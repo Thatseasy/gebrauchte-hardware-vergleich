@@ -1,5 +1,5 @@
 from typing import List, Dict, Optional, Tuple
-from .models import CanonicalSpec, ComponentType, Product
+from .models import CanonicalSpec, ComponentType, Product, Listing, Build
 from .database import DatabaseManager
 
 class SimilarityEngine:
@@ -113,7 +113,7 @@ class CombinationEngine:
         """
         Naive implementation: Picks the cheapest 'PASS' verified item for each spec.
         """
-        from .models import Build, BuildType, ValidationStatus # Import locally to avoid circular dep if any
+        from .models import BuildType, ValidationStatus # Import locally to avoid circular dep if any
 
         selected_components = []
         
