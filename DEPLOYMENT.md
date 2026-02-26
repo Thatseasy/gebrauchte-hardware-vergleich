@@ -18,7 +18,7 @@ Die Streamlit Cloud ist die einfachste Methode, da sie direkt für solche Apps g
 4. Fülle das kleine Formular aus:
    - **Repository:** Wähle dein Repository aus (z.B. `Thatseasy/kleinanzeigen_hardware_crawler`).
    - **Branch:** `main` (Stelle sicher, dass du unsere neu entwickelten Branches via Pull-Request in deinen `main` Branch gemerged hast!).
-   - **Main file path:** Trage hier den Pfad ein: `hardware_crawler/app.py`.
+   - **Main file path:** Trage hier den Pfad ein: `streamlit_app.py`.
    - **App URL:** Denke dir einen schönen Namen aus (z.B. `gaming-pc-crawler`).
 5. Klicke auf **Deploy!**
 
