@@ -1,0 +1,22 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.2, pytest-9.0.2, pluggy-1.6.0 -- C:\Dev\MiniApps\kleinanzeigen-gaming-pc-crawler\.venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Dev\MiniApps\kleinanzeigen-gaming-pc-crawler
+plugins: anyio-4.12.1
+collecting ... collected 0 items / 1 error
+
+=================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_database.py ___________________
+ImportError while importing test module 'C:\Dev\MiniApps\kleinanzeigen-gaming-pc-crawler\tests\test_database.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\imise\AppData\Roaming\uv\python\cpython-3.14.2-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_database.py:3: in <module>
+    from hardware_crawler.database import DatabaseManager
+E   ModuleNotFoundError: No module named 'hardware_crawler'
+=========================== short test summary info ===========================
+ERROR tests/test_database.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+============================== 1 error in 0.19s ===============================

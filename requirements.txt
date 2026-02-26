@@ -1,0 +1,10 @@
+streamlit
+pandas
+requests
+beautifulsoup4
+pytest
+python-dotenv
+openai
+google-generativeai
+anthropic
+cloudscraper
