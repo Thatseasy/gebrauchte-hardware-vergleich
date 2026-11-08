@@ -6,6 +6,125 @@ import threading
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, List, Optional
+from contextlib import contextmanager
+
+class TrafficMonitor:
+    """
+    Thread-safe network traffic & telemetry monitor:
+    - Counts HTTP requests & data volume (KB)
+    - Records HTTP status codes (200, 429, 403, 504, ConnectionReset)
+    - Records cache hits (e.g. 0ms catalog lookup)
+    - Records LLM calls & estimated token consumption
+    """
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.total_requests = 0
+        self.bytes_transferred = 0
+        self.status_codes: Dict[str, int] = {}
+        self.cache_hits = 0
+        self.llm_calls = 0
+        self.llm_tokens_estimated = 0
+        self.request_latencies: List[float] = []
+
+    def record_request(self, url: str, status_code: int, response_size_bytes: int = 0, latency_s: float = 0.0):
+        with self.lock:
+            self.total_requests += 1
+            self.bytes_transferred += max(0, response_size_bytes)
+            code_key = str(status_code)
+            self.status_codes[code_key] = self.status_codes.get(code_key, 0) + 1
+            if latency_s > 0:
+                self.request_latencies.append(latency_s)
+
+    def record_connection_error(self, error_type: str = "ConnectionReset"):
+        with self.lock:
+            self.total_requests += 1
+            self.status_codes[error_type] = self.status_codes.get(error_type, 0) + 1
+
+    def record_cache_hit(self):
+        with self.lock:
+            self.cache_hits += 1
+
+    def record_llm_call(self, tokens: int = 0):
+        with self.lock:
+            self.llm_calls += 1
+            self.llm_tokens_estimated += tokens
+
+    def get_summary(self) -> Dict[str, Any]:
+        with self.lock:
+            kb = round(self.bytes_transferred / 1024.0, 2)
+            avg_latency = round(sum(self.request_latencies) / len(self.request_latencies), 3) if self.request_latencies else 0.0
+            return {
+                "total_requests": self.total_requests,
+                "data_volume_kb": kb,
+                "status_codes": dict(self.status_codes),
+                "cache_hits": self.cache_hits,
+                "llm_calls": self.llm_calls,
+                "llm_tokens_estimated": self.llm_tokens_estimated,
+                "avg_latency_s": avg_latency
+            }
+
+    def reset(self):
+        with self.lock:
+            self.total_requests = 0
+            self.bytes_transferred = 0
+            self.status_codes.clear()
+            self.cache_hits = 0
+            self.llm_calls = 0
+            self.llm_tokens_estimated = 0
+            self.request_latencies.clear()
+
+class PerformanceTimer:
+    """
+    Precise performance timer for tracking durations across pipeline phases:
+    - Intent Parsing & Katalog-Lookup
+    - Kleinanzeigen Markt-Scraping (Einzelteile + Komplett-PCs)
+    - Verifikation & Scam-Filterung
+    - LLM-Aufrufe & BOM-Extraktion
+    - Gesamtdauer des Scans
+    """
+    def __init__(self):
+        self.lock = threading.Lock()
+        self.phase_starts: Dict[str, float] = {}
+        self.durations: Dict[str, float] = {}
+        self.start_time: float = time.time()
+
+    def start_phase(self, phase_name: str):
+        with self.lock:
+            self.phase_starts[phase_name] = time.perf_counter()
+
+    def stop_phase(self, phase_name: str) -> float:
+        with self.lock:
+            start = self.phase_starts.pop(phase_name, None)
+            if start is not None:
+                duration = time.perf_counter() - start
+                self.durations[phase_name] = self.durations.get(phase_name, 0.0) + duration
+                return duration
+            return 0.0
+
+    @contextmanager
+    def measure(self, phase_name: str):
+        self.start_phase(phase_name)
+        try:
+            yield
+        finally:
+            self.stop_phase(phase_name)
+
+    def get_summary(self) -> Dict[str, Any]:
+        with self.lock:
+            total_elapsed = time.time() - self.start_time
+            durations_ms = {k: round(v * 1000, 1) for k, v in self.durations.items()}
+            durations_s = {k: round(v, 2) for k, v in self.durations.items()}
+            return {
+                "total_duration_s": round(total_elapsed, 2),
+                "durations_s": durations_s,
+                "durations_ms": durations_ms
+            }
+
+    def reset(self):
+        with self.lock:
+            self.phase_starts.clear()
+            self.durations.clear()
+            self.start_time = time.time()
 
 class SessionLogger:
     """
@@ -17,6 +136,7 @@ class SessionLogger:
     - Active LLM verification & edits (Tier 2)
     - Complete PC BOM extractions and Arbitrage calculations
     - Final suggested builds
+    - Telemetry & performance metrics
     """
     
     DEFAULT_LOG_DIR = Path("logs/sessions")
@@ -28,6 +148,8 @@ class SessionLogger:
         self.log_file = self.log_dir / f"{self.session_id}.jsonl"
         self.events: List[Dict[str, Any]] = []
         self.lock = threading.Lock()
+        self.traffic_monitor = TrafficMonitor()
+        self.performance_timer = PerformanceTimer()
 
     def log_event(self, event_type: str, data: Dict[str, Any]) -> Dict[str, Any]:
         """Appends a structured event to the session JSONL log."""
@@ -111,6 +233,11 @@ class SessionLogger:
         self.log_event("build_generated", build_data)
 
     def log_session_complete(self, summary: Dict[str, Any]):
+        if "telemetry" not in summary:
+            summary["telemetry"] = {
+                "traffic": self.traffic_monitor.get_summary(),
+                "performance": self.performance_timer.get_summary()
+            }
         self.log_event("session_complete", summary)
 
     @classmethod

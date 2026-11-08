@@ -309,21 +309,53 @@ class GapAnalyzer:
     def estimate_psu_wattage(specs: List[CanonicalSpec]) -> int:
         """
         Estimation of required PSU wattage.
+        Uses deterministic HardwareCatalog TDP when available with formula:
+        (CPU_TDP + GPU_TDP + 80W) * 1.15
+        Falls back to keyword heuristics if not present in catalog.
         """
-        base_wattage = 150
-        
-        for s in specs:
-            name = s.name.upper()
-            if s.type == ComponentType.GPU:
-                if "4090" in name: base_wattage += 450
-                elif "4080" in name or "7900 XTX" in name: base_wattage += 320
-                elif "3080" in name or "6800 XT" in name: base_wattage += 320
-                elif "3070" in name or "6700" in name: base_wattage += 220
-                else: base_wattage += 180
-                
-            if s.type == ComponentType.CPU:
-                if "9" in name or "THREADRIPPER" in name: base_wattage += 180
-                elif "7" in name: base_wattage += 120
-                else: base_wattage += 65
-                
-        return int(base_wattage * 1.2)
+        cpu_tdp = None
+        gpu_tdp = None
+
+        # 1. Deterministic catalog lookup
+        try:
+            from .catalog import HardwareCatalog
+            catalog = HardwareCatalog()
+            for s in specs:
+                item = catalog.find_item(s.name)
+                if item:
+                    if item.type == "CPU" and cpu_tdp is None:
+                        cpu_tdp = item.tdp_w
+                    elif item.type == "GPU" and gpu_tdp is None:
+                        gpu_tdp = item.tdp_w
+        except Exception:
+            pass
+
+        # 2. Heuristic fallback for CPU/GPU TDP if not resolved
+        if cpu_tdp is None:
+            for s in specs:
+                if s.type == ComponentType.CPU:
+                    name = s.name.upper()
+                    if "9" in name or "THREADRIPPER" in name: cpu_tdp = 170
+                    elif "7" in name or "K" in name: cpu_tdp = 105
+                    else: cpu_tdp = 65
+                    break
+
+        if gpu_tdp is None:
+            for s in specs:
+                if s.type == ComponentType.GPU:
+                    name = s.name.upper()
+                    if "4090" in name: gpu_tdp = 450
+                    elif "4080" in name or "7900 XTX" in name: gpu_tdp = 320
+                    elif "3080" in name or "6800 XT" in name: gpu_tdp = 300
+                    elif "3070" in name or "6700" in name or "4070" in name: gpu_tdp = 220
+                    elif "6600" in name or "3060" in name or "4060" in name: gpu_tdp = 135
+                    else: gpu_tdp = 180
+                    break
+
+        actual_cpu = cpu_tdp if cpu_tdp is not None else 65
+        actual_gpu = gpu_tdp if gpu_tdp is not None else 0
+
+        # System base: Motherboard, RAM, NVMe SSD, Fans ~ 80W
+        # 1.15 headroom factor for transient spikes
+        return int((actual_cpu + actual_gpu + 80) * 1.15)
+

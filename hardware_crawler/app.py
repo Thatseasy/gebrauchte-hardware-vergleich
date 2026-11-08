@@ -6,16 +6,69 @@ import time
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 import streamlit as st
+import streamlit.components.v1 as components
 from hardware_crawler.ui_components import (
     render_chat_message, render_sidebar_summary,
     render_component_list_md, render_scan_results_md,
     render_listing_details, render_build_details,
-    render_build_listings
+    render_build_listings, render_build_proposals,
+    render_telemetry_summary
 )
 from hardware_crawler.orchestrator import HardwareOrchestrator
 
 # Page Config
 st.set_page_config(page_title="Hardware Agent 2.0", page_icon="🕵️", layout="wide")
+
+def inject_browser_telemetry():
+    """Lightweight client-side telemetry: captures window.onerror, unhandled rejections and resource timings."""
+    components.html(
+        """
+        <script>
+        (function() {
+            if (window._hw_telemetry_installed) return;
+            window._hw_telemetry_installed = true;
+
+            // Global Error Logging
+            window.onerror = function(message, source, lineno, colno, error) {
+                console.error("[HardwareAgent Browser Error]", {
+                    message: message,
+                    source: source,
+                    lineno: lineno,
+                    colno: colno,
+                    error: error ? error.stack : null,
+                    timestamp: new Date().toISOString()
+                });
+            };
+
+            window.addEventListener('unhandledrejection', function(event) {
+                console.error("[HardwareAgent Unhandled Rejection]", {
+                    reason: event.reason,
+                    timestamp: new Date().toISOString()
+                });
+            });
+
+            // Resource & Navigation Timing Profiling
+            if (window.performance && window.performance.getEntriesByType) {
+                window.addEventListener('load', function() {
+                    setTimeout(function() {
+                        const navEntries = performance.getEntriesByType('navigation');
+                        const nav = navEntries.length > 0 ? navEntries[0] : null;
+                        if (nav) {
+                            console.info("[HardwareAgent Client Timing]", {
+                                domReady: Math.round(nav.domContentLoadedEventEnd - nav.startTime) + "ms",
+                                pageLoad: Math.round(nav.loadEventEnd - nav.startTime) + "ms",
+                                transferSizeKB: (nav.transferSize / 1024).toFixed(1) + " KB"
+                            });
+                        }
+                    }, 500);
+                });
+            }
+        })();
+        </script>
+        """,
+        height=0,
+        width=0
+    )
 
 def get_orchestrator(api_key: str = None) -> HardwareOrchestrator:
     """Get or create the orchestrator in session state."""
@@ -25,6 +78,9 @@ def get_orchestrator(api_key: str = None) -> HardwareOrchestrator:
     return st.session_state.orchestrator
 
 def main():
+    # Inject browser-side telemetry
+    inject_browser_telemetry()
+
     # --- Session State Initialization ---
     if "messages" not in st.session_state:
         intro_text = (
@@ -84,6 +140,16 @@ def main():
 
     # Render scan results details after the last assistant message
     if st.session_state.scan_complete:
+        # Telemetry Summary Card
+        latest_report = st.session_state.get("latest_report")
+        telemetry = latest_report.get("telemetry") if latest_report else None
+        if not telemetry and getattr(orch, "session_logger", None):
+            telemetry = {
+                "traffic": orch.traffic_monitor.get_summary(),
+                "performance": orch.perf_timer.get_summary()
+            }
+        render_telemetry_summary(telemetry)
+
         # Größere Tabs via CSS
         st.markdown(
             """
@@ -129,11 +195,24 @@ def main():
             else:
                 st.info("Noch kein Session-Log aufgezeichnet.")
             
-    # Scan Market Button (only if specs exist and no scan yet)
+    # Scan Market Action Area (Proposals or Standard Scan)
     if orch.specs and not st.session_state.scan_complete:
-        if st.button("🚀 Scan Market", type="primary", use_container_width=True):
-            run_scan(orch)
-            st.rerun()
+        if orch.is_partial_intent and orch.build_proposals:
+            selected_tier = render_build_proposals(orch.build_proposals)
+            if selected_tier:
+                orch.apply_build_proposal(selected_tier)
+                run_scan(orch)
+                st.rerun()
+
+            st.markdown("---")
+            st.caption("Oder ohne automatische Build-Vervollständigung direkt nach deinen angegebenen Teilen suchen:")
+            if st.button("🔍 Nur meine eingegebenen Teile scannen", key="scan_raw_parts", use_container_width=True):
+                run_scan(orch)
+                st.rerun()
+        else:
+            if st.button("🚀 Scan Market", type="primary", use_container_width=True):
+                run_scan(orch)
+                st.rerun()
 
     # User Action Area (Chat Input or Reset/Export Options)
     if st.session_state.scan_complete:
@@ -181,8 +260,10 @@ def main():
             if added_names:
                 # Show parsed components
                 comp_md = render_component_list_md(orch.specs)
-                st.markdown(comp_md)
-                response_text = comp_md + "\n\n*Click '🚀 Scan Market' below to find deals!*"
+                if orch.is_partial_intent and orch.build_proposals:
+                    response_text = comp_md + "\n\n💡 **Einzelkomponente erkannt!** Wir haben 3 optimal abgestimmte Gaming-Setups (Budget, Mittelklasse, High-End) für dich kalkuliert. Wähle unten dein bevorzugtes Setup für den 1-Klick-Marktsuchlauf!"
+                else:
+                    response_text = comp_md + "\n\n*Klicke unten auf '🚀 Scan Market', um Kleinanzeigen zu durchsuchen!*"
             else:
                 response_text = "I didn't detect specific hardware parts. Try listing components like 'RTX 5070 Ti' or 'Ryzen 7800X3D'."
                 st.markdown(response_text)
@@ -193,19 +274,25 @@ def main():
 
 
 def run_scan(orch: HardwareOrchestrator):
-    """Run market scan with progress display."""
-    progress_bar = st.progress(0, text="Starting scan...")
+    """Run market scan with live elapsed time progress display and telemetry capture."""
+    start_time = time.time()
+    progress_bar = st.progress(0, text="⏱️ 0.0s | Starte Markt-Scan...")
     status_text = st.empty()
     
     def on_progress(pct, spec_name):
-        progress_bar.progress(min(pct, 1.0), text=f"Scanning: {spec_name}...")
+        elapsed = time.time() - start_time
+        progress_bar.progress(min(pct, 1.0), text=f"⏱️ {elapsed:.1f}s | Scanne Kleinanzeigen für {spec_name}...")
     
     report = orch.run_market_scan(progress_callback=on_progress)
+    elapsed_total = time.time() - start_time
     
-    progress_bar.progress(1.0, text="✅ Scan Complete!")
+    progress_bar.progress(1.0, text=f"✅ Scan abgeschlossen in {elapsed_total:.1f}s!")
     time.sleep(0.5)
     progress_bar.empty()
     status_text.empty()
+    
+    # Store latest report with telemetry for UI rendering
+    st.session_state.latest_report = report
     
     # Build results message
     results_md = render_scan_results_md(orch.listings_map, orch.specs, orch.latest_build)

@@ -16,9 +16,10 @@ class LLMClient:
     """
     Client for interacting with various LLM providers (Gemini, OpenAI, Ollama).
     """
-    def __init__(self, api_key: str = None):
+    def __init__(self, api_key: str = None, traffic_monitor=None):
         self.provider = os.getenv("LLM_PROVIDER", "gemini").lower()
         self.api_key = api_key
+        self.traffic_monitor = traffic_monitor
         self._setup_provider()
 
     def _setup_provider(self):
@@ -68,6 +69,8 @@ class LLMClient:
             return {}
 
         full_prompt = f"{system_prompt}\n\nTask: {prompt}\n\nResponse (JSON):"
+        if self.traffic_monitor:
+            self.traffic_monitor.record_llm_call(tokens=max(1, len(full_prompt) // 4))
 
         def _clean_and_parse_json(raw: str) -> Dict[str, Any]:
             import re
@@ -81,11 +84,20 @@ class LLMClient:
         for attempt in range(max_retries):
             try:
                 if self.provider == "gemini":
-                    # Gemini JSON mode
-                    response = self.model.generate_content(
-                        full_prompt,
-                        generation_config={"response_mime_type": "application/json"}
-                    )
+                    # Gemini JSON mode with 20s timeout option
+                    try:
+                        response = self.model.generate_content(
+                            full_prompt,
+                            generation_config={"response_mime_type": "application/json"},
+                            request_options={"timeout": 20}
+                        )
+                    except TypeError:
+                        response = self.model.generate_content(
+                            full_prompt,
+                            generation_config={"response_mime_type": "application/json"}
+                        )
+                    if self.traffic_monitor:
+                        self.traffic_monitor.record_request("gemini_api", 200, len(response.text) if hasattr(response, 'text') else 0)
                     return _clean_and_parse_json(response.text)
 
                 elif self.provider == "openai":
@@ -97,7 +109,10 @@ class LLMClient:
                         ],
                         response_format={"type": "json_object"}
                     )
-                    return _clean_and_parse_json(response.choices[0].message.content)
+                    content = response.choices[0].message.content
+                    if self.traffic_monitor:
+                        self.traffic_monitor.record_request("openai_api", 200, len(content))
+                    return _clean_and_parse_json(content)
                 
                 elif self.provider == "ollama":
                     import requests
@@ -107,13 +122,25 @@ class LLMClient:
                         "stream": False,
                         "format": "json"
                     }
-                    res = requests.post(f"{self.base_url}/api/generate", json=payload, timeout=30)
+                    res = requests.post(f"{self.base_url}/api/generate", json=payload, timeout=20)
+                    if self.traffic_monitor:
+                        self.traffic_monitor.record_request(f"{self.base_url}/api/generate", res.status_code, len(res.content))
                     if res.status_code == 200:
                         return _clean_and_parse_json(res.json()['response'])
             
             except Exception as e:
                 error_str = str(e)
-                is_transient = any(code in error_str.lower() for code in ["429", "503", "resource exhausted", "overloaded", "unavailable"])
+                error_lower = error_str.lower()
+
+                # Catch 504 Deadline Exceeded / Timeout and immediately return empty dict for instant heuristic fallback
+                is_timeout = any(term in error_lower for term in ["504", "deadline exceeded", "timed out", "timeout"])
+                if is_timeout:
+                    logger.warning(f"LLM Deadline/Timeout Exceeded ({error_str}). Immediate heuristic fallback without retries.")
+                    if self.traffic_monitor:
+                        self.traffic_monitor.record_request("llm_api", 504, 0)
+                    return {}
+
+                is_transient = any(code in error_lower for code in ["429", "503", "resource exhausted", "overloaded", "unavailable"])
                 if is_transient and attempt < max_retries - 1:
                     delay = 2 ** attempt
                     logger.warning(f"Transient LLM Error ({error_str}). Retrying in {delay}s... (Attempt {attempt+1}/{max_retries})")
@@ -121,6 +148,9 @@ class LLMClient:
                     continue
                     
                 logger.error("LLM Generation Error (%s): %s", self.provider, e)
+                if self.traffic_monitor:
+                    status_code = 429 if "429" in error_lower else (503 if "503" in error_lower else 500)
+                    self.traffic_monitor.record_request("llm_api", status_code, 0)
                 return {}
         
         return {}

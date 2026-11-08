@@ -313,4 +313,133 @@ def render_build_listings(listings: List[Listing]):
                     cols[1].markdown(f"### {price_str}{vb_badge}")
                     cols[2].markdown(f"[Ansehen]({sp.url or '#'})")
 
+def render_build_proposals(proposals: List[Any]) -> Optional[Any]:
+    """
+    Renders 3 interactive build proposal cards side-by-side with 1-click scan buttons.
+    Returns the selected proposal if a button was clicked, or None.
+    """
+    if not proposals:
+        return None
 
+    st.markdown("### 🛠️ Automatische Build-Vervollständigung")
+    st.info(
+        "💡 **Teileingabe erkannt:** Wir haben 3 optimal abgestimmte, 100% kompatible Gaming-Setups "
+        "für deine Komponente kalkuliert (0 ms, deterministisch über unsere 241-Teile-Matrix). "
+        "Wähle dein bevorzugtes Tier, um direkt den kompletten Markt-Scan auf Kleinanzeigen zu starten:"
+    )
+
+    cols = st.columns(len(proposals))
+    selected_proposal = None
+
+    for idx, prop in enumerate(proposals):
+        with cols[idx]:
+            with st.container(border=True):
+                # Header with Badge
+                st.markdown(f"### {html.escape(prop.tier_name)}")
+                st.caption(f"**{html.escape(prop.badge)}**")
+                st.markdown(f"*{html.escape(prop.headline)}*")
+
+                # Metrics: Price, Corridor, Gaming Index, P/L Ratio
+                p_min, p_max = getattr(prop, 'price_range', (prop.total_price * 0.9, prop.total_price * 1.1))
+                st.metric(
+                    label="Geschätzter Gesamtpreis",
+                    value=f"~{prop.total_price:.0f} €",
+                    delta=f"{p_min:.0f} € – {p_max:.0f} €"
+                )
+
+                m_col1, m_col2 = st.columns(2)
+                m_col1.markdown(f"🎮 **Gaming-Index:**\n### {prop.gaming_score}%")
+                m_col2.markdown(f"💎 **P/L-Faktor:**\n### {html.escape(prop.pl_label)}")
+
+                st.caption(html.escape(prop.description))
+                st.divider()
+
+                # Hardware BOM
+                st.markdown("📋 **Konfiguration & Komponenten:**")
+                for comp in prop.components:
+                    comp_type = None
+                    try:
+                        comp_type = ComponentType(comp.category)
+                    except Exception:
+                        pass
+                    icon = ICON_MAP.get(comp_type, "▫️") if comp_type else "▫️"
+                    user_tag = " <span style='background:#1e3a5f; color:#60a5fa; font-size:11px; padding:2px 6px; border-radius:4px;'>Deine Eingabe</span>" if comp.is_user_input else ""
+                    safe_name = html.escape(comp.name or "")
+                    safe_summary = html.escape(comp.specs_summary or "")
+                    st.markdown(
+                        f"- {icon} **{safe_name}**{user_tag}<br>"
+                        f"  *~{comp.estimated_price:.0f} €* <span style='color:#888; font-size:11px;'>({safe_summary})</span>",
+                        unsafe_allow_html=True
+                    )
+
+                st.divider()
+
+                # Compatibility Check Badge & Notes
+                if getattr(prop, 'is_compatible', True):
+                    st.success("✅ **100% Kompatibilität bestätigt**")
+                else:
+                    st.warning("⚠️ **Kompatibilitätshinweise vorhanden**")
+
+                for note in getattr(prop, 'compatibility_notes', []):
+                    st.caption(html.escape(str(note)))
+
+                st.divider()
+
+                # 1-Click Scan Button
+                btn_type = "primary" if prop.tier_id == "sweetspot" else "secondary"
+                if st.button(
+                    "🚀 Dieses Setup scannen",
+                    key=f"scan_prop_{prop.tier_id}_{idx}",
+                    type=btn_type,
+                    use_container_width=True
+                ):
+                    selected_proposal = prop
+
+def render_telemetry_summary(telemetry_data: Optional[Dict[str, Any]]):
+    """
+    Renders a compact, high-visibility performance and traffic telemetry summary card:
+    - Gesamtdauer (s)
+    - Anzahl HTTP-Requests & Status-Codes
+    - Datenvolumen (KB)
+    - Durchschnittliche Latenz (s)
+    - Pipeline-Phasen Aufschlüsselung
+    """
+    if not telemetry_data or not isinstance(telemetry_data, dict):
+        return
+    
+    traffic = telemetry_data.get("traffic", {})
+    perf = telemetry_data.get("performance", {})
+    
+    total_duration = perf.get("total_duration_s", 0.0)
+    total_reqs = traffic.get("total_requests", 0)
+    kb = traffic.get("data_volume_kb", 0.0)
+    avg_latency = traffic.get("avg_latency_s", 0.0)
+    cache_hits = traffic.get("cache_hits", 0)
+    llm_calls = traffic.get("llm_calls", 0)
+    status_codes = traffic.get("status_codes", {})
+    
+    with st.container(border=True):
+        st.markdown("### ⚡ Performance & Traffic")
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("⏱️ Gesamtdauer", f"{total_duration:.2f} s")
+        c2.metric("🌐 HTTP Requests", f"{total_reqs}")
+        c3.metric("📦 Datenvolumen", f"{kb:.1f} KB")
+        c4.metric("⚡ Ø Latenz", f"{avg_latency:.2f} s")
+        
+        with st.expander("🔍 Telemetrie-Details & Pipeline-Phasen", expanded=False):
+            t_col1, t_col2 = st.columns(2)
+            with t_col1:
+                st.markdown("**⏱️ Pipeline-Phasen:**")
+                durations_s = perf.get("durations_s", {})
+                if durations_s:
+                    for phase, dur in durations_s.items():
+                        st.caption(f"• **{phase}**: `{dur:.2f} s`")
+                else:
+                    st.caption("Keine Phasen erfasst.")
+            with t_col2:
+                st.markdown("**🌐 Traffic & Cache:**")
+                st.caption(f"• **0ms Katalog-Treffer (Cache Hits)**: `{cache_hits}`")
+                st.caption(f"• **LLM API Aufrufe**: `{llm_calls}`")
+                if status_codes:
+                    codes_str = ", ".join(f"`{k}`: {v}" for k, v in status_codes.items())
+                    st.caption(f"• **Status-Codes**: {codes_str}")

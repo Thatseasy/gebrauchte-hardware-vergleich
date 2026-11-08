@@ -4,6 +4,8 @@ from typing import List, Dict, Optional, Tuple, Any
 import re
 import json
 import logging
+import time
+import random
 from .models import Product, ComponentType, Listing, CanonicalSpec
 from .database import DatabaseManager
 
@@ -73,6 +75,10 @@ class PassmarkScraper:
 class KleinanzeigenScraper:
     """
     Resilient scraper for Kleinanzeigen supporting:
+    - Session reuse with Keep-Alive & standard browser headers
+    - Fast 7s timeout & connection reset recovery
+    - Gentle jitter / throttling (0.2s - 0.4s) between requests
+    - Traffic & telemetry monitoring integration
     - Modern Astro / Tailwind frontend (`article[data-adid]` & embedded Schema.org JSON-LD)
     - Legacy fallback (`article.aditem`)
     - Precision 4-tier VB price parsing (preserves '200 € VB' offers)
@@ -80,17 +86,41 @@ class KleinanzeigenScraper:
     
     BASE_URL = "https://www.kleinanzeigen.de"
     
-    def __init__(self):
+    def __init__(self, traffic_monitor=None):
+        self.traffic_monitor = traffic_monitor
+        self.scraper = self._create_session()
+        self.db = DatabaseManager()
+        self.last_error = None
+
+    def _create_session(self):
+        """Initializes cloudscraper session with Keep-Alive and standard browser headers."""
         import cloudscraper
-        self.scraper = cloudscraper.create_scraper(
+        scraper = cloudscraper.create_scraper(
             browser={
                 'browser': 'chrome',
                 'platform': 'windows',
                 'desktop': True
             }
         )
-        self.db = DatabaseManager()
-        self.last_error = None
+        scraper.headers.update({
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Language': 'de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Connection': 'keep-alive',
+            'Cache-Control': 'max-age=0'
+        })
+        return scraper
+
+    def _recreate_session(self):
+        """Recreates the scraper session upon connection drops or TCP RST."""
+        try:
+            self.scraper.close()
+        except Exception:
+            pass
+        self.scraper = self._create_session()
+
+    def _apply_jitter(self, min_s: float = 0.2, max_s: float = 0.4):
+        """Applies gentle jitter / throttling to avoid aggressive burst traffic."""
+        time.sleep(random.uniform(min_s, max_s))
 
     def search(self, query: str, radius: int = 0, location: str = "") -> List[Listing]:
         """Legacy search, wraps search_with_text"""
@@ -120,8 +150,19 @@ class KleinanzeigenScraper:
             url = f"{self.BASE_URL}/{url_part}"
             logger.info(f"Scraping Kleinanzeigen: {url}")
             
+            # Apply throttling jitter before request
+            self._apply_jitter(0.2, 0.4)
+            req_start = time.time()
+            
             try:
-                response = self.scraper.get(url, timeout=15)
+                # 7s timeout to prevent long hangs on stalled TCP connections
+                response = self.scraper.get(url, timeout=7)
+                req_latency = time.time() - req_start
+                resp_bytes = len(response.content) if hasattr(response, 'content') and response.content else 0
+                
+                if self.traffic_monitor:
+                    self.traffic_monitor.record_request(url, response.status_code, resp_bytes, req_latency)
+
                 if response.status_code == 429:
                     self.last_error = "HTTP_429_RATE_LIMIT"
                     logger.error(f"Rate limited by Kleinanzeigen (HTTP 429): {url}")
@@ -165,6 +206,19 @@ class KleinanzeigenScraper:
                         
             except requests.exceptions.HTTPError:
                 raise
+            except (requests.exceptions.ConnectionError, ConnectionResetError) as e:
+                self.last_error = "CONNECTION_RESET"
+                logger.warning(f"Connection reset/error on {url}: {e}. Reinitializing session...")
+                if self.traffic_monitor:
+                    self.traffic_monitor.record_connection_error("ConnectionReset")
+                self._recreate_session()
+                continue
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectTimeout) as e:
+                self.last_error = "TIMEOUT"
+                logger.warning(f"Connection timeout on {url}: {e}")
+                if self.traffic_monitor:
+                    self.traffic_monitor.record_request(url, 504, 0)
+                continue
             except Exception as e:
                 logger.error(f"Error scraping {url}: {e}")
                 
@@ -315,8 +369,15 @@ class KleinanzeigenScraper:
         if not listing.url or not str(listing.url).startswith("http"):
             return False
             
+        self._apply_jitter(0.2, 0.4)
+        req_start = time.time()
         try:
-            resp = self.scraper.get(listing.url, timeout=10)
+            resp = self.scraper.get(listing.url, timeout=7)
+            req_latency = time.time() - req_start
+            resp_bytes = len(resp.content) if hasattr(resp, 'content') and resp.content else 0
+            if self.traffic_monitor:
+                self.traffic_monitor.record_request(listing.url, resp.status_code, resp_bytes, req_latency)
+                
             if resp.status_code != 200:
                 return False
                 
@@ -376,6 +437,17 @@ class KleinanzeigenScraper:
                     listing.raw_attributes["price_source"] = "description_fallback"
 
             return True
+        except (requests.exceptions.ConnectionError, ConnectionResetError) as e:
+            logger.warning(f"Connection reset/error on detail page {listing.url}: {e}. Reinitializing session...")
+            if self.traffic_monitor:
+                self.traffic_monitor.record_connection_error("ConnectionReset")
+            self._recreate_session()
+            return False
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectTimeout) as e:
+            logger.warning(f"Timeout on detail page {listing.url}: {e}")
+            if self.traffic_monitor:
+                self.traffic_monitor.record_request(listing.url, 504, 0)
+            return False
         except Exception as e:
             logger.warning(f"Failed to fetch detail page for {listing.url}: {e}")
             return False

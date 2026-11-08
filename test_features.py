@@ -40,7 +40,7 @@ def test_features():
     assert ok_bad is False
     assert "Incompatible Sockets" in warnings_bad[0]
     
-    print("\n✅ Verification Passed!")
+    print("\n[OK] Verification Passed!")
 
 if __name__ == "__main__":
     test_features()

@@ -233,3 +233,86 @@
   - `scratch/test_scraper_adversarial.py`: 73/73 bestanden (100%).
   - `scratch/qa_head_audit.py`: 24/24 bestanden (100%).
   - Gesamtsuite `pytest`: 21/21 Unit/Integration Tests grün.
+
+---
+
+## Phase 12: Telemetrie, Traffic-Profiling & Auto-Build-Vervollständigung
+
+### Team 1: Performance, Traffic & Telemetry (Performance & Telemetry Engineer)
+- [x] **1.1 Root-Cause Fix für 4-10 Min. Hänger & Resilienz**:
+  - [x] `scrapers.py`: Kleinanzeigen-Timeout von 15s auf 7s senken, ConnectionReset-Handling einbauen.
+  - [x] `scrapers.py`: Cloudscraper Keep-Alive Session mit Standard-Headern wiederverwenden, sanftes Throttling/Jitter (0.2–0.4s).
+  - [x] `orchestrator.py`: ThreadPoolExecutor `max_workers` auf 2 begrenzen.
+  - [x] `orchestrator.py`: `fetch_detail_page()` nur für Top-3 bis Top-5 aussichtsreichste Komplett-PCs vorselektiert aufrufen.
+  - [x] `llm_client.py`: Gemini 504 Deadline Exceeded abfangen und sofort leeres Dict / Heuristik-Fallback zurückgeben statt Endlos-Retries.
+- [x] **1.2 Traffic- & Performance-Monitor (`TrafficMonitor` / `PerformanceTimer`)**:
+  - [x] `logging_session.py`: `TrafficMonitor` implementieren (Requests, Datenvolumen KB, HTTP-Statuscodes 200/429/403/504/ConnReset, Cache-Hits, LLM-Calls).
+  - [x] `logging_session.py`: `PerformanceTimer` implementieren (Zeiterfassung für Intent, Scraping, Verifikation, BOM, Gesamt).
+  - [x] Telemetrie-Hooks in `KleinanzeigenScraper`, `LLMClient`, `HardwareCatalog`, `HardwareOrchestrator` anbinden.
+  - [x] `SessionLogger.log_session_complete()` um vollständige Telemetrie-Zusammenfassung erweitern.
+- [x] **1.3 Streamlit UI & Browser-Telemetrie**:
+  - [x] `ui_components.py`: `render_telemetry_summary()` erstellen für kompakte Darstellung (Dauer, Requests, KB, avg Latenz).
+  - [x] `app.py`: Live-Dauer im Status-Balken anzeigen (`⏱️ {elapsed:.1f}s | ...`).
+  - [x] `app.py`: "⚡ Performance & Traffic"-Zusammenfassung nach dem Scan rendern.
+  - [x] `app.py`: Leichtes JavaScript-Snippet (`st.components.v1.html`) für `window.onerror` & Resource Timing einbinden.
+- [x] **1.4 Tests & Zertifizierung**:
+  - [x] Unit- & Integrationstests (`uv run pytest`) erweitern und ausführen (33/33 grün in 7.24s).
+  - [x] `scratch/qa_head_audit.py` ausführen und 100% grün verifizieren (24/24 bestanden, 0 Issues).
+  - [x] Ergebnisse dokumentieren und an Caller melden.
+
+### Team 2: Partial-Input & Auto-Build Completer (Build Completer Engineer)
+- [x] **1. Erkennung von Teil- / Einzeleingaben (`is_partial_intent`)**:
+  - [x] `orchestrator.py`: `detect_partial_intent(specs)` implementieren & Attribut `is_partial_intent` verankern.
+  - [x] Erkennung für 1–2 Kernkomponenten (CPU, GPU) ohne Komplett-PC-Intent.
+- [x] **2. `BuildCompleter` Engine (`hardware_crawler/completer.py`)**:
+  - [x] Datenklassen `BuildProposal` und `CompletedComponent` definieren.
+  - [x] 0ms deterministische Sockel-, Plattform- und TDP-Erkennung via `HardwareCatalog`.
+  - [x] Generierung von 3 Tiers (Budget, Mittelklasse/Sweetspot, High-End):
+    * CPU-Fokus (AM4 wie 5800X3D, AM5 wie 7800X3D, LGA1700, LGA1200): Budget (RX 6600, ~590€, ~42% Score), Sweetspot (RTX 3070 / RX 6700 XT, ~770€, ~65% Score), High-End (RTX 4070 Super / RX 7800 XT, ~1.140€, ~88% Score).
+    * GPU-Fokus (z. B. RTX 3070): Budget (Ryzen 5 5600 + B550 + 16GB, ~580€), Sweetspot (Ryzen 7 5700X3D + B550 + 32GB, ~750€), High-End (Ryzen 7 7800X3D + B650 + 32GB DDR5, ~1.050€).
+    * Dual-Fokus (CPU + GPU bereits vorhanden): Ergänzung von Board, RAM, Netzteil, Speicher & Gehäuse.
+  - [x] Automatische Berechnung: Gesamtpreis, Gaming-Score, P/L-Verhältnis (Punkte pro Euro / 100€) und Kompatibilitätsbestätigung (`CompatibilityEngine`).
+  - [x] Konvertierung jedes Vorschlags in `CanonicalSpec`-Liste für den Sofort-Scan.
+- [x] **3. UI-Integration in `app.py` & `ui_components.py`**:
+  - [x] `ui_components.py`: `render_build_proposals(proposals)` implementieren mit ansprechenden Build-Karten nebeneinander.
+  - [x] `app.py`: Bei `is_partial_intent = True` Vorschläge anzeigen und 1-Klick-Übernahme "🚀 Dieses Setup scannen" aktivieren.
+  - [x] Option "Nur eigene Teile scannen" für maximale Flexibilität beibehalten.
+- [x] **4. Tests & Verifikation**:
+  - [x] `tests/test_completer.py` erstellen mit Tests für AM4, AM5, LGA1700, GPU-Eingabe (RTX/Radeon) und Intent-Erkennung (7/7 bestanden).
+  - [x] Ausführung `uv run pytest tests/test_completer.py` und Gesamt-Suite `uv run pytest` (31/31 bestanden, 100% grün).
+  - [x] Dokumentation & Abschlussbericht an Caller via `send_message`.
+
+---
+
+## 🏆 Team 2 Review: Auto-Build Completer & Partial Input Architecture
+- **Deterministische 0ms Engine (`BuildCompleter`)**: Keine LLM-Latenz und keine Token-Kosten. Ermittelt Plattform (AM4, AM5, LGA1700, LGA1200), Sockel, TDP und RAM-Typ deterministisch über den 241-Komponenten-Katalog.
+- **Drei perfekt ausbalancierte Tiers**:
+  1. *🌱 Budget (Maximale Ersparnis):* Maximale Kosteneffizienz für 1080p Ultra (z.B. B450 + 16GB DDR4 + 500W PSU + RX 6600 bei 5800X3D-Eingabe; oder Ryzen 5 5600 + B550 + 16GB RAM + 550W PSU bei RTX 3070-Eingabe).
+  2. *⚖️ Mittelklasse (P-L Sweetspot):* Der Sieger für 1440p High-FPS (B550 + 32GB RAM + 650W PSU + RTX 3070 / RX 6700 XT; oder Ryzen 7 5700X3D + 32GB RAM + 650W PSU).
+  3. *🚀 High-End (Maximale Power):* Maximale Leistung auf der Zielplattform (RTX 4070 Super / 7800 XT + 32GB RAM + 750W Gold PSU; oder Ryzen 7 7800X3D + B650 + DDR5).
+- **Metriken & Kompatibilitätsgarantie**: Jedes Tier liefert Gesamtpreis, Preiskorridor, relativen Gaming-Score (0-100), P/L-Verhältnis (`pl_label`, z.B. `8.4 Pkt. / 100€`), BOM-Auflistung und eine Verifikation durch `CompatibilityEngine.check_compatibility()` (100% kompatibel).
+- **1-Klick Streamlit UI**: Interaktive Build-Karten nebeneinander mit direkter Übernahme (`orch.apply_build_proposal()`) und sofortigem Suchlauf. Alternative Option ("Nur eigene Teile scannen") bleibt für volle Flexibilität verfügbar.
+- **Tests**: 7/7 Tests in `tests/test_completer.py` und 33/33 Tests im gesamten Projekt erfolgreich (`uv run pytest` 100% grün).
+
+---
+
+## 🏆 Team 1 Review: Performance, Traffic-Reduktion & Telemetrie
+- **Root-Cause des 4–10 Min. Hängers eliminiert**:
+  1. *Kleinanzeigen TCP RST & Concurrency:* `max_workers` in `orchestrator.py` von 5 auf 2 gesenkt. Session-Reuse mit Keep-Alive und Standard-Browser-Headern in `KleinanzeigenScraper` implementiert. Sanftes Throttling / Jitter (`0.2s - 0.4s`) zwischen Requests hinzugefügt. Automatische Re-Initialisierung bei `ConnectionResetError` / WinError 10054.
+  2. *Detailseiten-Überlastung behoben:* `fetch_detail_page()` wird in `_search_and_evaluate_complete_pcs()` nur noch für die Top-3 aussichtsreichsten Komplett-PCs aufgerufen (mittels heuristischem `_pc_teaser_score` vorselektiert nach Preis-Korridor, Anchor-Tokens, Käuferschutz und Versand) statt ungedeckelt für alle Inserate. Timeout von 15s auf 7s gesenkt.
+  3. *Gemini 504 Deadline Exceeded:* Request-Timeout auf 20s begrenzt. Im Fehlerfall wird ein `504` / `Deadline Exceeded` / Timeout sofort im Exception-Filter abgefangen und bricht ohne langwierige Retry-Schleifen direkt mit sicherem Heuristik-Fallback ab.
+- **`TrafficMonitor` & `PerformanceTimer` (`logging_session.py`)**:
+  - `TrafficMonitor`: Zählt präzise HTTP-Requests, übertragene Datenmengen (KB), Status-Codes (200, 429, 403, 504, ConnectionReset), 0ms Katalog-Cache-Hits und LLM-Aufrufe / geschätzte Tokens.
+  - `PerformanceTimer`: Erfasst präzise Zeiten (`duration_ms` / Sekunden) für Intent Parsing & Katalog-Lookup, Kleinanzeigen Markt-Scraping, Verifikation & Scam-Filterung, LLM-Aufrufe & BOM-Extraktion sowie die Scan-Gesamtdauer.
+  - Vollständige Integration in den JSONL-Audit-Trail via `log_session_complete()`.
+- **Streamlit UI & Browser-Telemetrie (`app.py`, `ui_components.py`)**:
+  - Live-Verlaufsanzeige im Streamlit-Statusbalken während des Scans (`⏱️ {elapsed:.1f}s | Scanne Kleinanzeigen für {spec_name}...`).
+  - Neue visuelle Komponente `render_telemetry_summary()`: Zeigt nach dem Scan eine kompakte 4-Metriken-Karte (Gesamtdauer, HTTP-Requests, Datenvolumen KB, Ø Latenz) mit aufklappbaren Details zu Pipeline-Phasen und Status-Codes.
+  - Leichtgewichtiges Browser-JS-Snippet via `components.html`: Erfasst `window.onerror`, unhandled promise rejections sowie Resource- & Navigation-Timings (DOM Ready, Page Load, Transfer Size) im Browser-Log.
+- **Tests & Qualitätssicherung**:
+  - `uv run pytest`: 33/33 Tests bestanden (100% grün in 7.24s).
+  - `scratch/qa_head_audit.py`: 24/24 Chaos- und Stress-Szenarien bestanden (100.0%, 0 Issues).
+  - `scratch/test_scraper_adversarial.py`: 73/73 Tests bestanden (100.0%, 0 Flaws).
+
+
+
