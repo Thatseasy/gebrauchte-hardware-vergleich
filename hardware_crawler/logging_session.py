@@ -232,13 +232,132 @@ class SessionLogger:
     def log_build_generated(self, build_data: Dict[str, Any]):
         self.log_event("build_generated", build_data)
 
+    def log_intent_type_detected(
+        self,
+        raw_input_preview: str,
+        line_count: int,
+        detected_mode: str,
+        mode_confidence: float,
+        detected_seller_price: Optional[float],
+        is_vb: bool,
+        extracted_components_count: int,
+        unrecognized_lines: List[str],
+        latency_ms: float
+    ):
+        """Logs classification of user input into search vs paste-to-evaluate deal-check."""
+        return self.log_event("intent_type_detected", {
+            "raw_input_preview": (raw_input_preview or "")[:150],
+            "line_count": line_count,
+            "detected_mode": detected_mode,
+            "mode_confidence": round(mode_confidence, 2),
+            "detected_seller_price": detected_seller_price,
+            "is_vb": is_vb,
+            "extracted_components_count": extracted_components_count,
+            "unrecognized_lines": unrecognized_lines,
+            "latency_ms": round(latency_ms, 2)
+        })
+
+    def log_deal_check_evaluated(
+        self,
+        seller_asking_price: float,
+        is_vb: bool,
+        total_part_market_value: float,
+        arbitrage_savings: float,
+        savings_percent: float,
+        price_assessment: str,
+        components: List[Dict[str, Any]],
+        negotiation_target_price: Optional[float] = None
+    ):
+        """Logs valuation of a complete pasted ad against catalog market prices."""
+        return self.log_event("deal_check_evaluated", {
+            "seller_asking_price": seller_asking_price,
+            "is_vb": is_vb,
+            "total_part_market_value": round(total_part_market_value, 2),
+            "arbitrage_savings": round(arbitrage_savings, 2),
+            "savings_percent": round(savings_percent, 1),
+            "price_assessment": price_assessment,
+            "components": components,
+            "negotiation_target_price": negotiation_target_price
+        })
+
+    def log_hardware_plausibility_rejected(
+        self,
+        rejected_listing_title: str,
+        component_type: str,
+        listing_price: Optional[float],
+        rule_violated: str,
+        actual_wattage: Optional[int],
+        required_wattage: int,
+        rejection_reason: str,
+        build_context: Optional[Dict[str, Any]] = None,
+        recommended_wattage: Optional[int] = None
+    ):
+        """Logs strict rejection of an underpowered or hazardous component prior to price sorting."""
+        return self.log_event("hardware_plausibility_rejected", {
+            "rejected_listing_title": rejected_listing_title,
+            "component_type": component_type,
+            "listing_price": listing_price,
+            "rule_violated": rule_violated,
+            "actual_wattage": actual_wattage,
+            "required_wattage": required_wattage,
+            "recommended_wattage": recommended_wattage or int(required_wattage * 1.15),
+            "build_context": build_context or {},
+            "rejection_reason": rejection_reason
+        })
+
+    def log_bundle_slot_satisfied(
+        self,
+        bundle_listing_id: str,
+        bundle_title: str,
+        bundle_price: float,
+        satisfied_slots: List[str],
+        separate_slots_cost: float,
+        bundle_savings: float
+    ):
+        """Logs multi-slot fulfillment by a hardware bundle to prevent redundant part purchases."""
+        return self.log_event("bundle_slot_satisfied", {
+            "bundle_listing_id": bundle_listing_id,
+            "bundle_title": bundle_title,
+            "bundle_price": bundle_price,
+            "satisfied_slots": satisfied_slots,
+            "separate_slots_cost": round(separate_slots_cost, 2),
+            "bundle_savings": round(bundle_savings, 2)
+        })
+
+    def log_ready_to_play_gap_filled(
+        self,
+        base_components_price: float,
+        shipping_cost_total: float,
+        missing_slots: List[str],
+        standard_fillers: List[Dict[str, Any]],
+        gap_fillers_total: float,
+        true_ready_to_play_price: float
+    ):
+        """Logs standard pricing for missing case, cooler, or storage plus shipping overhead."""
+        return self.log_event("ready_to_play_gap_filled", {
+            "base_components_price": round(base_components_price, 2),
+            "shipping_cost_total": round(shipping_cost_total, 2),
+            "missing_slots": missing_slots,
+            "standard_fillers": standard_fillers,
+            "gap_fillers_total": round(gap_fillers_total, 2),
+            "true_ready_to_play_price": round(true_ready_to_play_price, 2)
+        })
+
+    def log_telemetry_summary(self, summary_data: Optional[Dict[str, Any]] = None):
+        """Logs summary telemetry at the conclusion of a session."""
+        data = summary_data or {
+            "traffic": self.traffic_monitor.get_summary(),
+            "performance": self.performance_timer.get_summary()
+        }
+        return self.log_event("telemetry_summary", data)
+
     def log_session_complete(self, summary: Dict[str, Any]):
         if "telemetry" not in summary:
             summary["telemetry"] = {
                 "traffic": self.traffic_monitor.get_summary(),
                 "performance": self.performance_timer.get_summary()
             }
-        self.log_event("session_complete", summary)
+        return self.log_event("session_complete", summary)
 
     @classmethod
     def get_latest_session_log(cls, log_dir: Optional[Path] = None) -> Optional[Path]:

@@ -76,7 +76,27 @@ class HardwareOrchestrator:
         self.session_logger.log_session_start(user_input)
         
         with self.perf_timer.measure("Intent Parsing & Katalog-Lookup"):
+            t_start = time.perf_counter()
+            from .deal_checker import detect_deal_check_intent
+            is_deal, det_price, is_vb, conf, mode = detect_deal_check_intent(user_input)
+            
             raw_components = self.intent_agent.parse_input(user_input)
+            latency_ms = (time.perf_counter() - t_start) * 1000.0
+
+            # Log intent detection event
+            line_count = len([l for l in (user_input or "").splitlines() if l.strip()])
+            self.session_logger.log_intent_type_detected(
+                raw_input_preview=user_input,
+                line_count=line_count,
+                detected_mode=mode,
+                mode_confidence=conf,
+                detected_seller_price=det_price,
+                is_vb=is_vb,
+                extracted_components_count=len(raw_components),
+                unrecognized_lines=[],
+                latency_ms=latency_ms
+            )
+
             added_names = []
             unresolved_for_cards = []
 
@@ -203,10 +223,14 @@ class HardwareOrchestrator:
             }
             
             # 0. Fast-path Alternatives via Catalog, fallback to LLM
+            # Focus alternative searches on primary compute hardware (GPU, CPU, Motherboard)
             alt_specs = []
-            spec_names = [s.name for s in self.specs if s.type not in [ComponentType.UNKNOWN, ComponentType.BUILD, ComponentType.ACCESSORY, ComponentType.FAN]]
+            primary_alt_types = {ComponentType.GPU, ComponentType.CPU, ComponentType.MOTHERBOARD}
+            spec_names = [s.name for s in self.specs if s.type in primary_alt_types]
             
             for s in self.specs:
+                if s.type not in primary_alt_types:
+                    continue
                 cat_alts = self.catalog.get_alternatives(s.name, max_results=2)
                 if cat_alts:
                     report["alternatives_found"][s.name] = [a.canonical_name for a in cat_alts]
@@ -221,7 +245,7 @@ class HardwareOrchestrator:
                         )
                         alt_specs.append((s.name, alt_spec))
 
-            # Check remaining parts needing LLM alternatives
+            # Check remaining core parts needing LLM alternatives
             unresolved_alts = [name for name in spec_names if name not in report["alternatives_found"]]
             if unresolved_alts:
                 logger.info(f"Finding alternatives for {len(unresolved_alts)} parts via LLM batch...")
@@ -281,7 +305,9 @@ class HardwareOrchestrator:
         
         # 3. Optimize Virtual Build from Loose Parts
         if self.listings_map:
-            self.latest_build = CombinationEngine.create_best_build(self.specs, self.listings_map)
+            self.latest_build = CombinationEngine.create_best_build(
+                self.specs, self.listings_map, session_logger=self.session_logger
+            )
             
             if self.latest_build:
                 current_parts = [c.product_match.name for c in self.latest_build.components if c.product_match]

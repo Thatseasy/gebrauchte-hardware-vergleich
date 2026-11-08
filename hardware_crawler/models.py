@@ -118,6 +118,10 @@ class Listing:
     bom: Optional[Dict[str, Any]] = None
     arbitrage_savings: float = 0.0
 
+    # Bundle Intelligence
+    is_bundle: bool = False
+    bundle_slots: List[str] = field(default_factory=list)
+
 @dataclass
 class Build:
     """Represents a combination of parts or a complete PC listing."""
@@ -129,6 +133,13 @@ class Build:
     individual_parts_value: float = 0.0 # Sum of individual parts
     arbitrage_savings: float = 0.0 # individual_parts_value - total_price
     
+    # Ready-to-Play TCO & Gaps
+    shipping_cost_total: float = 0.0
+    standard_fillers: List[Dict[str, Any]] = field(default_factory=list)
+    gap_fillers_total: float = 0.0
+    true_ready_to_play_price: float = 0.0
+    bundle_savings_total: float = 0.0
+
     # Analysis
     total_performance_score: int = 0
     gaming_tier: str = "1080p_budget"

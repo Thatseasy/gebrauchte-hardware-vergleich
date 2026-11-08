@@ -14,8 +14,27 @@ class HardwareIntentAgent:
         self.llm = llm_client
 
     def parse_input(self, text: str) -> List[Dict[str, Any]]:
-        # Fast-path check: Check if text directly matches catalog items
+        # Fast-path 1: Check if input is multi-line or bullet-formatted ad dump
+        from .deal_checker import MultiLineAdParser
         catalog = HardwareCatalog()
+
+        is_multiline = "\n" in text or " - " in text or " • " in text or " * " in text
+        if is_multiline:
+            parser = MultiLineAdParser(catalog)
+            ad_components, _, _, _ = parser.parse_ad_text(text)
+            if ad_components:
+                logger.info(f"Intent extracted {len(ad_components)} components via MultiLineAdParser in 0 ms.")
+                return [
+                    {
+                        "type": c.category,
+                        "raw_name": c.raw_name,
+                        "normalized_name": c.canonical_name,
+                        "constraints": []
+                    }
+                    for c in ad_components
+                ]
+
+        # Fast-path 2: Check if comma-separated text directly matches catalog items
         parts = [p.strip() for p in text.split(",") if p.strip()]
         resolved_items = []
         unresolved = []

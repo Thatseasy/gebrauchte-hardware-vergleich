@@ -1,5 +1,5 @@
 import re
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional, Tuple, Any
 from .models import CanonicalSpec, ComponentType, Product, Listing, Build
 from .database import DatabaseManager
 
@@ -193,51 +193,213 @@ class CompatibilityEngine:
         return (len(warnings) == 0, warnings)
 
 class CombinationEngine:
-    """Combines individual component listings into a complete Build."""
+    """Combines individual component listings into a complete Build with Wattage Cutoff and Bundle Intelligence."""
 
     @staticmethod
-    def create_best_build(specs: List[CanonicalSpec], listings_map: Dict[str, List[Listing]]) -> Optional[Build]:
+    def parse_wattage(text: str) -> Optional[int]:
+        if not text:
+            return None
+        m = re.search(r'\b(\d{3,4})\s*(?:W|WATT)\b', text, re.IGNORECASE)
+        if m:
+            w = int(m.group(1))
+            if 250 <= w <= 2000:
+                return w
+        return None
+
+    @staticmethod
+    def extract_system_tdp(specs: List[CanonicalSpec]) -> Tuple[int, int, int]:
         """
-        Picks the cheapest 'PASS' verified item for each spec with scam filtering.
+        Calculates cpu_tdp, gpu_tdp, and min_wattage = cpu_tdp + gpu_tdp + 100W.
+        """
+        from .catalog import HardwareCatalog
+        cat = HardwareCatalog()
+        cpu_tdp = 65
+        gpu_tdp = 180
+
+        for s in specs:
+            item = cat.find_item(s.name)
+            if item:
+                if item.type == "CPU":
+                    cpu_tdp = item.tdp_w or 65
+                elif item.type == "GPU":
+                    gpu_tdp = item.tdp_w or 180
+            else:
+                t_upper = s.name.upper()
+                if s.type == ComponentType.CPU:
+                    if any(k in t_upper for k in ["5800X3D", "13700", "14700", "12700", "5700X3D"]): cpu_tdp = 105
+                    elif any(k in t_upper for k in ["13900", "14900", "7900", "7950"]): cpu_tdp = 170
+                    else: cpu_tdp = 65
+                elif s.type == ComponentType.GPU:
+                    if any(k in t_upper for k in ["4090", "3090"]): gpu_tdp = 450
+                    elif any(k in t_upper for k in ["3080", "4080", "7900"]): gpu_tdp = 320
+                    elif any(k in t_upper for k in ["3070", "4070", "6800"]): gpu_tdp = 220
+                    elif any(k in t_upper for k in ["3060", "4060", "6600"]): gpu_tdp = 135
+
+        min_wattage = cpu_tdp + gpu_tdp + 100
+        return cpu_tdp, gpu_tdp, min_wattage
+
+    @staticmethod
+    def filter_plausible_psu(
+        listings: List[Listing],
+        min_wattage: int,
+        cpu_desc: str = "",
+        gpu_desc: str = "",
+        session_logger: Optional[Any] = None
+    ) -> List[Listing]:
+        """Strictly blocks underpowered PSUs before sorting by price."""
+        plausible = []
+        for l in listings:
+            w = CombinationEngine.parse_wattage(l.title) or CombinationEngine.parse_wattage(l.description)
+            if w is not None and w < min_wattage:
+                if session_logger and hasattr(session_logger, 'log_hardware_plausibility_rejected'):
+                    session_logger.log_hardware_plausibility_rejected(
+                        rejected_listing_title=l.title,
+                        component_type="PSU",
+                        listing_price=l.price,
+                        rule_violated="HARD_WATTAGE_CUTOFF",
+                        actual_wattage=w,
+                        required_wattage=min_wattage,
+                        recommended_wattage=int(min_wattage * 1.15),
+                        build_context={"cpu": cpu_desc, "gpu": gpu_desc, "base_system_w": 100},
+                        rejection_reason=f"PSU {w}W verworfen: Benötigt mindestens {min_wattage}W für GPU ({gpu_desc}) + CPU ({cpu_desc})"
+                    )
+                continue
+            plausible.append(l)
+        return plausible
+
+    @staticmethod
+    def detect_bundle_slots(listing: Listing, present_specs: List[CanonicalSpec]) -> List[ComponentType]:
+        """Detects whether a listing is a bundle satisfying multiple build slots."""
+        text = f"{listing.title or ''} {listing.description or ''}".upper()
+        has_bundle_kw = bool(re.search(r'\b(BUNDLE|COMBO|SET|KIT|MAINBOARD\s*\+\s*CPU|CPU\s*\+\s*BOARD|CPU\s*\+\s*MAINBOARD)\b', text))
+
+        has_cpu = bool(re.search(r'\b(RYZEN|CORE\s*I[3579]|I[3579]-|5800X3D|5600X?|7800X3D|12400|13600|13700|PROZESSOR)\b', text))
+        has_mb = bool(re.search(r'\b(B450|B550|X570|B650|X670|B760|Z690|Z790|A520|A620|MAINBOARD|MOTHERBOARD)\b', text))
+        has_ram = bool(re.search(r'\b(\d{1,3})\s*GB\s*(?:(?:DDR[345])|(?:RAM))\b|\b(DDR[345])\b', text))
+
+        matched_count = sum([has_cpu, has_mb, has_ram])
+        slots = set()
+        if has_bundle_kw or matched_count >= 2:
+            if has_cpu and any(s.type == ComponentType.CPU for s in present_specs):
+                slots.add(ComponentType.CPU)
+            if has_mb and any(s.type == ComponentType.MOTHERBOARD for s in present_specs):
+                slots.add(ComponentType.MOTHERBOARD)
+            if has_ram and any(s.type == ComponentType.RAM for s in present_specs):
+                slots.add(ComponentType.RAM)
+
+        if len(slots) >= 2:
+            listing.is_bundle = True
+            listing.bundle_slots = [s.value for s in slots]
+            return list(slots)
+        return []
+
+    @staticmethod
+    def fill_ready_to_play_gaps(
+        build: Build,
+        specs: List[CanonicalSpec],
+        session_logger: Optional[Any] = None
+    ):
+        """
+        Fills gaps for essential missing parts:
+        - Case (Gehäuse): +50.00 €
+        - Cooler (CPU-Kühler): +30.00 €
+        - Storage (SSD 1TB NVMe): +55.00 €
+        - Shipping: 6.99 € per unique seller listing
+        """
+        present_types = {c.product_match.type if c.product_match else ComponentType.UNKNOWN for c in build.components}
+
+        missing_slots = []
+        standard_fillers = []
+
+        if ComponentType.CASE not in present_types:
+            missing_slots.append("CASE")
+            standard_fillers.append({"slot": "CASE", "item": "Airflow ATX Gehäuse (Standard)", "price": 50.0})
+        if ComponentType.COOLER not in present_types:
+            missing_slots.append("COOLER")
+            standard_fillers.append({"slot": "COOLER", "item": "Tower CPU-Kühler 120mm (Standard)", "price": 30.0})
+        if ComponentType.STORAGE not in present_types:
+            missing_slots.append("STORAGE")
+            standard_fillers.append({"slot": "STORAGE", "item": "1TB NVMe M.2 SSD (Standard)", "price": 55.0})
+
+        gap_fillers_total = sum(f["price"] for f in standard_fillers)
+
+        # Shipping cost: 6.99 € per individual component listing
+        unique_listings_count = len([c for c in build.components if c.price and c.price > 0])
+        shipping_total = round(unique_listings_count * 6.99, 2)
+
+        build.shipping_cost_total = shipping_total
+        build.standard_fillers = standard_fillers
+        build.gap_fillers_total = round(gap_fillers_total, 2)
+        build.true_ready_to_play_price = round(build.total_price + shipping_total + gap_fillers_total, 2)
+
+        if session_logger and hasattr(session_logger, 'log_ready_to_play_gap_filled'):
+            session_logger.log_ready_to_play_gap_filled(
+                base_components_price=build.total_price,
+                shipping_cost_total=shipping_total,
+                missing_slots=missing_slots,
+                standard_fillers=standard_fillers,
+                gap_fillers_total=gap_fillers_total,
+                true_ready_to_play_price=build.true_ready_to_play_price
+            )
+
+    @staticmethod
+    def create_best_build(
+        specs: List[CanonicalSpec],
+        listings_map: Dict[str, List[Listing]],
+        session_logger: Optional[Any] = None
+    ) -> Optional[Build]:
+        """
+        Picks components with Hardware Plausibility, Hard Wattage Cutoff,
+        and Bundle Multi-Slot Satisfaction.
         """
         from .models import BuildType, ValidationStatus
 
-        selected_components = []
-        
+        cpu_tdp, gpu_tdp, min_wattage = CombinationEngine.extract_system_tdp(specs)
+        cpu_name = next((s.name for s in specs if s.type == ComponentType.CPU), f"CPU ({cpu_tdp}W)")
+        gpu_name = next((s.name for s in specs if s.type == ComponentType.GPU), f"GPU ({gpu_tdp}W)")
+
+        # 1. Check for valid Bundle listings across all candidates
+        candidate_bundles = []
+        for spec_name, raw_list in listings_map.items():
+            for l in raw_list:
+                if l.price is not None and l.price > 5.0 and not getattr(l, 'is_scam_suspected', False):
+                    bundle_slots = CombinationEngine.detect_bundle_slots(l, specs)
+                    if len(bundle_slots) >= 2:
+                        candidate_bundles.append((l, bundle_slots))
+
+        # 2. Pick best item per spec (with Wattage Cutoff for PSUs)
+        best_per_spec: Dict[str, Listing] = {}
         for spec in specs:
             raw_candidates = listings_map.get(spec.name, [])
-            # Exclude any listing suspected of scam or with SCAM_SUSPECT status
             listings = [
                 l for l in raw_candidates
                 if not getattr(l, 'is_scam_suspected', False)
                 and (not l.verification or l.verification.status != ValidationStatus.SCAM_SUSPECT)
             ]
-            # Priority 1: Verified PASS with price > 5.0
+
+            # Enforce Hard Wattage Cutoff on PSUs BEFORE price sorting
+            if spec.type == ComponentType.PSU:
+                listings = CombinationEngine.filter_plausible_psu(
+                    listings, min_wattage, cpu_name, gpu_name, session_logger
+                )
+
             valid = [
                 l for l in listings
                 if l.price is not None and l.price > 5.0
                 and l.verification and l.verification.status == ValidationStatus.PASS
             ]
-            # Priority 2: Verified REVIEW with price > 5.0
             if not valid:
                 valid = [
                     l for l in listings
                     if l.price is not None and l.price > 5.0
                     and l.verification and l.verification.status == ValidationStatus.REVIEW
                 ]
-            # Priority 3: Fallback to any verified PASS listing (including pure VB or None price)
             if not valid:
                 valid = [
                     l for l in listings
-                    if l.verification and l.verification.status == ValidationStatus.PASS
+                    if l.verification and l.verification.status in [ValidationStatus.PASS, ValidationStatus.REVIEW]
                 ]
-            # Priority 4: Fallback to any verified REVIEW listing
-            if not valid:
-                valid = [
-                    l for l in listings
-                    if l.verification and l.verification.status == ValidationStatus.REVIEW
-                ]
-            
+
             if valid:
                 valid.sort(key=lambda x: (x.price is None or x.price <= 0.0, x.price if (x.price is not None and x.price > 0.0) else float('inf')))
                 
@@ -258,25 +420,80 @@ class CombinationEngine:
                 else:
                     best_match = valid[0]
                     
-                best_match.product_match = Product(id=spec.name, name=spec.name, type=spec.type) 
-                selected_components.append(best_match)
-        
+                best_per_spec[spec.name] = best_match
+
+        # 3. Evaluate Bundle Advantage (Multi-Slot Satisfaction)
+        selected_components: List[Listing] = []
+        satisfied_by_bundle_types: set = set()
+        bundle_savings_total = 0.0
+
+        if candidate_bundles:
+            # Sort bundles by price ascending
+            candidate_bundles.sort(key=lambda b: b[0].price or float('inf'))
+            for b_listing, b_slots in candidate_bundles:
+                # Calculate cost of separate individual parts for these slots
+                separate_cost = 0.0
+                covered_specs = [s for s in specs if s.type in b_slots]
+                all_covered_have_items = True
+                for cs in covered_specs:
+                    if cs.name in best_per_spec and best_per_spec[cs.name].price:
+                        separate_cost += best_per_spec[cs.name].price
+                    else:
+                        all_covered_have_items = False
+                        break
+
+                if all_covered_have_items and b_listing.price and b_listing.price < separate_cost:
+                    # Bundle is cheaper! Satisfy multiple slots simultaneously
+                    primary_slot = covered_specs[0].type
+                    b_listing.product_match = Product(id=covered_specs[0].name, name=covered_specs[0].name, type=primary_slot)
+                    selected_components.append(b_listing)
+
+                    for cs in covered_specs:
+                        satisfied_by_bundle_types.add(cs.type)
+
+                    savings = round(separate_cost - b_listing.price, 2)
+                    bundle_savings_total += savings
+
+                    if session_logger and hasattr(session_logger, 'log_bundle_slot_satisfied'):
+                        session_logger.log_bundle_slot_satisfied(
+                            bundle_listing_id=b_listing.url,
+                            bundle_title=b_listing.title,
+                            bundle_price=b_listing.price,
+                            satisfied_slots=[s.value for s in b_slots],
+                            separate_slots_cost=separate_cost,
+                            bundle_savings=savings
+                        )
+                    break
+
+        # 4. Add remaining individual components for slots not satisfied by bundle
+        for spec in specs:
+            if spec.type in satisfied_by_bundle_types:
+                continue
+            if spec.name in best_per_spec:
+                cand = best_per_spec[spec.name]
+                cand.product_match = Product(id=spec.name, name=spec.name, type=spec.type)
+                selected_components.append(cand)
+
         if not selected_components:
             return None
-            
+
         build = Build(
             components=selected_components,
-            build_type=BuildType.VIRTUAL
+            build_type=BuildType.VIRTUAL,
+            bundle_savings_total=round(bundle_savings_total, 2)
         )
         build.calculate_totals()
-        
+
         # Check compatibility
         is_compat, warnings = CompatibilityEngine.check_compatibility(specs)
         build.compatibility_warnings = warnings
-        
+
         # Check gaps
         build.missing_components = GapAnalyzer.analyze_completeness(specs)
-        
+
+        # 5. Fill Ready-to-Play Gaps & Calculate True Ready-to-Play TCO
+        CombinationEngine.fill_ready_to_play_gaps(build, specs, session_logger)
+
         return build
 
 class GapAnalyzer:

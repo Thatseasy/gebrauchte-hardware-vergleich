@@ -12,9 +12,11 @@ from hardware_crawler.ui_components import (
     render_component_list_md, render_scan_results_md,
     render_listing_details, render_build_details,
     render_build_listings, render_build_proposals,
-    render_telemetry_summary
+    render_telemetry_summary, render_deal_check_view,
+    render_versus_view
 )
 from hardware_crawler.orchestrator import HardwareOrchestrator
+from hardware_crawler.deal_checker import detect_deal_check_intent, DealChecker
 
 # Page Config
 st.set_page_config(page_title="Hardware Agent 2.0", page_icon="🕵️", layout="wide")
@@ -195,8 +197,22 @@ def main():
             else:
                 st.info("Noch kein Session-Log aufgezeichnet.")
             
+    # Deal-Checker and Versus-View Action Area
+    if st.session_state.get("deal_check_result"):
+        deal_res = st.session_state.deal_check_result
+        render_deal_check_view(deal_res)
+
+        if st.session_state.get("show_versus") and orch.latest_build:
+            render_versus_view(deal_res, orch.latest_build)
+        elif not st.session_state.scan_complete:
+            st.markdown("---")
+            if st.button("⚔️ Gegen besten DIY-Build vergleichen (Versus-View)", type="primary", use_container_width=True):
+                st.session_state.show_versus = True
+                run_scan(orch)
+                st.rerun()
+
     # Scan Market Action Area (Proposals or Standard Scan)
-    if orch.specs and not st.session_state.scan_complete:
+    elif orch.specs and not st.session_state.scan_complete:
         if orch.is_partial_intent and orch.build_proposals:
             selected_tier = render_build_proposals(orch.build_proposals)
             if selected_tier:
@@ -217,7 +233,7 @@ def main():
     # User Action Area (Chat Input or Reset/Export Options)
     if st.session_state.scan_complete:
         st.divider()
-        st.markdown("### 🎯 Suche abgeschlossen")
+        st.markdown("### 🎯 Vorgang abgeschlossen")
         st.info("Damit sich alte Suchergebnisse nicht mit neuen vermischen, ist die aktuelle Session abgeschlossen.")
         
         col1, col2 = st.columns(2)
@@ -234,7 +250,7 @@ def main():
         )
         
         # Reset Button (preserves API key)
-        if col2.button("🔄 Neue Suche starten", type="primary", use_container_width=True):
+        if col2.button("🔄 Neue Suche / Neuen Deal prüfen", type="primary", use_container_width=True):
             from hardware_crawler.orchestrator import HardwareOrchestrator
             st.session_state.orchestrator = HardwareOrchestrator(api_key=active_api_key)
             intro_text = (
@@ -245,30 +261,61 @@ def main():
             )
             st.session_state.messages = [{"role": "assistant", "content": intro_text}]
             st.session_state.scan_complete = False
+            st.session_state.deal_check_result = None
+            st.session_state.show_versus = False
             st.rerun()
             
-    elif prompt := st.chat_input("Describe your build or components..."):
+    elif prompt := st.chat_input("Describe your build, components, or paste Kleinanzeigen ad..."):
         # Add User Message
         st.session_state.messages.append({"role": "user", "content": prompt})
         render_chat_message("user", prompt)
         
-        # Process with Orchestrator
+        # Check for Paste-to-Evaluate Deal-Check Intent
+        is_deal, det_price, is_vb, conf, mode = detect_deal_check_intent(prompt)
+
         with st.chat_message("assistant"):
-            with st.spinner("Analyzing your components..."):
-                added_names = orch.process_user_intent(prompt)
-            
-            if added_names:
-                # Show parsed components
-                comp_md = render_component_list_md(orch.specs)
-                if orch.is_partial_intent and orch.build_proposals:
-                    response_text = comp_md + "\n\n💡 **Einzelkomponente erkannt!** Wir haben 3 optimal abgestimmte Gaming-Setups (Budget, Mittelklasse, High-End) für dich kalkuliert. Wähle unten dein bevorzugtes Setup für den 1-Klick-Marktsuchlauf!"
-                else:
-                    response_text = comp_md + "\n\n*Klicke unten auf '🚀 Scan Market', um Kleinanzeigen zu durchsuchen!*"
+            if is_deal:
+                with st.spinner("Bewerte Kleinanzeigen-Inserat gegen Gebrauchtmarkt..."):
+                    deal_checker = DealChecker(orch.catalog)
+                    deal_res = deal_checker.evaluate_ad(
+                        prompt,
+                        seller_asking_price=det_price,
+                        is_vb=is_vb,
+                        session_logger=orch.session_logger
+                    )
+                    st.session_state.deal_check_result = deal_res
+                    orch.process_user_intent(prompt)
+
+                    p_str = f"{deal_res.seller_asking_price:.0f} €" if deal_res.seller_asking_price > 0 else "k.A."
+                    vb_str = " (VB)" if deal_res.is_vb else ""
+                    savings_str = f"{'+' if deal_res.arbitrage_savings > 0 else ''}{deal_res.arbitrage_savings:.0f} €"
+
+                    response_text = (
+                        f"🔍 **Kleinanzeigen-Inserat erkannt ({len(deal_res.components)} Komponenten)!**\n\n"
+                        f"### {deal_res.assessment_headline}\n"
+                        f"{deal_res.assessment_description}\n\n"
+                        f"• **Angebotspreis:** {p_str}{vb_str}\n"
+                        f"• **Geschätzter Marktwert (Summe Teile):** ~{deal_res.total_market_value:.0f} €\n"
+                        f"• **Spar-Vorteil:** {savings_str} ({deal_res.savings_percent:.1f}%)\n\n"
+                        f"*Details zu Einzelpreisen und Verhandlungsvorlage siehe unten!*"
+                    )
+                    st.markdown(response_text)
+                    st.session_state.messages.append({"role": "assistant", "content": response_text})
             else:
-                response_text = "I didn't detect specific hardware parts. Try listing components like 'RTX 5070 Ti' or 'Ryzen 7800X3D'."
+                with st.spinner("Analyzing your components..."):
+                    added_names = orch.process_user_intent(prompt)
+                
+                if added_names:
+                    comp_md = render_component_list_md(orch.specs)
+                    if orch.is_partial_intent and orch.build_proposals:
+                        response_text = comp_md + "\n\n💡 **Einzelkomponente erkannt!** Wir haben 3 optimal abgestimmte Gaming-Setups (Budget, Mittelklasse, High-End) für dich kalkuliert. Wähle unten dein bevorzugtes Setup für den 1-Klick-Marktsuchlauf!"
+                    else:
+                        response_text = comp_md + "\n\n*Klicke unten auf '🚀 Scan Market', um Kleinanzeigen zu durchsuchen!*"
+                else:
+                    response_text = "I didn't detect specific hardware parts. Try listing components like 'RTX 3070' or 'Ryzen 7800X3D' or paste an ad description."
+                
                 st.markdown(response_text)
-            
-            st.session_state.messages.append({"role": "assistant", "content": response_text})
+                st.session_state.messages.append({"role": "assistant", "content": response_text})
         
         st.rerun()
 

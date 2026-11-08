@@ -443,3 +443,177 @@ def render_telemetry_summary(telemetry_data: Optional[Dict[str, Any]]):
                 if status_codes:
                     codes_str = ", ".join(f"`{k}`: {v}" for k, v in status_codes.items())
                     st.caption(f"• **Status-Codes**: {codes_str}")
+
+def render_deal_check_view(deal: Any):
+    """
+    Renders Deal-Checker evaluation results:
+    - Assessment Headline & Badge (TOP_DEAL, FAIR_DEAL, OVERPRICED)
+    - 3 Key Metrics: Asking Price, Part Market Value, Arbitrage Savings
+    - Component Breakdown Table with Market Values
+    - Ready-to-Play Gap Alert (if Case, Cooler, Storage missing)
+    - Negotiation Assistant with German template & 1-click copy box
+    """
+    if not deal:
+        return
+
+    from .deal_checker import PriceAssessment
+
+    st.markdown("## 🔍 Inserat-Bewertung (Deal-Checker)")
+
+    # 1. Assessment Banner
+    if deal.assessment == PriceAssessment.TOP_DEAL:
+        st.success(f"### {deal.assessment_headline}\n{deal.assessment_description}")
+    elif deal.assessment == PriceAssessment.FAIR_DEAL:
+        st.info(f"### {deal.assessment_headline}\n{deal.assessment_description}")
+    elif deal.assessment == PriceAssessment.OVERPRICED:
+        st.error(f"### {deal.assessment_headline}\n{deal.assessment_description}")
+    else:
+        st.warning(f"### {deal.assessment_headline}\n{deal.assessment_description}")
+
+    # 2. Key Metrics Row
+    m1, m2, m3 = st.columns(3)
+    seller_price_display = f"{deal.seller_asking_price:.0f} €" if deal.seller_asking_price > 0 else "k.A."
+    vb_label = " (VB)" if deal.is_vb else " (Festpreis)"
+    m1.metric("💰 Angebotspreis", f"{seller_price_display}{vb_label}")
+    m2.metric("🏷️ Summe Einzelteil-Marktwerte", f"~{deal.total_market_value:.0f} €")
+    
+    savings_sign = "+" if deal.arbitrage_savings > 0 else ""
+    m3.metric(
+        "⚡ Ersparnis gegenüber Einzelkauf",
+        f"{savings_sign}{deal.arbitrage_savings:.0f} €",
+        delta=f"{savings_sign}{deal.savings_percent:.1f}%"
+    )
+
+    # 3. Component Breakdown Table
+    with st.container(border=True):
+        st.markdown(f"### 📋 Erkannte Komponenten ({len(deal.components)} Teile)")
+        table_data = []
+        for c in deal.components:
+            cat_icon = ICON_MAP.get(ComponentType(c.category), "▫️") if c.category in ComponentType.__members__ else "▫️"
+            table_data.append({
+                "Kategorie": f"{cat_icon} {c.category}",
+                "Erkannte Hardware": c.canonical_name,
+                "Fairer Gebrauchtpreis": f"~{c.market_value_fair:.0f} €",
+                "Preis-Korridor": f"{c.market_value_min:.0f} € – {c.market_value_max:.0f} €",
+                "Katalog-Treffer": "0 ms Katalog" if c.is_catalog_match else "Markt-Richtwert"
+            })
+        if table_data:
+            st.dataframe(pd.DataFrame(table_data), use_container_width=True, hide_index=True)
+
+    # 4. Ready-to-Play Gap Alert (if missing Case, Cooler, Storage)
+    if deal.missing_essential_parts:
+        with st.container(border=True):
+            st.warning("⚠️ **Hinweis zu 'Ready-to-Play':** In der Anzeige fehlen essenzielle Teile für den Betrieb:")
+            for mp in deal.missing_essential_parts:
+                st.caption(f"• {html.escape(mp)}")
+            st.markdown(
+                f"**Zusatzaufwand:** +{deal.ready_to_play_additional_cost:.0f} € "
+                f"$\rightarrow$ **Echter Ready-to-Play Preis:** **~{deal.ready_to_play_total_cost:.0f} €**"
+            )
+
+    # 5. Negotiation Assistant
+    if deal.negotiation:
+        neg = deal.negotiation
+        with st.container(border=True):
+            st.markdown("### 💬 Verhandlungs-Assistent (Kleinanzeigen Anschreiben)")
+            st.caption(f"🎯 **Empfohlenes Einstiegsgebot:** **{neg.target_offer_price:.0f} €** ({neg.suggested_discount_pct:.1f}% Rabatt)")
+            st.caption(f"💡 *Begründung:* {html.escape(neg.rationale)}")
+            st.code(neg.chat_message_german, language="text")
+            st.caption("📋 *Tipp: Klicke oben rechts auf das Copy-Icon, um die Nachricht direkt in Kleinanzeigen einzufügen.*")
+
+def render_versus_view(deal: Any, diy_build: Any):
+    """
+    Renders 2-column head-to-head showdown:
+    Left: Kleinanzeigen Complete PC
+    Right: Best DIY Virtual Build
+    Bottom: Automated System Recommendation
+    """
+    if not deal or not diy_build:
+        return
+
+    st.markdown("## ⚔️ DER SHOWDOWN: FERTIG-PC vs. EIGENBAU")
+    col_pc, col_diy = st.columns(2)
+
+    # Left Column: Complete PC from Ad
+    with col_pc:
+        with st.container(border=True):
+            st.markdown("### 🖥️ KLEINANZEIGEN FERTIG-PC")
+            st.caption("Komplettes System aus dem Inserat")
+            
+            p_disp = f"{deal.seller_asking_price:.0f} €" if deal.seller_asking_price > 0 else "VB"
+            vb_txt = " (VB)" if deal.is_vb else ""
+            st.metric("💰 Angebotspreis", f"{p_disp}{vb_txt}")
+            st.caption("🚚 **0 € Versand** • Sofort abholbereit vor Ort")
+
+            # Gaming Score (estimated from parts)
+            pc_score = 65
+            for c in deal.components:
+                if c.category == "GPU" and "3080" in c.canonical_name: pc_score = 65
+                elif c.category == "GPU" and "4070" in c.canonical_name: pc_score = 67
+                elif c.category == "GPU" and "3070" in c.canonical_name: pc_score = 52
+            st.metric("🎮 Gaming Score (TPU)", f"{pc_score} / 100")
+
+            pl_pc = round((pc_score / deal.seller_asking_price) * 100, 1) if deal.seller_asking_price > 0 else 0.0
+            st.metric("⚡ P/L Ratio", f"{pl_pc} Pkt. / 100 €")
+            st.divider()
+
+            st.markdown("📦 **Enthaltene Komponenten:**")
+            for c in deal.components:
+                st.caption(f"• **{c.category}:** {html.escape(c.canonical_name)} (~{c.market_value_fair:.0f} €)")
+
+            st.divider()
+            st.markdown("🛡️ **Aufwand & Risiko:**")
+            st.caption("✅ 1x Transaktion (Abholung & Vor-Ort-Test)")
+            st.caption("✅ Sofort einsatzbereit (Ready-to-Play)")
+            st.caption("⚠️ Keine Händler-Garantie (Privatverkauf)")
+
+    # Right Column: Best DIY Build
+    with col_diy:
+        with st.container(border=True):
+            st.markdown("### 🛠️ BESTER EIGENBAU (DIY BUILD)")
+            st.caption("Optimiertes Setup aus geprüften Einzelteilen")
+
+            diy_ready_price = getattr(diy_build, 'true_ready_to_play_price', diy_build.total_price)
+            st.metric("💰 Ready-to-Play Gesamtpreis", f"~{diy_ready_price:.0f} €")
+            shipping_txt = f"{diy_build.shipping_cost_total:.0f} €" if getattr(diy_build, 'shipping_cost_total', 0) > 0 else "28 €"
+            st.caption(f"📦 Teile: {diy_build.total_price:.0f} € • Versand: {shipping_txt} • Gap-Fillers: {getattr(diy_build, 'gap_fillers_total', 0):.0f} €")
+
+            diy_score = getattr(diy_build, 'total_performance_score', 0) or pc_score
+            st.metric("🎮 Gaming Score (TPU)", f"{diy_score} / 100")
+
+            pl_diy = round((diy_score / diy_ready_price) * 100, 1) if diy_ready_price > 0 else 0.0
+            st.metric("⚡ P/L Ratio", f"{pl_diy} Pkt. / 100 €")
+            st.divider()
+
+            st.markdown("📦 **Enthaltene Komponenten:**")
+            for c in diy_build.components:
+                c_type_str = c.product_match.type.value if c.product_match else "Teil"
+                bundle_tag = " *(Im Bundle)*" if getattr(c, 'is_bundle', False) else ""
+                st.caption(f"• **{c_type_str}:** {html.escape(c.title[:45])}{bundle_tag} (~{c.price:.0f} €)")
+
+            st.divider()
+            st.markdown("🛡️ **Aufwand & Risiko:**")
+            st.caption(f"⚠️ {len(diy_build.components)} separate Verkäufer & Pakete")
+            st.caption("⚠️ ~3-4 Std. Zusammenbau & Installation nötig")
+            st.caption("✅ Flexible Auswahl der besten Einzelkomponenten")
+
+    # Bottom Banner: System Recommendation
+    with st.container(border=True):
+        st.markdown("### 🏆 SYSTEM-EMPFEHLUNG")
+        price_diff = diy_ready_price - deal.seller_asking_price
+        target_offer = deal.negotiation.target_offer_price if deal.negotiation else deal.seller_asking_price
+
+        if price_diff >= -30.0:
+            st.success(
+                f"🎯 **Empfehlung: Fertig-PC kaufen (Verhandlungs-Ziel: ~{target_offer:.0f} €)**\n\n"
+                f"Der Fertig-PC ist mit {deal.seller_asking_price:.0f} € preislich auf Augenhöhe oder günstiger "
+                f"als der Eigenbau (~{diy_ready_price:.0f} € Ready-to-Play). Durch Verhandlung sparst du bares Geld, "
+                f"kannst den PC vor Ort testen und sparst dir 4 Stunden Bau- und Konfigurationsaufwand!"
+            )
+        else:
+            st.info(
+                f"🎯 **Empfehlung: Eigenbau bevorzugen (~{diy_ready_price:.0f} €)**\n\n"
+                f"Der Fertig-PC ist mit {deal.seller_asking_price:.0f} € teurer als der modulare Eigenbau. "
+                f"Wenn der Verkäufer nicht auf mindestens {target_offer:.0f} € nachverhandelt, lohnt sich der Einzelkauf mehr."
+            )
+

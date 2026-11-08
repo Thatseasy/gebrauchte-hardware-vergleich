@@ -314,5 +314,168 @@
   - `scratch/qa_head_audit.py`: 24/24 Chaos- und Stress-Szenarien bestanden (100.0%, 0 Issues).
   - `scratch/test_scraper_adversarial.py`: 73/73 Tests bestanden (100.0%, 0 Flaws).
 
+---
+
+## Sprint 3: Deal-Checker, Full-Build Intelligence & UX Overhaul
+
+### Phase 1: Rules & Notion Project Management Setup
+- [x] Create `rules.md` in workspace root enforcing Notion sync, logging-first approach, and strict team separation.
+- [x] Create Notion Subpage "Sprint 3: Deal-Checker, Full-Build Intelligence & UX Overhaul" under page `2f4d261b-913c-80c2-9bbe-c43b94062846` (Page ID: `412d261b-913c-812c-a951-ee4c69a7895b`).
+- [x] Create Notion Task Database with columns: Task Name, Status, Priority, Assignee / Team, Category (Data Source: `collection://9ec6db6c-82f2-4125-96f1-ecbe285aed56`).
+- [x] Populate Notion database with detailed Sprint 3 tickets:
+  - [x] `TICKET-01`: Deal-Checker & Inserat-Bewertung (Paste-to-Evaluate Mode)
+  - [x] `TICKET-02`: Multi-Line Listing Parser Hardening & Intent Recovery
+  - [x] `TICKET-03`: Hardware Plausibilität & Hard Wattage Cutoff (Block underpowered PSUs)
+  - [x] `TICKET-04`: Bundle-Intelligence (Multi-Component Slot Satisfaction)
+  - [x] `TICKET-05`: Ready-to-Play Lückenfüllung & Gesamtkostenschätzung
+  - [x] `TICKET-06`: Versus-View UI (Kleinanzeigen Komplett-PC vs. Bester Eigenbau)
+  - [x] `TICKET-07`: [Backlog] Nightly Delta-Poller & Smart Caching Architecture (Spike)
+  - [x] `TICKET-08`: Real-World QA & Browser-Verifikation mit Kleinanzeigen-Inseraten
+
+### Phase 2: Team 1 - Planning & Architecture (Sprint Architect & Spec Writer)
+- [x] Dispatch Team 1 subagent to draft technical specifications and pre-implementation logging plan:
+  - [x] Pre-Implementation Logging & Telemetry Strategy (What, Where, How across all pipeline stages).
+  - [x] TICKET-01: Deal-Checker & Inserat-Bewertung (Paste-to-Evaluate Domain Model & Negotiation Assistant).
+  - [x] TICKET-02: Multi-Line Listing Parser Hardening & sess_20261108_122052_2abad8 Forensics.
+  - [x] TICKET-03: Hardware Plausibilität & Hard Wattage Cutoff (Block underpowered PSUs before price sort).
+  - [x] TICKET-04: Bundle-Intelligence (Multi-Component Slot Satisfaction in CombinationEngine).
+  - [x] TICKET-05: Ready-to-Play Lückenfüllung & Gesamtkostenschätzung (Case 50€, Cooler 30€, SSD 55€).
+  - [x] TICKET-06: Versus-View UI (2-Spalten-Layout & KPI Showdown: Fertig-PC vs. Bester Eigenbau).
+  - [x] TICKET-07: Nightly Delta-Poller & Smart Caching Architecture (Spike & SQLite schema).
+- [x] Save specification as `tasks/sprint_3_spec.md`.
+- [x] Review Team 1 architectural specification and report to caller.
+
+---
+
+## 🏆 Team 1 Review: Sprint 3 Architecture & Specification
+- **Spezifikation & Schnittstellendefinitionen abgeschlossen**: Ausführliches Architekturdokument `tasks/sprint_3_spec.md` (634 Zeilen) erstellt.
+- **Pre-Implementation Logging & Telemetrie**: Schemas für alle 6 Kernereignisse (`intent_type_detected`, `deal_check_evaluated`, `hardware_plausibility_rejected`, `bundle_slot_satisfied`, `ready_to_play_gap_filled`, `telemetry_summary`) strikt vor der Implementierung definiert.
+- **TICKET-01 bis TICKET-07 vollständig spezifiziert**:
+  - `TICKET-01`: Deal-Checker & Inserat-Bewertung mit automatischer Intent-Klassifizierung (`DEAL_CHECK_PASTE` vs. `SEARCH`), Domain-Modell (`DealCheckResult`, `PriceAssessment`), Arbitrage-Formel und deutschem Verhandlungs-Assistenten.
+  - `TICKET-02`: Multi-Line Parser Hardening mit Forensik zu `sess_20261108_122052_2abad8.jsonl`, Eliminierung des Query-Stitchings und 0ms Zeilen-Normalisierung gegen den 241-Komponenten-Katalog.
+  - `TICKET-03`: Harte Blockierung unterdimensionierter Netzteile (`min_wattage = cpu_tdp + gpu_tdp + 100W`) VOR der Preis-Sortierung in `CombinationEngine`.
+  - `TICKET-04`: Multi-Slot-Befriedigung durch Bundles (z.B. CPU + Mainboard + RAM) zur Verhinderung doppelter Komponenten im DIY-Build.
+  - `TICKET-05`: Ready-to-Play Lückenfüllung mit Markt-Richtpreisen (Gehäuse 50€, Kühler 30€, SSD 55€) und Versandkosten-Buffer (6.99€/Verkäufer) für echte TCO-Transparenz.
+  - `TICKET-06`: Versus-View UI mit 2-Spalten-Showdown in Streamlit (Fertig-PC vs. Bester Eigenbau) inklusive KPI-Vergleich und automatischer System-Empfehlung.
+  - `TICKET-07`: Spike für Nightly Delta-Poller auf Seite 1 mit SQLite-Caching (`listings_cache.db`), Preis-Historie und 0ms Warm-Query-Serving.
+
+### Phase 3: Team 2 - Implementation (Fullstack & Core Engine Engineer)
+- [x] **Step 1: Pre-Implementation Logging & Telemetry**
+  - [x] Implement event helper methods in `hardware_crawler/logging_session.py`:
+    * `intent_type_detected`
+    * `deal_check_evaluated`
+    * `hardware_plausibility_rejected`
+    * `bundle_slot_satisfied`
+    * `ready_to_play_gap_filled`
+    * `telemetry_summary`
+- [x] **Step 2: TICKET-01 & TICKET-02: Deal-Checker & Multi-Line Parser**
+  - [x] Create `hardware_crawler/deal_checker.py`:
+    * `PriceAssessment` Enum & Dataclasses (`EvaluatedComponent`, `NegotiationStrategy`, `DealCheckResult`)
+    * `detect_deal_check_intent()` 0ms heuristic classifier
+    * `MultiLineAdParser` with bullet stripping, annotation cleanup, regex & 241-catalog matching
+    * `DealChecker` valuation engine & German negotiation message generator
+  - [x] Update `hardware_crawler/agents.py`: Integrate `MultiLineAdParser` into `HardwareIntentAgent` to prevent query-stitching and drop of secondary parts.
+- [x] **Step 3: TICKET-03: Hardware Plausibility & Hard Wattage Cutoff**
+  - [x] In `hardware_crawler/analysis.py` (`CombinationEngine`):
+    * Implement `_filter_plausible_components()` / `_filter_plausible_psu()` before price sorting
+    * Enforce `min_wattage = cpu_tdp + gpu_tdp + 100W`
+    * Strictly block underpowered PSUs (e.g. 400W PSU for RTX 3080)
+    * Log `hardware_plausibility_rejected`
+- [x] **Step 4: TICKET-04: Bundle-Intelligence**
+  - [x] In `hardware_crawler/analysis.py` (`CombinationEngine`):
+    * Detect bundle listings (CPU + Motherboard, CPU + MB + RAM)
+    * Satisfy multiple build slots simultaneously
+    * Prevent duplicate purchases for bundle-covered slots
+    * Log `bundle_slot_satisfied`
+- [x] **Step 5: TICKET-05: Ready-to-Play Gap Filling & TCO**
+  - [x] In `hardware_crawler/completer.py` / `analysis.py`:
+    * Implement `fill_ready_to_play_gaps()`: add benchmark prices (Case 50€, Cooler 30€, SSD 55€)
+    * Compute shipping buffer (6.99€ per distinct seller listing)
+    * Calculate and display True Ready-to-Play price
+    * Log `ready_to_play_gap_filled`
+- [x] **Step 6: TICKET-06: Versus-View UI & Streamlit Integration**
+  - [x] In `hardware_crawler/ui_components.py`:
+    * Implement `render_deal_check_view()`
+    * Implement `render_versus_view()` (2-column showdown, KPIs, recommendation)
+  - [x] In `hardware_crawler/app.py`:
+    * Integrate `detect_deal_check_intent()` and Deal-Checker flow into chat/search
+- [x] **Step 7: Unit & Integration Tests Verification**
+  - [x] Create `tests/test_deal_checker.py` (including forensics case from `sess_20261108_122052_2abad8.jsonl`)
+  - [x] Create `tests/test_combination_hardening.py`
+  - [x] Run `uv run pytest` and verify 100% green test suite (42/42 tests passed)
+  - [x] Run QA deep audits (qa_head_audit: 24/24, test_scraper_adversarial: 73/73, matrix_audit: 21/21)
+  - [x] Report completion to caller via `send_message`
+
+---
+
+## 🏆 Team 2 Review: Sprint 3 Core Implementation
+- **0ms Deal-Checker & Inserat-Bewertung (`deal_checker.py`)**:
+  - `MultiLineAdParser`: Zerlegt mehrzeilige Kleinanzeigen-Dumps, strippt Aufzählungszeichen, Emojis und Modding-Annotationen (z.B. PTM7950, Deshroud).
+  - Re-Test des User-Falls aus `sess_20261108_122052_2abad8.jsonl`: Alle 8 Komponenten (CPU, GPU, RAM, Motherboard, PSU, Case, Cooler, SSD) wurden zu 100% ohne Query-Stitching und ohne Droppen sekundärer Teile extrahiert.
+  - Arbitrage-Bewertung (`DealCheckResult`): Berechnet faire Marktwerte der Teile gegen den 241-Komponenten-Katalog, klassifiziert in `TOP_DEAL`, `FAIR_DEAL` oder `OVERPRICED`.
+  - Verhandlungs-Assistent: Generiert höfliche deutsche Anschreiben mit 8–12% Rabattangebot, Barzahlung und Vor-Ort-Abholung.
+- **Hardware-Plausibilität & Hard Wattage Cutoff (`analysis.py`)**:
+  - VOR der Preissortierung: Berechnet `min_wattage = cpu_tdp + gpu_tdp + 100W`.
+  - Unterdimensionierte Netzteile (z.B. 400W PSU bei 320W RTX 3080 + 105W 5800X3D) werden strikt verworfen (`hardware_plausibility_rejected`).
+- **Bundle-Intelligence (`analysis.py`)**:
+  - Erkennt Bundle-Angebote (CPU + Mainboard + RAM). Befriedigt mehrere Slots gleichzeitig und verhindert doppelte Zukäufe (`bundle_slot_satisfied`).
+- **Ready-to-Play Lückenfüllung & TCO (`completer.py` / `analysis.py`)**:
+  - Fehlende Slots (Gehäuse 50€, Kühler 30€, SSD 55€) werden transparent mit Markt-Richtpreisen ergänzt.
+  - Versandkostenpauschale von 6.99€ pro Einzel-Listing wird im `true_ready_to_play_price` abgebildet (`ready_to_play_gap_filled`).
+- **Versus-View UI (`ui_components.py` & `app.py`)**:
+  - 2-Spalten-Showdown in Streamlit: Fertig-PC Inserat vs. Bester DIY-Build mit KPI-Gegenüberstellung (Preis, Gaming-Score, P/L) und automatischer System-Empfehlung.
+- **Test-Ergebnisse**:
+  - `uv run pytest`: 42/42 Tests grün (100% in 8.3s).
+  - `scratch/qa_head_audit.py`: 24/24 Tests bestanden (100.0%, 0 Flaws).
+  - `scratch/test_scraper_adversarial.py`: 73/73 Tests bestanden (100.0%, 0 Flaws).
+  - `scratch/test_matrix_deep_audit.py`: 21/21 Hardware-Prüfungen bestanden (100.0%, 0 Flaws).
+
+---
+
+### Phase 4: Team 3 - Real-User QA Testing (Browser & Playwright Specialist)
+- [x] **Team 3 Real-User Browser QA Execution**:
+  - [x] Pre-flight Check: Verify Streamlit running on http://localhost:8501 and Playwright Chromium readiness.
+  - [x] Step 1: Scrape & select 2-3 real, active Gaming-PC listings from Kleinanzeigen (Title, Description, Price, URL).
+  - [x] Step 2: Implement and run automated Playwright real-user browser test suite (`scratch/test_browser_qa.py`):
+    * Input real ad fulltext into Streamlit chat input.
+    * Verify automatic Deal-Checker intent triggering (`DEAL_CHECK_PASTE`).
+    * Verify component deconstruction (CPU, GPU, RAM, Motherboard, PSU, Storage, Cooler, Case).
+    * Verify Arbitrage savings & valuation badges (TOP_DEAL / FAIR_DEAL / OVERPRICED).
+    * Verify German negotiation assistant template and target offer calculation.
+    * Verify Versus-View showdown trigger and 2-column comparative display.
+    * Capture high-res fullpage screenshots into `scratch/qa_screenshots/`.
+  - [x] Step 3: Run Gegenprüfung with user's original case (`sess_20261108_122052_2abad8.jsonl`) live in browser.
+  - [x] Step 4: Verification against Acceptance Criteria of TICKET-01 through TICKET-06.
+  - [x] Step 5: Deliver comprehensive QA Certification Report to caller.
+
+---
+
+## 🏆 Team 3 Review: Real-User Browser QA & Certification (TICKET-08)
+- **100% Automatisierter Real-User Browser Test (`scratch/test_browser_qa.py`)**:
+  - Ausführung mit Playwright Chromium im Headless-Modus auf dem Live-Streamlit-Server (`http://localhost:8501`).
+  - 3 reale End-to-End Testfälle erfolgreich validiert:
+    1. *Reales Inserat 1:* Ryzen 5 5600 + RTX 3070 (900 € VB, URL: `3558840374-228-794`) $\rightarrow$ Deal-Checker erkennt 9 Komponenten, stuft als OVERPRICED ein (-150 € Abweichung zum Marktwert ~750 €) und erzeugt Gegenangebot von 690 € (-23.3%). Versus-View Showdown belegt P/L-Vorteil des DIY-Builds (7.6 vs. 5.8 Pkt./100 €).
+    2. *Reales Inserat 4:* Intel i5-13600KF + RTX 3070 (800 € Festpreis, URL: `3565447776-228-8088`) $\rightarrow$ Deal-Checker erkennt 7 Komponenten, Ready-to-Play Lücke (+30 € für CPU-Kühler) und Verhandlungsassistent mit 740 € Angebot.
+    3. *Originalfall des Nutzers (`sess_20261108_122052_2abad8.jsonl`):* Ryzen 5800X3D + RTX 3080 10GB + B450-F + 32GB RAM + Dark Rock Pro 4 + 1TB NVMe + Pure Base 500 + Seasonic 650W $\rightarrow$ 8/8 Komponenten sauber ohne Query-Stitching erkannt. Fairer Gebrauchtpreis (~952 € Marktwert vs. 850 € Angebotspreis, +102 € Ersparnis). Gegenangebot 750 € (-11.8%). Versus-View Showdown bestätigt Fertig-PC Vorteil gegenüber 8 Einzelpaketen mit Versand (850 € vs. 868 € DIY).
+- **Hochauflösende Screenshots erstellt & archiviert**:
+  - `scratch/qa_screenshots/deal_checker_real_ad_1.png`: Deal-Checker Bewertung, KPI-Metriken, Komponenten-Tabelle, Verhandlungsassistent.
+  - `scratch/qa_screenshots/versus_view_real_ad_1.png`: 2-Spalten-Showdown Fertig-PC vs. Bester DIY-Build mit Gaming-Score und P/L-Verhältnis.
+  - `scratch/qa_screenshots/deal_checker_real_ad_4.png`: Ready-to-Play Lückenhinweis und Festpreis-Verhandlungsnachricht.
+  - `scratch/qa_screenshots/deal_checker_user_original_case.png`: Vollständige 8/8 Komponenten-Zerlegung des Nutzerfalls.
+  - `scratch/qa_screenshots/versus_view_user_original_case.png`: Gegenüberstellung Fertig-PC vs. DIY für den Original-Nutzerfall.
+- **Engine-Härtung**:
+  - `MultiLineAdParser`: Deduplizierung singulärer Komponenten (CPU, GPU, Mainboard, Gehäuse, Netzteil, Kühler) und Filterung von Benchmark-/Haftungs-Disclaimern (3DMark, FurMark, AGB, Impressum).
+  - `HardwareOrchestrator`: Fokussierung von Kleinanzeigen-Alternativensuchen auf Kernhardware (GPU, CPU, Mainboard) verhindert ausufernde Scans nach Gehäuse-Exoten und senkt E2E-Latenz drastisch.
+- **Regressionstest-Status**:
+  - Pytest Gesamt-Suite: **42/42 Tests grün (100.0%)** in 7.08s.
+  - `qa_head_audit.py`: **24/24 Tests bestanden (100.0%)**, 0 Issues.
+
+### Phase 5: Verification & Notion Ticket Sync
+- [x] Verify all tickets meet acceptance criteria (100% verified by Team 3 QA).
+- [x] Update all ticket statuses in Notion to `Done` (TICKET-01 to TICKET-08 in database `collection://9ec6db6c-82f2-4125-96f1-ecbe285aed56`).
+- [x] Update `tasks/todo.md` and `tasks/lessons.md`.
+- [x] Stage and commit changes to git repository.
+
+
 
 
