@@ -31,7 +31,8 @@ class LLMClient:
                     logger.warning("GEMINI_API_KEY not found. LLM features will fail.")
                     return
                 genai.configure(api_key=self.api_key)
-                self.model = genai.GenerativeModel('gemini-2.0-flash')
+                self.model_name = os.getenv("GEMINI_MODEL", "gemini-3.8-flash")
+                self.model = genai.GenerativeModel(self.model_name)
             except Exception as e:
                 logger.error(f"Gemini Init Error: {e}")
                 self.api_key = None
@@ -68,6 +69,14 @@ class LLMClient:
 
         full_prompt = f"{system_prompt}\n\nTask: {prompt}\n\nResponse (JSON):"
 
+        def _clean_and_parse_json(raw: str) -> Dict[str, Any]:
+            import re
+            cleaned = raw.strip()
+            if cleaned.startswith("```"):
+                cleaned = re.sub(r"^```(?:json)?\s*", "", cleaned, flags=re.IGNORECASE)
+                cleaned = re.sub(r"\s*```$", "", cleaned)
+            return json.loads(cleaned.strip())
+
         max_retries = 4
         for attempt in range(max_retries):
             try:
@@ -77,7 +86,7 @@ class LLMClient:
                         full_prompt,
                         generation_config={"response_mime_type": "application/json"}
                     )
-                    return json.loads(response.text)
+                    return _clean_and_parse_json(response.text)
 
                 elif self.provider == "openai":
                     response = self.client.chat.completions.create(
@@ -88,7 +97,7 @@ class LLMClient:
                         ],
                         response_format={"type": "json_object"}
                     )
-                    return json.loads(response.choices[0].message.content)
+                    return _clean_and_parse_json(response.choices[0].message.content)
                 
                 elif self.provider == "ollama":
                     import requests
@@ -100,13 +109,14 @@ class LLMClient:
                     }
                     res = requests.post(f"{self.base_url}/api/generate", json=payload, timeout=30)
                     if res.status_code == 200:
-                        return json.loads(res.json()['response'])
+                        return _clean_and_parse_json(res.json()['response'])
             
             except Exception as e:
                 error_str = str(e)
-                if ("429" in error_str or "Resource exhausted" in error_str) and attempt < max_retries - 1:
+                is_transient = any(code in error_str.lower() for code in ["429", "503", "resource exhausted", "overloaded", "unavailable"])
+                if is_transient and attempt < max_retries - 1:
                     delay = 2 ** attempt
-                    logger.warning(f"Rate limit hit (429). Retrying in {delay}s... (Attempt {attempt+1}/{max_retries})")
+                    logger.warning(f"Transient LLM Error ({error_str}). Retrying in {delay}s... (Attempt {attempt+1}/{max_retries})")
                     time.sleep(delay)
                     continue
                     
@@ -122,5 +132,4 @@ class LLMClient:
         if self.provider == "gemini":
             response = self.model.generate_content(prompt)
             return response.text
-        # Add others as needed
         return "LLM Not configured or implemented for text."

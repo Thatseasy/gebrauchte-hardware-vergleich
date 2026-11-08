@@ -83,7 +83,7 @@ def main():
 
 
     # Render scan results details after the last assistant message
-    if st.session_state.scan_complete and (orch.listings_map or orch.build_listings):
+    if st.session_state.scan_complete:
         # Größere Tabs via CSS
         st.markdown(
             """
@@ -97,7 +97,7 @@ def main():
             unsafe_allow_html=True
         )
         
-        tab1, tab2, tab3 = st.tabs(["🏷️ Einzelteile-Börse", "💰 Preis-Leistung (Setups)", "🖥️ Komplett-PCs"])
+        tab1, tab2, tab3, tab4 = st.tabs(["🏷️ Einzelteile-Börse", "💰 Preis-Leistung (Setups)", "🖥️ Komplett-PCs", "📜 Session Log"])
         
         with tab1:
             render_listing_details(orch.listings_map, orch.specs)
@@ -110,6 +110,24 @@ def main():
                 
         with tab3:
             render_build_listings(orch.build_listings)
+
+        with tab4:
+            st.markdown("### 📜 Session-Audit & Verifikations-Protokoll")
+            if orch.session_logger and orch.session_logger.log_file.exists():
+                from hardware_crawler.logging_session import SessionLogger
+                events = SessionLogger.read_session_events(orch.session_logger.log_file)
+                st.caption(f"Session-ID: `{orch.session_logger.session_id}` • {len(events)} protokollierte Ereignisse")
+                for ev in events:
+                    if not isinstance(ev, dict):
+                        continue
+                    ts_raw = ev.get('timestamp')
+                    ts_str = str(ts_raw or '')
+                    ts_display = ts_str[11:19] if len(ts_str) >= 19 else ts_str
+                    event_type = ev.get('event_type', 'unbekannt')
+                    with st.expander(f"⏱️ {ts_display} — {event_type}", expanded=False):
+                        st.json(ev.get("data", {}))
+            else:
+                st.info("Noch kein Session-Log aufgezeichnet.")
             
     # Scan Market Button (only if specs exist and no scan yet)
     if orch.specs and not st.session_state.scan_complete:
@@ -136,10 +154,10 @@ def main():
             use_container_width=True
         )
         
-        # Reset Button
+        # Reset Button (preserves API key)
         if col2.button("🔄 Neue Suche starten", type="primary", use_container_width=True):
             from hardware_crawler.orchestrator import HardwareOrchestrator
-            st.session_state.orchestrator = HardwareOrchestrator()
+            st.session_state.orchestrator = HardwareOrchestrator(api_key=active_api_key)
             intro_text = (
                 "👋 Hi! Wir suchen jetzt nach den besten Angeboten zu den angegebenen Komponenten sowie Alternativen dazu, "
                 "die genauso gut sind, kompatibel und möglicherweise zu besseren Preisen verfügbar sind.\n\n"

@@ -1,14 +1,21 @@
+import html
+import math
 import streamlit as st
 import pandas as pd
 from typing import List, Optional, Dict, Any
 from .models import CanonicalSpec, ComponentType, Listing, ValidationStatus, Build
 
 def generate_csv_export(listings_map: Dict[str, List[Listing]]) -> str:
-    """Creates a CSV string from all found listings."""
+    """Creates a CSV string from all found listings with UTF-8 BOM for German Excel."""
     data = []
     for spec_name, listings in listings_map.items():
         for l in listings:
-            status = l.verification.status.value if getattr(l, 'verification', None) else "UNKNOWN"
+            if getattr(l, 'verification', None):
+                status = l.verification.status.value
+            elif getattr(l, 'is_scam_suspected', False):
+                status = ValidationStatus.SCAM_SUSPECT.value
+            else:
+                status = "UNKNOWN"
             is_alt = getattr(l, 'is_alternative', False)
             data.append({
                 "Such-Kategorie": spec_name,
@@ -21,10 +28,13 @@ def generate_csv_export(listings_map: Dict[str, List[Listing]]) -> str:
             })
     
     if not data:
-        return "Such-Kategorie,Titel,Preis,Ort,Verifiziert,Alternative,Link\n"
+        return "\ufeffSuch-Kategorie;Titel;Preis;Ort;Verifiziert;Alternative;Link\n"
         
     df = pd.DataFrame(data)
-    return df.to_csv(index=False)
+    csv_str = df.to_csv(index=False, sep=';')
+    if not csv_str.startswith('\ufeff'):
+        csv_str = '\ufeff' + csv_str
+    return csv_str
 
 # Icon map for component types
 ICON_MAP = {
@@ -132,13 +142,23 @@ def render_listing_details(listings_map: Dict[str, List[Listing]], specs: List[C
             listings = listings_map.get(s.name, [])
             cat_all_listings.extend(listings)
             
-        # Filter for PASS
-        valid = [l for l in cat_all_listings if l.verification and l.verification.status == ValidationStatus.PASS and l.price > 0.0]
+        # Filter for PASS (without scam suspect)
+        valid = [
+            l for l in cat_all_listings 
+            if l.verification and l.verification.status == ValidationStatus.PASS 
+            and not getattr(l, 'is_scam_suspected', False)
+            and (l.price is None or l.price >= 0.0)
+        ]
+        scam_listings = [
+            l for l in cat_all_listings
+            if getattr(l, 'is_scam_suspected', False)
+            or (l.verification and l.verification.status == ValidationStatus.SCAM_SUSPECT)
+        ]
         
         if valid:
             with st.expander(f"{icon} {cat_name} ({len(valid)} Angebote)"):
-                # Sort by price
-                for l in sorted(valid, key=lambda x: x.price)[:15]:
+                # Sort priced items first, then pure VB
+                for l in sorted(valid, key=lambda x: (x.price is None or x.price == 0.0, x.price if x.price is not None else float('inf')))[:15]:
                     with st.container(border=True):
                         cols = st.columns([5, 2, 2])
                         is_alt = getattr(l, 'is_alternative', False)
@@ -148,12 +168,50 @@ def render_listing_details(listings_map: Dict[str, List[Listing]], specs: List[C
                         # Label if it's an alternative to what
                         alt_info = f"<br><small style='color:#888'>Alternative für {l.alternative_for}</small>" if is_alt else ""
                         
-                        cols[0].markdown(f"{marker}**{l.title[:70]}**{alt_info}", unsafe_allow_html=True)
-                        cols[1].markdown(f"**{l.price:.2f} €**")
-                        cols[2].markdown(f"[Ansehen]({l.url})")
+                        # VB badge & Trust badges
+                        vb_badge = " *(VB)*" if l.is_vb else ""
+                        trust_badges = ""
+                        if getattr(l, 'has_buyer_protection', False):
+                            trust_badges += " <span style='background:#0d3820; color:#4ade80; font-size:11px; padding:2px 6px; border-radius:4px;'>🛡️ Käuferschutz</span>"
+                        if getattr(l, 'shipping_available', False):
+                            trust_badges += " <span style='background:#1e293b; color:#94a3b8; font-size:11px; padding:2px 6px; border-radius:4px;'>📦 Versand</span>"
+                        
+                        safe_title = html.escape((l.title or "")[:70])
+                        cols[0].markdown(f"{marker}**{safe_title}**{trust_badges}{alt_info}", unsafe_allow_html=True)
+                        
+                        price_display = f"{l.price:.2f} €" if (l.price is not None and l.price > 0.0) else "VB"
+                        cols[1].markdown(f"**{price_display}**{vb_badge}")
+                        cols[2].markdown(f"[Ansehen]({l.url or '#'})")
+                        
+                        # 1-Click Negotiation Template for VB Listings (finite numbers >= 10€)
+                        if l.is_vb and l.price is not None and math.isfinite(l.price) and 10.0 <= l.price <= 100000.0:
+                            offer_price = max(10, int(round(l.price * 0.88 / 5.0) * 5))
+                            short_title = html.escape((l.title or "")[:45])
+                            msg = f"Hallo, ich interessiere mich für Ihr Angebot '{short_title}'. Wären {offer_price} € für Sie vorstellbar? Bei Einigung nehme ich es gerne direkt. Viele Grüße"
+                            with st.expander(f"💬 Verhandlungs-Vorlage ({offer_price} € Angebot)", expanded=False):
+                                st.caption("Klicke rechts oben im Textfeld auf das Kopiersymbol:")
+                                st.code(msg, language="text")
         else:
             with st.expander(f"{icon} {cat_name} (Keine validen Angebote gefunden)", expanded=False):
                 st.info(f"Keine validen Angebote für {cat_name} gefunden.")
+
+        # Collapsed warning section for suspected scam / defective / box-only offers
+        if scam_listings:
+            with st.expander(f"⚠️ Verdächtige Angebote / Scam-Verdacht ({len(scam_listings)})", expanded=False):
+                for sl in scam_listings:
+                    with st.container(border=True):
+                        cols = st.columns([5, 2, 2])
+                        reason_text = html.escape(getattr(sl, 'scam_reason', None) or "Verdacht auf OVP / Defekt / Fake-Platzhalter")
+                        safe_title = html.escape((sl.title or "")[:70])
+                        cols[0].markdown(
+                            f"<span style='color:#ef4444; font-weight:600;'>⚠️ Grund: {reason_text}</span><br>"
+                            f"**{safe_title}**",
+                            unsafe_allow_html=True
+                        )
+                        price_display = f"{sl.price:.2f} €" if (sl.price is not None and sl.price > 0.0) else "VB"
+                        vb_badge = " *(VB)*" if sl.is_vb else ""
+                        cols[1].markdown(f"**{price_display}**{vb_badge}")
+                        cols[2].markdown(f"[Ansehen]({sl.url or '#'})")
 
 def render_build_details(build: Build):
     """Render a complete PC build recommendation in a premium card layout."""
@@ -164,10 +222,13 @@ def render_build_details(build: Build):
             with st.container(border=True):
                 cols = st.columns([1, 5, 2, 2])
                 icon = ICON_MAP.get(c.product_match.type, "❓") if c.product_match else "❓"
+                vb_badge = " *(VB)*" if c.is_vb else ""
                 cols[0].write(f"### {icon}")
-                cols[1].markdown(f"**{c.title[:60]}**\n\n*{c.location}*")
-                cols[2].markdown(f"### {c.price:.0f} €")
-                cols[3].markdown(f"[Kaufen/Ansehen]({c.url})")
+                title_short = html.escape((c.title or "")[:60])
+                price_str = f"{c.price:.0f} €" if c.price is not None else "Preis k.A."
+                cols[1].markdown(f"**{title_short}**\n\n*{c.location}*")
+                cols[2].markdown(f"### {price_str}{vb_badge}")
+                cols[3].markdown(f"[Kaufen/Ansehen]({c.url or '#'})")
             
         if build.missing_components:
             st.warning(f"⚠️ **Fehlende Teile für einen kompletten PC:** {', '.join(build.missing_components)}")
@@ -177,18 +238,79 @@ def render_build_details(build: Build):
                 st.error(f"⚠️ {w}")
 
 def render_build_listings(listings: List[Listing]):
-    """Render found complete PC listings."""
-    st.markdown("### 🖥️ Komplette PCs auf Kleinanzeigen")
-    valid = [l for l in listings if l.verification and l.verification.status != ValidationStatus.REJECT and l.price > 0.0]
+    """Render found complete PC listings with BOM decomposition and arbitrage savings."""
+    st.markdown("### 🖥️ Komplette PCs auf Kleinanzeigen & Arbitrage-Analyse")
+    valid = [
+        l for l in listings 
+        if not getattr(l, 'is_scam_suspected', False)
+        and (not l.verification or l.verification.status not in [ValidationStatus.REJECT, ValidationStatus.SCAM_SUSPECT]) 
+        and (l.price is None or l.price >= 0.0)
+    ]
+    scam_pcs = [
+        l for l in listings
+        if getattr(l, 'is_scam_suspected', False)
+        or (l.verification and l.verification.status == ValidationStatus.SCAM_SUSPECT)
+    ]
     
-    if not valid:
+    if not valid and not scam_pcs:
         st.info("Keine passenden kompletten PCs gefunden.")
         return
         
-    for l in sorted(valid, key=lambda x: x.price):
+    for l in sorted(valid, key=lambda x: getattr(x, 'arbitrage_savings', 0), reverse=True):
         with st.container(border=True):
             cols = st.columns([5, 2, 2])
-            cols[0].markdown(f"**{l.title[:80]}**\n\n*{l.location}*")
-            cols[1].markdown(f"### {l.price:.0f} €")
-            cols[2].markdown(f"[Ansehen]({l.url})")
+            vb_badge = " *(VB)*" if l.is_vb else ""
+            
+            # Arbitrage Highlight
+            savings = getattr(l, 'arbitrage_savings', 0.0)
+            savings_html = ""
+            if savings > 0:
+                savings_html = f"<div style='background-color:#1c3d24; color:#4ade80; padding:4px 8px; border-radius:4px; font-weight:600; display:inline-block; margin-bottom:6px;'>🔥 Spar-Vorteil: ~{savings:.0f} € günstiger als Einzelteilkauf!</div><br>"
+            
+            # Trust badges
+            trust_badges = ""
+            if getattr(l, 'has_buyer_protection', False):
+                trust_badges += " <span style='background:#0d3820; color:#4ade80; font-size:11px; padding:2px 6px; border-radius:4px;'>🛡️ Käuferschutz</span>"
+            if getattr(l, 'shipping_available', False):
+                trust_badges += " <span style='background:#1e293b; color:#94a3b8; font-size:11px; padding:2px 6px; border-radius:4px;'>📦 Versand</span>"
+
+            # BOM components display
+            bom_html = ""
+            if getattr(l, 'bom', None) and l.bom.get("components"):
+                parts_str = " • ".join([f"**{k}**: {v}" for k, v in l.bom["components"].items() if v])
+                bom_html = f"<div style='font-size:0.85rem; color:#aaa; margin-top:4px;'>📋 <b>Erfasste Hardware:</b> {parts_str}</div>"
+                
+            safe_title = html.escape((l.title or "")[:80])
+            cols[0].markdown(f"{savings_html}**{safe_title}**{trust_badges}\n\n*{l.location}*{bom_html}", unsafe_allow_html=True)
+            
+            price_str = f"{l.price:.0f} €" if (l.price is not None and l.price > 0.0) else "VB"
+            cols[1].markdown(f"### {price_str}{vb_badge}")
+            cols[2].markdown(f"[Ansehen]({l.url or '#'})")
+            
+            # 1-Click Negotiation Template for Complete PC (finite numbers >= 50€)
+            if l.is_vb and l.price is not None and math.isfinite(l.price) and 50.0 <= l.price <= 100000.0:
+                offer_price = max(50, int(round(l.price * 0.90 / 10.0) * 10))
+                short_title = html.escape((l.title or "")[:45])
+                msg = f"Hallo, ich interessiere mich für Ihren PC '{short_title}'. Wären {offer_price} € für Sie in Ordnung? Ich könnte zeitnah abholen oder per sicherem Versand zahlen. Viele Grüße"
+                with st.expander(f"💬 Verhandlungs-Vorlage ({offer_price} € Angebot)", expanded=False):
+                    st.caption("Klicke rechts oben im Textfeld auf das Kopiersymbol:")
+                    st.code(msg, language="text")
+
+    if scam_pcs:
+        with st.expander(f"⚠️ Verdächtige Komplett-PCs / Scam-Verdacht ({len(scam_pcs)})", expanded=False):
+            for sp in scam_pcs:
+                with st.container(border=True):
+                    cols = st.columns([5, 2, 2])
+                    reason_text = html.escape(getattr(sp, 'scam_reason', None) or "Verdacht auf OVP / Defekt / Fake-Angebot")
+                    safe_title = html.escape((sp.title or "")[:80])
+                    cols[0].markdown(
+                        f"<span style='color:#ef4444; font-weight:600;'>⚠️ Grund: {reason_text}</span><br>"
+                        f"**{safe_title}**\n\n*{sp.location}*",
+                        unsafe_allow_html=True
+                    )
+                    price_str = f"{sp.price:.0f} €" if (sp.price is not None and sp.price > 0.0) else "VB"
+                    vb_badge = " *(VB)*" if sp.is_vb else ""
+                    cols[1].markdown(f"### {price_str}{vb_badge}")
+                    cols[2].markdown(f"[Ansehen]({sp.url or '#'})")
+
 

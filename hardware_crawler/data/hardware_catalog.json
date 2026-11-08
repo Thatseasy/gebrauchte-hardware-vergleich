@@ -1,0 +1,4784 @@
+{
+  "version": "2.0",
+  "updated": "2026-11",
+  "components": [
+    {
+      "id": "gpu_rtx_4090",
+      "canonical_name": "NVIDIA GeForce RTX 4090",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4090",
+        "RTX4090",
+        "GEFORCE RTX 4090",
+        "4090 24GB"
+      ],
+      "gaming_score": 100,
+      "tier": "4k_ultra",
+      "tdp_w": 450,
+      "rec_psu_w": 850,
+      "vram_gb": 24,
+      "used_price_min": 1500.0,
+      "used_price_max": 1850.0
+    },
+    {
+      "id": "gpu_rtx_4080_super",
+      "canonical_name": "NVIDIA GeForce RTX 4080 Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4080 SUPER",
+        "RTX4080SUPER",
+        "4080 SUPER",
+        "4080S",
+        "RTX 4080S"
+      ],
+      "gaming_score": 80,
+      "tier": "4k_high",
+      "tdp_w": 320,
+      "rec_psu_w": 750,
+      "vram_gb": 16,
+      "used_price_min": 850.0,
+      "used_price_max": 1050.0
+    },
+    {
+      "id": "gpu_rtx_4080",
+      "canonical_name": "NVIDIA GeForce RTX 4080",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4080",
+        "RTX4080",
+        "GEFORCE RTX 4080",
+        "4080 16GB"
+      ],
+      "gaming_score": 77,
+      "tier": "4k_high",
+      "tdp_w": 320,
+      "rec_psu_w": 750,
+      "vram_gb": 16,
+      "used_price_min": 800.0,
+      "used_price_max": 950.0
+    },
+    {
+      "id": "gpu_rtx_4070_ti_super",
+      "canonical_name": "NVIDIA GeForce RTX 4070 Ti Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4070 TI SUPER",
+        "4070 TI SUPER",
+        "4070TIS",
+        "RTX 4070TIS",
+        "RTX 4070 TI S",
+        "4070 TI S"
+      ],
+      "gaming_score": 71,
+      "tier": "1440p_ultra",
+      "tdp_w": 285,
+      "rec_psu_w": 700,
+      "vram_gb": 16,
+      "used_price_min": 700.0,
+      "used_price_max": 820.0
+    },
+    {
+      "id": "gpu_rtx_4070_ti",
+      "canonical_name": "NVIDIA GeForce RTX 4070 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4070 TI",
+        "RTX4070TI",
+        "4070 TI",
+        "GEFORCE 4070 TI"
+      ],
+      "gaming_score": 67,
+      "tier": "1440p_ultra",
+      "tdp_w": 285,
+      "rec_psu_w": 700,
+      "vram_gb": 12,
+      "used_price_min": 580.0,
+      "used_price_max": 680.0
+    },
+    {
+      "id": "gpu_rtx_4070_super",
+      "canonical_name": "NVIDIA GeForce RTX 4070 Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4070 SUPER",
+        "4070 SUPER",
+        "4070S",
+        "RTX4070SUPER",
+        "RTX 4070S"
+      ],
+      "gaming_score": 61,
+      "tier": "1440p_high",
+      "tdp_w": 220,
+      "rec_psu_w": 650,
+      "vram_gb": 12,
+      "used_price_min": 520.0,
+      "used_price_max": 600.0
+    },
+    {
+      "id": "gpu_rtx_4070",
+      "canonical_name": "NVIDIA GeForce RTX 4070",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4070",
+        "RTX4070",
+        "4070 12GB",
+        "GEFORCE RTX 4070"
+      ],
+      "gaming_score": 54,
+      "tier": "1440p_high",
+      "tdp_w": 200,
+      "rec_psu_w": 600,
+      "vram_gb": 12,
+      "used_price_min": 440.0,
+      "used_price_max": 520.0
+    },
+    {
+      "id": "gpu_rtx_4060_ti_16gb",
+      "canonical_name": "NVIDIA GeForce RTX 4060 Ti 16GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4060 TI 16GB",
+        "4060 TI 16GB",
+        "RTX4060TI 16GB",
+        "4060TI 16GB",
+        "RTX 4060TI 16GB"
+      ],
+      "gaming_score": 44,
+      "tier": "1080p_ultra",
+      "tdp_w": 165,
+      "rec_psu_w": 550,
+      "vram_gb": 16,
+      "used_price_min": 380.0,
+      "used_price_max": 450.0
+    },
+    {
+      "id": "gpu_rtx_4060_ti_8gb",
+      "canonical_name": "NVIDIA GeForce RTX 4060 Ti 8GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4060 TI 8GB",
+        "4060 TI 8GB",
+        "RTX4060TI 8GB",
+        "4060TI 8GB",
+        "RTX 4060 TI",
+        "4060 TI",
+        "RTX4060TI",
+        "RTX 4060TI"
+      ],
+      "gaming_score": 43,
+      "tier": "1080p_ultra",
+      "tdp_w": 160,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 310.0,
+      "used_price_max": 380.0
+    },
+    {
+      "id": "gpu_rtx_4060",
+      "canonical_name": "NVIDIA GeForce RTX 4060",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 4060",
+        "4060 8GB",
+        "RTX4060",
+        "GEFORCE RTX 4060"
+      ],
+      "gaming_score": 35,
+      "tier": "1080p_high",
+      "tdp_w": 115,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 230.0,
+      "used_price_max": 280.0
+    },
+    {
+      "id": "gpu_rtx_3090_ti",
+      "canonical_name": "NVIDIA GeForce RTX 3090 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3090 TI",
+        "3090 TI",
+        "RTX3090TI"
+      ],
+      "gaming_score": 75,
+      "tier": "4k_high",
+      "tdp_w": 450,
+      "rec_psu_w": 850,
+      "vram_gb": 24,
+      "used_price_min": 700.0,
+      "used_price_max": 850.0
+    },
+    {
+      "id": "gpu_rtx_3090",
+      "canonical_name": "NVIDIA GeForce RTX 3090",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3090",
+        "3090 24GB",
+        "RTX3090"
+      ],
+      "gaming_score": 70,
+      "tier": "4k_entry",
+      "tdp_w": 350,
+      "rec_psu_w": 750,
+      "vram_gb": 24,
+      "used_price_min": 600.0,
+      "used_price_max": 750.0
+    },
+    {
+      "id": "gpu_rtx_3080_ti",
+      "canonical_name": "NVIDIA GeForce RTX 3080 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3080 TI",
+        "3080 TI",
+        "RTX3080TI"
+      ],
+      "gaming_score": 67,
+      "tier": "1440p_ultra",
+      "tdp_w": 350,
+      "rec_psu_w": 750,
+      "vram_gb": 12,
+      "used_price_min": 450.0,
+      "used_price_max": 540.0
+    },
+    {
+      "id": "gpu_rtx_3080_12gb",
+      "canonical_name": "NVIDIA GeForce RTX 3080 12GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3080 12GB",
+        "3080 12GB",
+        "RTX3080 12GB"
+      ],
+      "gaming_score": 64,
+      "tier": "1440p_high",
+      "tdp_w": 350,
+      "rec_psu_w": 750,
+      "vram_gb": 12,
+      "used_price_min": 400.0,
+      "used_price_max": 480.0
+    },
+    {
+      "id": "gpu_rtx_3080_10gb",
+      "canonical_name": "NVIDIA GeForce RTX 3080 10GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3080 10GB",
+        "3080 10GB",
+        "RTX 3080",
+        "RTX3080",
+        "GEFORCE 3080",
+        "RTX3080 10GB"
+      ],
+      "gaming_score": 62,
+      "tier": "1440p_high",
+      "tdp_w": 320,
+      "rec_psu_w": 750,
+      "vram_gb": 10,
+      "used_price_min": 360.0,
+      "used_price_max": 440.0
+    },
+    {
+      "id": "gpu_rtx_3070_ti",
+      "canonical_name": "NVIDIA GeForce RTX 3070 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3070 TI",
+        "3070 TI",
+        "RTX3070TI"
+      ],
+      "gaming_score": 53,
+      "tier": "1440p_high",
+      "tdp_w": 290,
+      "rec_psu_w": 700,
+      "vram_gb": 8,
+      "used_price_min": 280.0,
+      "used_price_max": 340.0
+    },
+    {
+      "id": "gpu_rtx_3070",
+      "canonical_name": "NVIDIA GeForce RTX 3070",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3070",
+        "3070 8GB",
+        "RTX3070",
+        "GEFORCE 3070"
+      ],
+      "gaming_score": 49,
+      "tier": "1440p_sweetspot",
+      "tdp_w": 220,
+      "rec_psu_w": 650,
+      "vram_gb": 8,
+      "used_price_min": 240.0,
+      "used_price_max": 300.0
+    },
+    {
+      "id": "gpu_rtx_3060_ti",
+      "canonical_name": "NVIDIA GeForce RTX 3060 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3060 TI",
+        "3060 TI",
+        "RTX3060TI"
+      ],
+      "gaming_score": 42,
+      "tier": "1080p_ultra",
+      "tdp_w": 200,
+      "rec_psu_w": 600,
+      "vram_gb": 8,
+      "used_price_min": 200.0,
+      "used_price_max": 260.0
+    },
+    {
+      "id": "gpu_rtx_3060_12gb",
+      "canonical_name": "NVIDIA GeForce RTX 3060 12GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3060 12GB",
+        "3060 12GB",
+        "RTX3060 12GB",
+        "RTX 3060",
+        "RTX3060",
+        "GEFORCE 3060",
+        "RTX 3060 12G"
+      ],
+      "gaming_score": 33,
+      "tier": "1080p_high",
+      "tdp_w": 170,
+      "rec_psu_w": 550,
+      "vram_gb": 12,
+      "used_price_min": 170.0,
+      "used_price_max": 230.0
+    },
+    {
+      "id": "gpu_rtx_3060_8gb",
+      "canonical_name": "NVIDIA GeForce RTX 3060 8GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3060 8GB",
+        "3060 8GB",
+        "RTX3060 8GB",
+        "RTX 3060 8G",
+        "3060 8G"
+      ],
+      "gaming_score": 29,
+      "tier": "1080p_mid",
+      "tdp_w": 170,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 150.0,
+      "used_price_max": 195.0
+    },
+    {
+      "id": "gpu_rtx_3050_8gb",
+      "canonical_name": "NVIDIA GeForce RTX 3050 8GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3050 8GB",
+        "3050 8GB",
+        "RTX 3050",
+        "RTX3050",
+        "3050 8G",
+        "RTX 3050 8G"
+      ],
+      "gaming_score": 23,
+      "tier": "1080p_budget",
+      "tdp_w": 130,
+      "rec_psu_w": 450,
+      "vram_gb": 8,
+      "used_price_min": 120.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "gpu_rtx_3050_6gb",
+      "canonical_name": "NVIDIA GeForce RTX 3050 6GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 3050 6GB",
+        "3050 6GB",
+        "RTX3050 6GB",
+        "3050 6G",
+        "RTX 3050 6G"
+      ],
+      "gaming_score": 19,
+      "tier": "1080p_budget",
+      "tdp_w": 70,
+      "rec_psu_w": 400,
+      "vram_gb": 6,
+      "used_price_min": 95.0,
+      "used_price_max": 130.0
+    },
+    {
+      "id": "gpu_rtx_2080_ti",
+      "canonical_name": "NVIDIA GeForce RTX 2080 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2080 TI",
+        "2080 TI",
+        "RTX2080TI",
+        "2080TI 11GB"
+      ],
+      "gaming_score": 48,
+      "tier": "1440p_sweetspot",
+      "tdp_w": 250,
+      "rec_psu_w": 650,
+      "vram_gb": 11,
+      "used_price_min": 230.0,
+      "used_price_max": 290.0
+    },
+    {
+      "id": "gpu_rtx_2080_super",
+      "canonical_name": "NVIDIA GeForce RTX 2080 Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2080 SUPER",
+        "2080 SUPER",
+        "2080S",
+        "RTX 2080S"
+      ],
+      "gaming_score": 43,
+      "tier": "1080p_ultra",
+      "tdp_w": 250,
+      "rec_psu_w": 650,
+      "vram_gb": 8,
+      "used_price_min": 180.0,
+      "used_price_max": 230.0
+    },
+    {
+      "id": "gpu_rtx_2080",
+      "canonical_name": "NVIDIA GeForce RTX 2080",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2080",
+        "2080 8GB",
+        "RTX2080"
+      ],
+      "gaming_score": 40,
+      "tier": "1080p_ultra",
+      "tdp_w": 215,
+      "rec_psu_w": 600,
+      "vram_gb": 8,
+      "used_price_min": 170.0,
+      "used_price_max": 210.0
+    },
+    {
+      "id": "gpu_rtx_2070_super",
+      "canonical_name": "NVIDIA GeForce RTX 2070 Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2070 SUPER",
+        "2070 SUPER",
+        "2070S",
+        "RTX 2070S"
+      ],
+      "gaming_score": 38,
+      "tier": "1080p_high",
+      "tdp_w": 215,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 160.0,
+      "used_price_max": 200.0
+    },
+    {
+      "id": "gpu_rtx_2070",
+      "canonical_name": "NVIDIA GeForce RTX 2070",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2070",
+        "2070 8GB",
+        "RTX2070"
+      ],
+      "gaming_score": 34,
+      "tier": "1080p_high",
+      "tdp_w": 175,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 140.0,
+      "used_price_max": 180.0
+    },
+    {
+      "id": "gpu_rtx_2060_super",
+      "canonical_name": "NVIDIA GeForce RTX 2060 Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2060 SUPER",
+        "2060 SUPER",
+        "2060S",
+        "RTX 2060S"
+      ],
+      "gaming_score": 33,
+      "tier": "1080p_high",
+      "tdp_w": 175,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 130.0,
+      "used_price_max": 170.0
+    },
+    {
+      "id": "gpu_rtx_2060_12gb",
+      "canonical_name": "NVIDIA GeForce RTX 2060 12GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2060 12GB",
+        "2060 12GB",
+        "RTX2060 12GB"
+      ],
+      "gaming_score": 29,
+      "tier": "1080p_mid",
+      "tdp_w": 184,
+      "rec_psu_w": 500,
+      "vram_gb": 12,
+      "used_price_min": 130.0,
+      "used_price_max": 170.0
+    },
+    {
+      "id": "gpu_rtx_2060_6gb",
+      "canonical_name": "NVIDIA GeForce RTX 2060 6GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "RTX 2060 6GB",
+        "2060 6GB",
+        "RTX 2060",
+        "RTX2060"
+      ],
+      "gaming_score": 27,
+      "tier": "1080p_mid",
+      "tdp_w": 160,
+      "rec_psu_w": 500,
+      "vram_gb": 6,
+      "used_price_min": 110.0,
+      "used_price_max": 145.0
+    },
+    {
+      "id": "gpu_gtx_1080_ti",
+      "canonical_name": "NVIDIA GeForce GTX 1080 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1080 TI",
+        "1080 TI",
+        "1080TI 11GB",
+        "GTX1080TI"
+      ],
+      "gaming_score": 36,
+      "tier": "1080p_high",
+      "tdp_w": 250,
+      "rec_psu_w": 600,
+      "vram_gb": 11,
+      "used_price_min": 130.0,
+      "used_price_max": 180.0
+    },
+    {
+      "id": "gpu_gtx_1080",
+      "canonical_name": "NVIDIA GeForce GTX 1080",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1080",
+        "1080 8GB",
+        "GTX1080"
+      ],
+      "gaming_score": 28,
+      "tier": "1080p_mid",
+      "tdp_w": 180,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 90.0,
+      "used_price_max": 130.0
+    },
+    {
+      "id": "gpu_gtx_1070_ti",
+      "canonical_name": "NVIDIA GeForce GTX 1070 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1070 TI",
+        "1070 TI",
+        "GTX1070TI"
+      ],
+      "gaming_score": 26,
+      "tier": "1080p_mid",
+      "tdp_w": 180,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 80.0,
+      "used_price_max": 120.0
+    },
+    {
+      "id": "gpu_gtx_1070",
+      "canonical_name": "NVIDIA GeForce GTX 1070",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1070",
+        "1070 8GB",
+        "GTX1070"
+      ],
+      "gaming_score": 23,
+      "tier": "1080p_budget",
+      "tdp_w": 150,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 70.0,
+      "used_price_max": 100.0
+    },
+    {
+      "id": "gpu_gtx_1660_ti",
+      "canonical_name": "NVIDIA GeForce GTX 1660 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1660 TI",
+        "1660 TI",
+        "GTX1660TI"
+      ],
+      "gaming_score": 24,
+      "tier": "1080p_budget",
+      "tdp_w": 120,
+      "rec_psu_w": 450,
+      "vram_gb": 6,
+      "used_price_min": 90.0,
+      "used_price_max": 125.0
+    },
+    {
+      "id": "gpu_gtx_1660_super",
+      "canonical_name": "NVIDIA GeForce GTX 1660 Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1660 SUPER",
+        "1660 SUPER",
+        "1660S",
+        "GTX1660SUPER"
+      ],
+      "gaming_score": 22,
+      "tier": "1080p_budget",
+      "tdp_w": 125,
+      "rec_psu_w": 450,
+      "vram_gb": 6,
+      "used_price_min": 85.0,
+      "used_price_max": 120.0
+    },
+    {
+      "id": "gpu_gtx_1660",
+      "canonical_name": "NVIDIA GeForce GTX 1660",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1660",
+        "1660 6GB",
+        "GTX1660"
+      ],
+      "gaming_score": 20,
+      "tier": "1080p_budget",
+      "tdp_w": 120,
+      "rec_psu_w": 450,
+      "vram_gb": 6,
+      "used_price_min": 75.0,
+      "used_price_max": 105.0
+    },
+    {
+      "id": "gpu_gtx_1650_super",
+      "canonical_name": "NVIDIA GeForce GTX 1650 Super",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1650 SUPER",
+        "1650 SUPER",
+        "1650S",
+        "GTX1650SUPER"
+      ],
+      "gaming_score": 18,
+      "tier": "1080p_entry",
+      "tdp_w": 100,
+      "rec_psu_w": 400,
+      "vram_gb": 4,
+      "used_price_min": 65.0,
+      "used_price_max": 95.0
+    },
+    {
+      "id": "gpu_gtx_1650",
+      "canonical_name": "NVIDIA GeForce GTX 1650",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1650",
+        "1650 4GB",
+        "GTX1650"
+      ],
+      "gaming_score": 14,
+      "tier": "1080p_entry",
+      "tdp_w": 75,
+      "rec_psu_w": 350,
+      "vram_gb": 4,
+      "used_price_min": 50.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "gpu_gtx_1060_6gb",
+      "canonical_name": "NVIDIA GeForce GTX 1060 6GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1060 6GB",
+        "1060 6GB",
+        "GTX 1060",
+        "GTX1060"
+      ],
+      "gaming_score": 17,
+      "tier": "1080p_entry",
+      "tdp_w": 120,
+      "rec_psu_w": 400,
+      "vram_gb": 6,
+      "used_price_min": 50.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "gpu_gtx_1060_3gb",
+      "canonical_name": "NVIDIA GeForce GTX 1060 3GB",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1060 3GB",
+        "1060 3GB",
+        "GTX1060 3GB"
+      ],
+      "gaming_score": 14,
+      "tier": "1080p_entry",
+      "tdp_w": 120,
+      "rec_psu_w": 400,
+      "vram_gb": 3,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "gpu_gtx_1050_ti",
+      "canonical_name": "NVIDIA GeForce GTX 1050 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1050 TI",
+        "1050 TI",
+        "GTX1050TI",
+        "1050TI 4GB"
+      ],
+      "gaming_score": 11,
+      "tier": "1080p_entry",
+      "tdp_w": 75,
+      "rec_psu_w": 300,
+      "vram_gb": 4,
+      "used_price_min": 35.0,
+      "used_price_max": 60.0
+    },
+    {
+      "id": "gpu_gtx_970",
+      "canonical_name": "NVIDIA GeForce GTX 970",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 970",
+        "970 4GB",
+        "GTX970",
+        "GEFORCE GTX 970"
+      ],
+      "gaming_score": 13,
+      "tier": "1080p_entry",
+      "tdp_w": 145,
+      "rec_psu_w": 450,
+      "vram_gb": 4,
+      "used_price_min": 30.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "gpu_rx_7900_xtx",
+      "canonical_name": "AMD Radeon RX 7900 XTX",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 7900 XTX",
+        "7900 XTX",
+        "7900XTX 24GB",
+        "RADEON 7900 XTX",
+        "RX7900XTX"
+      ],
+      "gaming_score": 83,
+      "tier": "4k_ultra",
+      "tdp_w": 355,
+      "rec_psu_w": 800,
+      "vram_gb": 24,
+      "used_price_min": 720.0,
+      "used_price_max": 880.0
+    },
+    {
+      "id": "gpu_rx_7900_xt",
+      "canonical_name": "AMD Radeon RX 7900 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 7900 XT",
+        "7900 XT",
+        "7900XT 20GB",
+        "RX7900XT"
+      ],
+      "gaming_score": 73,
+      "tier": "4k_high",
+      "tdp_w": 315,
+      "rec_psu_w": 750,
+      "vram_gb": 20,
+      "used_price_min": 580.0,
+      "used_price_max": 700.0
+    },
+    {
+      "id": "gpu_rx_7900_gre",
+      "canonical_name": "AMD Radeon RX 7900 GRE",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 7900 GRE",
+        "7900 GRE",
+        "7900GRE 16GB",
+        "RX7900GRE"
+      ],
+      "gaming_score": 62,
+      "tier": "1440p_ultra",
+      "tdp_w": 260,
+      "rec_psu_w": 700,
+      "vram_gb": 16,
+      "used_price_min": 450.0,
+      "used_price_max": 540.0
+    },
+    {
+      "id": "gpu_rx_7800_xt",
+      "canonical_name": "AMD Radeon RX 7800 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 7800 XT",
+        "7800 XT",
+        "7800XT 16GB",
+        "RADEON 7800 XT",
+        "RX7800XT"
+      ],
+      "gaming_score": 56,
+      "tier": "1440p_high",
+      "tdp_w": 263,
+      "rec_psu_w": 700,
+      "vram_gb": 16,
+      "used_price_min": 400.0,
+      "used_price_max": 470.0
+    },
+    {
+      "id": "gpu_rx_7700_xt",
+      "canonical_name": "AMD Radeon RX 7700 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 7700 XT",
+        "7700 XT",
+        "7700XT 12GB",
+        "RX7700XT"
+      ],
+      "gaming_score": 48,
+      "tier": "1440p_sweetspot",
+      "tdp_w": 245,
+      "rec_psu_w": 650,
+      "vram_gb": 12,
+      "used_price_min": 330.0,
+      "used_price_max": 390.0
+    },
+    {
+      "id": "gpu_rx_7600_xt",
+      "canonical_name": "AMD Radeon RX 7600 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 7600 XT",
+        "7600 XT",
+        "7600XT 16GB",
+        "RX7600XT"
+      ],
+      "gaming_score": 36,
+      "tier": "1080p_high",
+      "tdp_w": 190,
+      "rec_psu_w": 550,
+      "vram_gb": 16,
+      "used_price_min": 260.0,
+      "used_price_max": 320.0
+    },
+    {
+      "id": "gpu_rx_7600",
+      "canonical_name": "AMD Radeon RX 7600",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 7600",
+        "7600 8GB",
+        "RADEON RX 7600",
+        "RX7600",
+        "RADEON 7600"
+      ],
+      "gaming_score": 32,
+      "tier": "1080p_high",
+      "tdp_w": 165,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 200.0,
+      "used_price_max": 250.0
+    },
+    {
+      "id": "gpu_rx_6950_xt",
+      "canonical_name": "AMD Radeon RX 6950 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6950 XT",
+        "6950 XT",
+        "6950XT 16GB",
+        "RX6950XT"
+      ],
+      "gaming_score": 68,
+      "tier": "1440p_ultra",
+      "tdp_w": 335,
+      "rec_psu_w": 800,
+      "vram_gb": 16,
+      "used_price_min": 420.0,
+      "used_price_max": 500.0
+    },
+    {
+      "id": "gpu_rx_6900_xt",
+      "canonical_name": "AMD Radeon RX 6900 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6900 XT",
+        "6900 XT",
+        "6900XT 16GB",
+        "RX6900XT"
+      ],
+      "gaming_score": 63,
+      "tier": "1440p_ultra",
+      "tdp_w": 300,
+      "rec_psu_w": 750,
+      "vram_gb": 16,
+      "used_price_min": 370.0,
+      "used_price_max": 450.0
+    },
+    {
+      "id": "gpu_rx_6800_xt",
+      "canonical_name": "AMD Radeon RX 6800 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6800 XT",
+        "6800 XT",
+        "6800XT 16GB",
+        "RX6800XT"
+      ],
+      "gaming_score": 55,
+      "tier": "1440p_high",
+      "tdp_w": 300,
+      "rec_psu_w": 700,
+      "vram_gb": 16,
+      "used_price_min": 330.0,
+      "used_price_max": 400.0
+    },
+    {
+      "id": "gpu_rx_6800_16gb",
+      "canonical_name": "AMD Radeon RX 6800 16GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6800",
+        "RX 6800 16GB",
+        "6800 16GB",
+        "RX6800",
+        "RADEON 6800"
+      ],
+      "gaming_score": 49,
+      "tier": "1440p_sweetspot",
+      "tdp_w": 250,
+      "rec_psu_w": 650,
+      "vram_gb": 16,
+      "used_price_min": 280.0,
+      "used_price_max": 350.0
+    },
+    {
+      "id": "gpu_rx_6750_xt",
+      "canonical_name": "AMD Radeon RX 6750 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6750 XT",
+        "6750 XT",
+        "6750XT 12GB",
+        "RX6750XT"
+      ],
+      "gaming_score": 45,
+      "tier": "1080p_ultra",
+      "tdp_w": 250,
+      "rec_psu_w": 650,
+      "vram_gb": 12,
+      "used_price_min": 250.0,
+      "used_price_max": 310.0
+    },
+    {
+      "id": "gpu_rx_6700_xt",
+      "canonical_name": "AMD Radeon RX 6700 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6700 XT",
+        "6700 XT",
+        "6700XT 12GB",
+        "RX6700XT"
+      ],
+      "gaming_score": 43,
+      "tier": "1080p_ultra",
+      "tdp_w": 230,
+      "rec_psu_w": 600,
+      "vram_gb": 12,
+      "used_price_min": 220.0,
+      "used_price_max": 280.0
+    },
+    {
+      "id": "gpu_rx_6700_10gb",
+      "canonical_name": "AMD Radeon RX 6700 10GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6700 10GB",
+        "6700 10GB",
+        "RX 6700",
+        "RX6700",
+        "RX6700 10GB"
+      ],
+      "gaming_score": 38,
+      "tier": "1080p_high",
+      "tdp_w": 175,
+      "rec_psu_w": 550,
+      "vram_gb": 10,
+      "used_price_min": 190.0,
+      "used_price_max": 240.0
+    },
+    {
+      "id": "gpu_rx_6650_xt",
+      "canonical_name": "AMD Radeon RX 6650 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6650 XT",
+        "6650 XT",
+        "6650XT 8GB",
+        "RX6650XT"
+      ],
+      "gaming_score": 35,
+      "tier": "1080p_high",
+      "tdp_w": 180,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 180.0,
+      "used_price_max": 230.0
+    },
+    {
+      "id": "gpu_rx_6600_xt",
+      "canonical_name": "AMD Radeon RX 6600 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6600 XT",
+        "6600 XT",
+        "6600XT 8GB",
+        "RX6600XT"
+      ],
+      "gaming_score": 33,
+      "tier": "1080p_high",
+      "tdp_w": 160,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 160.0,
+      "used_price_max": 210.0
+    },
+    {
+      "id": "gpu_rx_6600",
+      "canonical_name": "AMD Radeon RX 6600",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6600",
+        "6600 8GB",
+        "RADEON RX 6600",
+        "RX6600"
+      ],
+      "gaming_score": 28,
+      "tier": "1080p_mid",
+      "tdp_w": 132,
+      "rec_psu_w": 450,
+      "vram_gb": 8,
+      "used_price_min": 140.0,
+      "used_price_max": 180.0
+    },
+    {
+      "id": "gpu_rx_6500_xt",
+      "canonical_name": "AMD Radeon RX 6500 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6500 XT",
+        "6500 XT",
+        "RX6500XT",
+        "6500XT 4GB"
+      ],
+      "gaming_score": 15,
+      "tier": "1080p_entry",
+      "tdp_w": 107,
+      "rec_psu_w": 400,
+      "vram_gb": 4,
+      "used_price_min": 80.0,
+      "used_price_max": 115.0
+    },
+    {
+      "id": "gpu_rx_5700_xt",
+      "canonical_name": "AMD Radeon RX 5700 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 5700 XT",
+        "5700 XT",
+        "RX5700XT",
+        "RADEON RX 5700 XT",
+        "RX 5700XT"
+      ],
+      "gaming_score": 34,
+      "tier": "1080p_high",
+      "tdp_w": 225,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 120.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "gpu_rx_5700",
+      "canonical_name": "AMD Radeon RX 5700",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 5700",
+        "5700 8GB",
+        "RX5700",
+        "RADEON RX 5700"
+      ],
+      "gaming_score": 30,
+      "tier": "1080p_mid",
+      "tdp_w": 180,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 100.0,
+      "used_price_max": 135.0
+    },
+    {
+      "id": "gpu_rx_5600_xt",
+      "canonical_name": "AMD Radeon RX 5600 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 5600 XT",
+        "5600 XT",
+        "RX5600XT",
+        "5600XT 6GB"
+      ],
+      "gaming_score": 26,
+      "tier": "1080p_mid",
+      "tdp_w": 150,
+      "rec_psu_w": 450,
+      "vram_gb": 6,
+      "used_price_min": 90.0,
+      "used_price_max": 125.0
+    },
+    {
+      "id": "gpu_rx_5500_xt",
+      "canonical_name": "AMD Radeon RX 5500 XT",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 5500 XT",
+        "5500 XT",
+        "RX5500XT",
+        "5500XT 8GB"
+      ],
+      "gaming_score": 17,
+      "tier": "1080p_entry",
+      "tdp_w": 130,
+      "rec_psu_w": 450,
+      "vram_gb": 8,
+      "used_price_min": 65.0,
+      "used_price_max": 95.0
+    },
+    {
+      "id": "gpu_rx_590",
+      "canonical_name": "AMD Radeon RX 590",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 590",
+        "RX 590 8GB",
+        "RX590",
+        "590 8GB"
+      ],
+      "gaming_score": 18,
+      "tier": "1080p_entry",
+      "tdp_w": 225,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 60.0,
+      "used_price_max": 90.0
+    },
+    {
+      "id": "gpu_rx_580_8gb",
+      "canonical_name": "AMD Radeon RX 580 8GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 580 8GB",
+        "580 8GB",
+        "RX 580",
+        "RX580",
+        "RX580 8GB"
+      ],
+      "gaming_score": 16,
+      "tier": "1080p_entry",
+      "tdp_w": 185,
+      "rec_psu_w": 450,
+      "vram_gb": 8,
+      "used_price_min": 45.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "gpu_rx_580_4gb",
+      "canonical_name": "AMD Radeon RX 580 4GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 580 4GB",
+        "580 4GB",
+        "RX580 4GB"
+      ],
+      "gaming_score": 14,
+      "tier": "1080p_entry",
+      "tdp_w": 185,
+      "rec_psu_w": 450,
+      "vram_gb": 4,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "gpu_rx_570_8gb",
+      "canonical_name": "AMD Radeon RX 570 8GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 570 8GB",
+        "570 8GB",
+        "RX 570",
+        "RX570",
+        "RX570 8GB"
+      ],
+      "gaming_score": 14,
+      "tier": "1080p_entry",
+      "tdp_w": 150,
+      "rec_psu_w": 450,
+      "vram_gb": 8,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "gpu_rx_570_4gb",
+      "canonical_name": "AMD Radeon RX 570 4GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 570 4GB",
+        "570 4GB",
+        "RX570 4GB"
+      ],
+      "gaming_score": 12,
+      "tier": "1080p_entry",
+      "tdp_w": 150,
+      "rec_psu_w": 450,
+      "vram_gb": 4,
+      "used_price_min": 30.0,
+      "used_price_max": 50.0
+    },
+    {
+      "id": "gpu_arc_a770_16gb",
+      "canonical_name": "Intel Arc A770 16GB",
+      "type": "GPU",
+      "brand": "Intel",
+      "aliases": [
+        "ARC A770 16GB",
+        "A770 16GB",
+        "INTEL ARC A770",
+        "ARC A770",
+        "A770 16G"
+      ],
+      "gaming_score": 36,
+      "tier": "1080p_high",
+      "tdp_w": 225,
+      "rec_psu_w": 550,
+      "vram_gb": 16,
+      "used_price_min": 220.0,
+      "used_price_max": 280.0
+    },
+    {
+      "id": "gpu_arc_a770_8gb",
+      "canonical_name": "Intel Arc A770 8GB",
+      "type": "GPU",
+      "brand": "Intel",
+      "aliases": [
+        "ARC A770 8GB",
+        "A770 8GB",
+        "A770 8G"
+      ],
+      "gaming_score": 34,
+      "tier": "1080p_high",
+      "tdp_w": 225,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 180.0,
+      "used_price_max": 230.0
+    },
+    {
+      "id": "gpu_arc_a750",
+      "canonical_name": "Intel Arc A750",
+      "type": "GPU",
+      "brand": "Intel",
+      "aliases": [
+        "ARC A750",
+        "A750",
+        "INTEL ARC A750",
+        "A750 8GB"
+      ],
+      "gaming_score": 31,
+      "tier": "1080p_high",
+      "tdp_w": 225,
+      "rec_psu_w": 550,
+      "vram_gb": 8,
+      "used_price_min": 150.0,
+      "used_price_max": 195.0
+    },
+    {
+      "id": "gpu_arc_a580",
+      "canonical_name": "Intel Arc A580",
+      "type": "GPU",
+      "brand": "Intel",
+      "aliases": [
+        "ARC A580",
+        "A580",
+        "INTEL ARC A580",
+        "A580 8GB"
+      ],
+      "gaming_score": 25,
+      "tier": "1080p_mid",
+      "tdp_w": 185,
+      "rec_psu_w": 500,
+      "vram_gb": 8,
+      "used_price_min": 120.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "gpu_arc_a380",
+      "canonical_name": "Intel Arc A380",
+      "type": "GPU",
+      "brand": "Intel",
+      "aliases": [
+        "ARC A380",
+        "A380",
+        "INTEL ARC A380",
+        "A380 6GB"
+      ],
+      "gaming_score": 12,
+      "tier": "1080p_entry",
+      "tdp_w": 75,
+      "rec_psu_w": 350,
+      "vram_gb": 6,
+      "used_price_min": 70.0,
+      "used_price_max": 100.0
+    },
+    {
+      "id": "cpu_ryzen_7_9800x3d",
+      "canonical_name": "AMD Ryzen 7 9800X3D",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 9800X3D",
+        "9800X3D",
+        "R7 9800X3D",
+        "Ryzen 9800X3D"
+      ],
+      "gaming_score": 108,
+      "tier": "flagship_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 120,
+      "used_price_min": 440.0,
+      "used_price_max": 520.0
+    },
+    {
+      "id": "cpu_ryzen_7_7800x3d",
+      "canonical_name": "AMD Ryzen 7 7800X3D",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 7800X3D",
+        "7800X3D",
+        "R7 7800X3D",
+        "Ryzen 7800X3D"
+      ],
+      "gaming_score": 100,
+      "tier": "flagship_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 120,
+      "used_price_min": 310.0,
+      "used_price_max": 380.0
+    },
+    {
+      "id": "cpu_ryzen_9_7950x3d",
+      "canonical_name": "AMD Ryzen 9 7950X3D",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 7950X3D",
+        "7950X3D",
+        "R9 7950X3D",
+        "Ryzen 7950X3D"
+      ],
+      "gaming_score": 101,
+      "tier": "flagship_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 120,
+      "used_price_min": 430.0,
+      "used_price_max": 520.0
+    },
+    {
+      "id": "cpu_ryzen_9_7900x3d",
+      "canonical_name": "AMD Ryzen 9 7900X3D",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 7900X3D",
+        "7900X3D",
+        "R9 7900X3D",
+        "Ryzen 7900X3D"
+      ],
+      "gaming_score": 93,
+      "tier": "flagship_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 120,
+      "used_price_min": 330.0,
+      "used_price_max": 410.0
+    },
+    {
+      "id": "cpu_ryzen_7_9700x",
+      "canonical_name": "AMD Ryzen 7 9700X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 9700X",
+        "9700X",
+        "R7 9700X",
+        "Ryzen 9700X"
+      ],
+      "gaming_score": 92,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 280.0,
+      "used_price_max": 340.0
+    },
+    {
+      "id": "cpu_ryzen_5_9600x",
+      "canonical_name": "AMD Ryzen 5 9600X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 9600X",
+        "9600X",
+        "R5 9600X",
+        "Ryzen 9600X"
+      ],
+      "gaming_score": 86,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 210.0,
+      "used_price_max": 260.0
+    },
+    {
+      "id": "cpu_ryzen_9_7950x",
+      "canonical_name": "AMD Ryzen 9 7950X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 7950X",
+        "7950X",
+        "R9 7950X",
+        "Ryzen 7950X"
+      ],
+      "gaming_score": 94,
+      "tier": "flagship_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 170,
+      "used_price_min": 350.0,
+      "used_price_max": 430.0
+    },
+    {
+      "id": "cpu_ryzen_9_7900x",
+      "canonical_name": "AMD Ryzen 9 7900X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 7900X",
+        "7900X",
+        "R9 7900X",
+        "Ryzen 7900X"
+      ],
+      "gaming_score": 88,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 170,
+      "used_price_min": 270.0,
+      "used_price_max": 340.0
+    },
+    {
+      "id": "cpu_ryzen_7_7700x",
+      "canonical_name": "AMD Ryzen 7 7700X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 7700X",
+        "7700X",
+        "R7 7700X",
+        "Ryzen 7700X"
+      ],
+      "gaming_score": 84,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 210.0,
+      "used_price_max": 260.0
+    },
+    {
+      "id": "cpu_ryzen_7_7700",
+      "canonical_name": "AMD Ryzen 7 7700",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 7700",
+        "R7 7700",
+        "Ryzen 7700"
+      ],
+      "gaming_score": 81,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 180.0,
+      "used_price_max": 230.0
+    },
+    {
+      "id": "cpu_ryzen_5_7600x",
+      "canonical_name": "AMD Ryzen 5 7600X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 7600X",
+        "7600X",
+        "R5 7600X",
+        "Ryzen 7600X"
+      ],
+      "gaming_score": 80,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 150.0,
+      "used_price_max": 190.0
+    },
+    {
+      "id": "cpu_ryzen_5_7600",
+      "canonical_name": "AMD Ryzen 5 7600",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 7600",
+        "R5 7600",
+        "Ryzen 7600"
+      ],
+      "gaming_score": 78,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 140.0,
+      "used_price_max": 175.0
+    },
+    {
+      "id": "cpu_ryzen_5_7500f",
+      "canonical_name": "AMD Ryzen 5 7500F",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 7500F",
+        "7500F",
+        "R5 7500F",
+        "Ryzen 7500F"
+      ],
+      "gaming_score": 77,
+      "tier": "high_gaming",
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 115.0,
+      "used_price_max": 145.0
+    },
+    {
+      "id": "cpu_ryzen_7_5800x3d",
+      "canonical_name": "AMD Ryzen 7 5800X3D",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 5800X3D",
+        "5800X3D",
+        "R7 5800X3D",
+        "Ryzen 5800X3D"
+      ],
+      "gaming_score": 87,
+      "tier": "high_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 210.0,
+      "used_price_max": 270.0
+    },
+    {
+      "id": "cpu_ryzen_7_5700x3d",
+      "canonical_name": "AMD Ryzen 7 5700X3D",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 5700X3D",
+        "5700X3D",
+        "R7 5700X3D",
+        "Ryzen 5700X3D"
+      ],
+      "gaming_score": 83,
+      "tier": "high_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 160.0,
+      "used_price_max": 210.0
+    },
+    {
+      "id": "cpu_ryzen_9_5950x",
+      "canonical_name": "AMD Ryzen 9 5950X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 5950X",
+        "5950X",
+        "R9 5950X",
+        "Ryzen 5950X"
+      ],
+      "gaming_score": 82,
+      "tier": "high_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 250.0,
+      "used_price_max": 320.0
+    },
+    {
+      "id": "cpu_ryzen_9_5900x",
+      "canonical_name": "AMD Ryzen 9 5900X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 5900X",
+        "5900X",
+        "R9 5900X",
+        "Ryzen 5900X"
+      ],
+      "gaming_score": 78,
+      "tier": "high_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 180.0,
+      "used_price_max": 240.0
+    },
+    {
+      "id": "cpu_ryzen_7_5800x",
+      "canonical_name": "AMD Ryzen 7 5800X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 5800X",
+        "5800X",
+        "R7 5800X",
+        "Ryzen 5800X"
+      ],
+      "gaming_score": 70,
+      "tier": "mid_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 120.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "cpu_ryzen_7_5700x",
+      "canonical_name": "AMD Ryzen 7 5700X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 5700X",
+        "5700X",
+        "R7 5700X",
+        "Ryzen 5700X"
+      ],
+      "gaming_score": 68,
+      "tier": "mid_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 110.0,
+      "used_price_max": 145.0
+    },
+    {
+      "id": "cpu_ryzen_5_5600x",
+      "canonical_name": "AMD Ryzen 5 5600X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 5600X",
+        "5600X",
+        "R5 5600X",
+        "Ryzen 5600X"
+      ],
+      "gaming_score": 65,
+      "tier": "mid_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 85.0,
+      "used_price_max": 120.0
+    },
+    {
+      "id": "cpu_ryzen_5_5600",
+      "canonical_name": "AMD Ryzen 5 5600",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 5600",
+        "R5 5600",
+        "Ryzen 5600"
+      ],
+      "gaming_score": 63,
+      "tier": "mid_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 75.0,
+      "used_price_max": 105.0
+    },
+    {
+      "id": "cpu_ryzen_7_5700g",
+      "canonical_name": "AMD Ryzen 7 5700G",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 5700G",
+        "5700G",
+        "R7 5700G",
+        "Ryzen 5700G"
+      ],
+      "gaming_score": 58,
+      "tier": "mid_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 110.0,
+      "used_price_max": 150.0
+    },
+    {
+      "id": "cpu_ryzen_5_5600g",
+      "canonical_name": "AMD Ryzen 5 5600G",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 5600G",
+        "5600G",
+        "R5 5600G",
+        "Ryzen 5600G"
+      ],
+      "gaming_score": 54,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 75.0,
+      "used_price_max": 110.0
+    },
+    {
+      "id": "cpu_ryzen_5_5500",
+      "canonical_name": "AMD Ryzen 5 5500",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 5500",
+        "R5 5500",
+        "Ryzen 5500"
+      ],
+      "gaming_score": 52,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 55.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "cpu_ryzen_7_3800x",
+      "canonical_name": "AMD Ryzen 7 3800X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 3800X",
+        "3800X",
+        "R7 3800X",
+        "Ryzen 3800X"
+      ],
+      "gaming_score": 57,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 75.0,
+      "used_price_max": 105.0
+    },
+    {
+      "id": "cpu_ryzen_7_3700x",
+      "canonical_name": "AMD Ryzen 7 3700X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 3700X",
+        "3700X",
+        "R7 3700X",
+        "Ryzen 3700X"
+      ],
+      "gaming_score": 55,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 65.0,
+      "used_price_max": 95.0
+    },
+    {
+      "id": "cpu_ryzen_5_3600x",
+      "canonical_name": "AMD Ryzen 5 3600X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 3600X",
+        "3600X",
+        "R5 3600X",
+        "Ryzen 3600X"
+      ],
+      "gaming_score": 52,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 45.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "cpu_ryzen_5_3600",
+      "canonical_name": "AMD Ryzen 5 3600",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 3600",
+        "R5 3600",
+        "Ryzen 3600"
+      ],
+      "gaming_score": 50,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "cpu_ryzen_3_3300x",
+      "canonical_name": "AMD Ryzen 3 3300X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 3 3300X",
+        "3300X",
+        "R3 3300X",
+        "Ryzen 3300X"
+      ],
+      "gaming_score": 46,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 35.0,
+      "used_price_max": 60.0
+    },
+    {
+      "id": "cpu_ryzen_3_3100",
+      "canonical_name": "AMD Ryzen 3 3100",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 3 3100",
+        "R3 3100",
+        "Ryzen 3100"
+      ],
+      "gaming_score": 40,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "cpu_ryzen_7_2700x",
+      "canonical_name": "AMD Ryzen 7 2700X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 2700X",
+        "2700X",
+        "R7 2700X",
+        "Ryzen 2700X"
+      ],
+      "gaming_score": 45,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 45.0,
+      "used_price_max": 70.0
+    },
+    {
+      "id": "cpu_ryzen_5_2600x",
+      "canonical_name": "AMD Ryzen 5 2600X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 2600X",
+        "2600X",
+        "R5 2600X",
+        "Ryzen 2600X"
+      ],
+      "gaming_score": 41,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "cpu_ryzen_5_2600",
+      "canonical_name": "AMD Ryzen 5 2600",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 2600",
+        "R5 2600",
+        "Ryzen 2600"
+      ],
+      "gaming_score": 38,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 30.0,
+      "used_price_max": 50.0
+    },
+    {
+      "id": "cpu_ryzen_5_1600af",
+      "canonical_name": "AMD Ryzen 5 1600 AF",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 1600 AF",
+        "Ryzen 1600 AF",
+        "1600 AF",
+        "1600AF",
+        "R5 1600 AF"
+      ],
+      "gaming_score": 37,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "cpu_ryzen_5_1600",
+      "canonical_name": "AMD Ryzen 5 1600",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 1600",
+        "R5 1600",
+        "Ryzen 1600"
+      ],
+      "gaming_score": 33,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 20.0,
+      "used_price_max": 35.0
+    },
+    {
+      "id": "cpu_intel_i9_14900k",
+      "canonical_name": "Intel Core i9-14900K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i9-14900K",
+        "14900K",
+        "Core i9 14900K",
+        "i9 14900KF",
+        "i9 14900K"
+      ],
+      "gaming_score": 98,
+      "tier": "flagship_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 253,
+      "used_price_min": 380.0,
+      "used_price_max": 470.0
+    },
+    {
+      "id": "cpu_intel_i7_14700k",
+      "canonical_name": "Intel Core i7-14700K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-14700K",
+        "14700K",
+        "Core i7 14700K",
+        "i7 14700KF",
+        "i7 14700K"
+      ],
+      "gaming_score": 92,
+      "tier": "flagship_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 253,
+      "used_price_min": 290.0,
+      "used_price_max": 360.0
+    },
+    {
+      "id": "cpu_intel_i5_14600k",
+      "canonical_name": "Intel Core i5-14600K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-14600K",
+        "14600K",
+        "Core i5 14600K",
+        "i5 14600KF",
+        "i5 14600K"
+      ],
+      "gaming_score": 86,
+      "tier": "high_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 181,
+      "used_price_min": 220.0,
+      "used_price_max": 270.0
+    },
+    {
+      "id": "cpu_intel_i5_14400f",
+      "canonical_name": "Intel Core i5-14400F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-14400F",
+        "14400F",
+        "Core i5 14400F",
+        "i5 14400",
+        "i5-14400"
+      ],
+      "gaming_score": 74,
+      "tier": "mid_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 130.0,
+      "used_price_max": 170.0
+    },
+    {
+      "id": "cpu_intel_i9_13900k",
+      "canonical_name": "Intel Core i9-13900K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i9-13900K",
+        "13900K",
+        "Core i9 13900K",
+        "i9 13900KF",
+        "i9 13900K"
+      ],
+      "gaming_score": 95,
+      "tier": "flagship_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 253,
+      "used_price_min": 330.0,
+      "used_price_max": 410.0
+    },
+    {
+      "id": "cpu_intel_i7_13700k",
+      "canonical_name": "Intel Core i7-13700K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-13700K",
+        "13700K",
+        "Core i7 13700K",
+        "i7 13700KF",
+        "i7 13700K",
+        "i7-13700",
+        "i7 13700",
+        "Core i7 13700"
+      ],
+      "gaming_score": 90,
+      "tier": "flagship_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 253,
+      "used_price_min": 250.0,
+      "used_price_max": 320.0
+    },
+    {
+      "id": "cpu_intel_i5_13600k",
+      "canonical_name": "Intel Core i5-13600K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-13600K",
+        "13600K",
+        "Core i5 13600K",
+        "i5 13600KF",
+        "i5 13600K",
+        "i5-13600",
+        "i5 13600",
+        "Core i5 13600"
+      ],
+      "gaming_score": 84,
+      "tier": "high_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 181,
+      "used_price_min": 190.0,
+      "used_price_max": 240.0
+    },
+    {
+      "id": "cpu_intel_i5_13400f",
+      "canonical_name": "Intel Core i5-13400F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-13400F",
+        "13400F",
+        "Core i5 13400F",
+        "i5 13400",
+        "i5-13400"
+      ],
+      "gaming_score": 72,
+      "tier": "mid_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 110.0,
+      "used_price_max": 145.0
+    },
+    {
+      "id": "cpu_intel_i3_13100f",
+      "canonical_name": "Intel Core i3-13100F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i3-13100F",
+        "13100F",
+        "Core i3 13100F",
+        "i3 13100",
+        "i3-13100"
+      ],
+      "gaming_score": 58,
+      "tier": "budget_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 58,
+      "used_price_min": 65.0,
+      "used_price_max": 90.0
+    },
+    {
+      "id": "cpu_intel_i9_12900k",
+      "canonical_name": "Intel Core i9-12900K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i9-12900K",
+        "12900K",
+        "Core i9 12900K",
+        "i9 12900KF",
+        "i9 12900K"
+      ],
+      "gaming_score": 86,
+      "tier": "high_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 241,
+      "used_price_min": 230.0,
+      "used_price_max": 300.0
+    },
+    {
+      "id": "cpu_intel_i7_12700k",
+      "canonical_name": "Intel Core i7-12700K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-12700K",
+        "12700K",
+        "Core i7 12700K",
+        "i7 12700KF",
+        "i7 12700K",
+        "i7-12700",
+        "i7 12700"
+      ],
+      "gaming_score": 80,
+      "tier": "high_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 190,
+      "used_price_min": 170.0,
+      "used_price_max": 220.0
+    },
+    {
+      "id": "cpu_intel_i5_12600k",
+      "canonical_name": "Intel Core i5-12600K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-12600K",
+        "12600K",
+        "Core i5 12600K",
+        "i5 12600KF",
+        "i5 12600K",
+        "i5-12600",
+        "i5 12600"
+      ],
+      "gaming_score": 75,
+      "tier": "high_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 150,
+      "used_price_min": 130.0,
+      "used_price_max": 175.0
+    },
+    {
+      "id": "cpu_intel_i5_12400f",
+      "canonical_name": "Intel Core i5-12400F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-12400F",
+        "12400F",
+        "Core i5 12400F",
+        "i5 12400",
+        "i5-12400"
+      ],
+      "gaming_score": 68,
+      "tier": "mid_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 85.0,
+      "used_price_max": 115.0
+    },
+    {
+      "id": "cpu_intel_i3_12100f",
+      "canonical_name": "Intel Core i3-12100F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i3-12100F",
+        "12100F",
+        "Core i3 12100F",
+        "i3 12100",
+        "i3-12100"
+      ],
+      "gaming_score": 56,
+      "tier": "budget_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 58,
+      "used_price_min": 55.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "cpu_intel_i9_11900k",
+      "canonical_name": "Intel Core i9-11900K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i9-11900K",
+        "11900K",
+        "Core i9 11900K",
+        "i9 11900KF",
+        "i9-11900"
+      ],
+      "gaming_score": 75,
+      "tier": "high_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 125,
+      "used_price_min": 180.0,
+      "used_price_max": 240.0
+    },
+    {
+      "id": "cpu_intel_i7_11700k",
+      "canonical_name": "Intel Core i7-11700K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-11700K",
+        "11700K",
+        "Core i7 11700K",
+        "i7-11700"
+      ],
+      "gaming_score": 72,
+      "tier": "high_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 125,
+      "used_price_min": 140.0,
+      "used_price_max": 190.0
+    },
+    {
+      "id": "cpu_intel_i5_11600k",
+      "canonical_name": "Intel Core i5-11600K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-11600K",
+        "11600K",
+        "Core i5 11600K",
+        "i5 11600KF",
+        "i5-11600"
+      ],
+      "gaming_score": 67,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 125,
+      "used_price_min": 110.0,
+      "used_price_max": 145.0
+    },
+    {
+      "id": "cpu_intel_i5_11400f",
+      "canonical_name": "Intel Core i5-11400F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-11400F",
+        "11400F",
+        "Core i5 11400F"
+      ],
+      "gaming_score": 61,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 75.0,
+      "used_price_max": 105.0
+    },
+    {
+      "id": "cpu_intel_i9_10900k",
+      "canonical_name": "Intel Core i9-10900K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i9-10900K",
+        "10900K",
+        "Core i9 10900K",
+        "i9 10900KF",
+        "i9-10900"
+      ],
+      "gaming_score": 74,
+      "tier": "high_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 125,
+      "used_price_min": 180.0,
+      "used_price_max": 240.0
+    },
+    {
+      "id": "cpu_intel_i7_10700k",
+      "canonical_name": "Intel Core i7-10700K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-10700K",
+        "10700K",
+        "Core i7 10700K",
+        "i7 10700KF"
+      ],
+      "gaming_score": 70,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 125,
+      "used_price_min": 130.0,
+      "used_price_max": 175.0
+    },
+    {
+      "id": "cpu_intel_i7_10700",
+      "canonical_name": "Intel Core i7-10700",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-10700",
+        "i7 10700",
+        "Core i7 10700"
+      ],
+      "gaming_score": 66,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 110.0,
+      "used_price_max": 150.0
+    },
+    {
+      "id": "cpu_intel_i5_10600k",
+      "canonical_name": "Intel Core i5-10600K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-10600K",
+        "10600K",
+        "Core i5 10600K",
+        "i5 10600KF"
+      ],
+      "gaming_score": 63,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 125,
+      "used_price_min": 90.0,
+      "used_price_max": 125.0
+    },
+    {
+      "id": "cpu_intel_i5_10400f",
+      "canonical_name": "Intel Core i5-10400F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-10400F",
+        "10400F",
+        "Core i5 10400F"
+      ],
+      "gaming_score": 57,
+      "tier": "budget_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 60.0,
+      "used_price_max": 85.0
+    },
+    {
+      "id": "cpu_intel_i3_10100f",
+      "canonical_name": "Intel Core i3-10100F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i3-10100F",
+        "10100F",
+        "Core i3 10100F",
+        "i3 10100",
+        "i3-10100"
+      ],
+      "gaming_score": 46,
+      "tier": "budget_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "cpu_intel_i9_9900k",
+      "canonical_name": "Intel Core i9-9900K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i9-9900K",
+        "9900K",
+        "Core i9 9900K",
+        "i9 9900KF",
+        "i9 9900"
+      ],
+      "gaming_score": 69,
+      "tier": "mid_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 170.0,
+      "used_price_max": 230.0
+    },
+    {
+      "id": "cpu_intel_i7_9700k",
+      "canonical_name": "Intel Core i7-9700K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-9700K",
+        "9700K",
+        "Core i7 9700K",
+        "i7 9700KF"
+      ],
+      "gaming_score": 64,
+      "tier": "mid_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 120.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "cpu_intel_i7_9700",
+      "canonical_name": "Intel Core i7-9700",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-9700",
+        "i7 9700",
+        "Core i7 9700",
+        "i7 9700F",
+        "i7-9700F"
+      ],
+      "gaming_score": 61,
+      "tier": "mid_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 100.0,
+      "used_price_max": 135.0
+    },
+    {
+      "id": "cpu_intel_i5_9600k",
+      "canonical_name": "Intel Core i5-9600K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-9600K",
+        "9600K",
+        "Core i5 9600K",
+        "i5 9600KF"
+      ],
+      "gaming_score": 56,
+      "tier": "budget_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 70.0,
+      "used_price_max": 100.0
+    },
+    {
+      "id": "cpu_intel_i5_9400f",
+      "canonical_name": "Intel Core i5-9400F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-9400F",
+        "9400F",
+        "Core i5 9400F",
+        "i5 9400",
+        "i5-9400"
+      ],
+      "gaming_score": 49,
+      "tier": "budget_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 45.0,
+      "used_price_max": 70.0
+    },
+    {
+      "id": "cpu_intel_i3_9100f",
+      "canonical_name": "Intel Core i3-9100F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i3-9100F",
+        "9100F",
+        "Core i3 9100F",
+        "i3 9100",
+        "i3-9100"
+      ],
+      "gaming_score": 38,
+      "tier": "entry_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 30.0,
+      "used_price_max": 50.0
+    },
+    {
+      "id": "cpu_intel_i7_8700k",
+      "canonical_name": "Intel Core i7-8700K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-8700K",
+        "8700K",
+        "Core i7 8700K"
+      ],
+      "gaming_score": 62,
+      "tier": "mid_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 100.0,
+      "used_price_max": 140.0
+    },
+    {
+      "id": "cpu_intel_i7_8700",
+      "canonical_name": "Intel Core i7-8700",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-8700",
+        "i7 8700",
+        "Core i7 8700"
+      ],
+      "gaming_score": 58,
+      "tier": "budget_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 80.0,
+      "used_price_max": 115.0
+    },
+    {
+      "id": "cpu_intel_i5_8600k",
+      "canonical_name": "Intel Core i5-8600K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-8600K",
+        "8600K",
+        "Core i5 8600K"
+      ],
+      "gaming_score": 51,
+      "tier": "budget_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 55.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "cpu_intel_i5_8400",
+      "canonical_name": "Intel Core i5-8400",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-8400",
+        "i5 8400",
+        "Core i5 8400"
+      ],
+      "gaming_score": 46,
+      "tier": "budget_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "mb_a620",
+      "canonical_name": "AMD A620 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "A620",
+        "A620M",
+        "A620 Motherboard",
+        "A620 Gaming"
+      ],
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 60.0,
+      "used_price_max": 90.0
+    },
+    {
+      "id": "mb_b650",
+      "canonical_name": "AMD B650 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "B650",
+        "B650 Gaming",
+        "B650 Tomahawk",
+        "B650 Aorus",
+        "B650M"
+      ],
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 90.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "mb_b650e",
+      "canonical_name": "AMD B650E Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "B650E",
+        "B650E Gaming",
+        "B650E Aorus",
+        "B650E Taichi"
+      ],
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 130.0,
+      "used_price_max": 210.0
+    },
+    {
+      "id": "mb_x670",
+      "canonical_name": "AMD X670 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "X670",
+        "X670 Gaming",
+        "X670 Aorus",
+        "X670 Tomahawk"
+      ],
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 35,
+      "used_price_min": 140.0,
+      "used_price_max": 220.0
+    },
+    {
+      "id": "mb_x670e",
+      "canonical_name": "AMD X670E Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "X670E",
+        "X670E Gaming",
+        "X670E Hero",
+        "X670E Taichi"
+      ],
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 40,
+      "used_price_min": 180.0,
+      "used_price_max": 300.0
+    },
+    {
+      "id": "mb_a320",
+      "canonical_name": "AMD A320 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "A320",
+        "A320M",
+        "A320 Gaming",
+        "A320 Motherboard"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 15,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "mb_b350",
+      "canonical_name": "AMD B350 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "B350",
+        "B350M",
+        "B350 Gaming",
+        "B350 Tomahawk"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 30.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "mb_b450",
+      "canonical_name": "AMD B450 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "B450",
+        "B450 Tomahawk",
+        "B450 Gaming",
+        "B450M",
+        "B450 Aorus"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 40.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "mb_x470",
+      "canonical_name": "AMD X470 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "X470",
+        "X470 Gaming",
+        "X470 Taichi",
+        "X470 Aorus"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 50.0,
+      "used_price_max": 90.0
+    },
+    {
+      "id": "mb_a520",
+      "canonical_name": "AMD A520 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "A520",
+        "A520M",
+        "A520 Gaming",
+        "A520 Motherboard"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 35.0,
+      "used_price_max": 60.0
+    },
+    {
+      "id": "mb_b550",
+      "canonical_name": "AMD B550 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "B550",
+        "B550 Gaming",
+        "B550 Tomahawk",
+        "B550 Aorus",
+        "B550M",
+        "B550-F"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 60.0,
+      "used_price_max": 110.0
+    },
+    {
+      "id": "mb_x570",
+      "canonical_name": "AMD X570 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "X570",
+        "X570 Gaming",
+        "X570 Tomahawk",
+        "X570 Aorus",
+        "X570-E"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 80.0,
+      "used_price_max": 150.0
+    },
+    {
+      "id": "mb_h610",
+      "canonical_name": "Intel H610 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H610",
+        "H610M",
+        "H610 Motherboard"
+      ],
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 45.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "mb_b660",
+      "canonical_name": "Intel B660 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "B660",
+        "B660 Gaming",
+        "B660M",
+        "B660 Tomahawk"
+      ],
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 65.0,
+      "used_price_max": 110.0
+    },
+    {
+      "id": "mb_h670",
+      "canonical_name": "Intel H670 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H670",
+        "H670M",
+        "H670 Gaming",
+        "H670 Tomahawk"
+      ],
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 70.0,
+      "used_price_max": 115.0
+    },
+    {
+      "id": "mb_b760",
+      "canonical_name": "Intel B760 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "B760",
+        "B760 Gaming",
+        "B760M",
+        "B760 Tomahawk"
+      ],
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 75.0,
+      "used_price_max": 130.0
+    },
+    {
+      "id": "mb_z690",
+      "canonical_name": "Intel Z690 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "Z690",
+        "Z690 Gaming",
+        "Z690 Tomahawk",
+        "Z690 Aorus"
+      ],
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 35,
+      "used_price_min": 110.0,
+      "used_price_max": 180.0
+    },
+    {
+      "id": "mb_z790",
+      "canonical_name": "Intel Z790 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "Z790",
+        "Z790 Gaming",
+        "Z790 Tomahawk",
+        "Z790 Aorus",
+        "Z790-P"
+      ],
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 35,
+      "used_price_min": 140.0,
+      "used_price_max": 230.0
+    },
+    {
+      "id": "mb_h410",
+      "canonical_name": "Intel H410 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H410",
+        "H410M",
+        "H410 Motherboard"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 35.0,
+      "used_price_max": 60.0
+    },
+    {
+      "id": "mb_b460",
+      "canonical_name": "Intel B460 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "B460",
+        "B460M",
+        "B460 Gaming",
+        "B460 Tomahawk"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 45.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "mb_h510",
+      "canonical_name": "Intel H510 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H510",
+        "H510M",
+        "H510 Motherboard"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "mb_b560",
+      "canonical_name": "Intel B560 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "B560",
+        "B560M",
+        "B560 Gaming",
+        "B560 Tomahawk"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 55.0,
+      "used_price_max": 90.0
+    },
+    {
+      "id": "mb_z490",
+      "canonical_name": "Intel Z490 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "Z490",
+        "Z490 Gaming",
+        "Z490 Tomahawk",
+        "Z490 Aorus"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 70.0,
+      "used_price_max": 120.0
+    },
+    {
+      "id": "mb_z590",
+      "canonical_name": "Intel Z590 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "Z590",
+        "Z590 Gaming",
+        "Z590 Tomahawk",
+        "Z590 Aorus"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 35,
+      "used_price_min": 85.0,
+      "used_price_max": 140.0
+    },
+    {
+      "id": "mb_h310",
+      "canonical_name": "Intel H310 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H310",
+        "H310M",
+        "H310 Motherboard"
+      ],
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 30.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "mb_b360",
+      "canonical_name": "Intel B360 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "B360",
+        "B360M",
+        "B360 Gaming",
+        "B360 Pro"
+      ],
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 40.0,
+      "used_price_max": 70.0
+    },
+    {
+      "id": "mb_b365",
+      "canonical_name": "Intel B365 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "B365",
+        "B365M",
+        "B365 Gaming",
+        "B365 Pro"
+      ],
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 40.0,
+      "used_price_max": 70.0
+    },
+    {
+      "id": "mb_z370",
+      "canonical_name": "Intel Z370 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "Z370",
+        "Z370 Gaming",
+        "Z370 Tomahawk",
+        "Z370 Aorus"
+      ],
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 60.0,
+      "used_price_max": 100.0
+    },
+    {
+      "id": "mb_z390",
+      "canonical_name": "Intel Z390 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "Z390",
+        "Z390 Gaming",
+        "Z390 Tomahawk",
+        "Z390 Aorus"
+      ],
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 70.0,
+      "used_price_max": 120.0
+    },
+    {
+      "id": "ram_8gb_ddr4",
+      "canonical_name": "8GB DDR4 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "8GB DDR4",
+        "8 GB DDR4",
+        "DDR4 8GB",
+        "8GB RAM DDR4"
+      ],
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 4,
+      "used_price_min": 12.0,
+      "used_price_max": 22.0
+    },
+    {
+      "id": "ram_16gb_ddr4",
+      "canonical_name": "16GB DDR4 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "16GB DDR4",
+        "16 GB DDR4",
+        "DDR4 16GB",
+        "16GB RAM DDR4"
+      ],
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 5,
+      "used_price_min": 20.0,
+      "used_price_max": 35.0
+    },
+    {
+      "id": "ram_32gb_ddr4",
+      "canonical_name": "32GB DDR4 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "32GB DDR4",
+        "32 GB DDR4",
+        "DDR4 32GB",
+        "DDR4-3600",
+        "DDR4-3200",
+        "32GB RAM DDR4"
+      ],
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 8,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "ram_64gb_ddr4",
+      "canonical_name": "64GB DDR4 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "64GB DDR4",
+        "64 GB DDR4",
+        "DDR4 64GB",
+        "64GB RAM DDR4"
+      ],
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 12,
+      "used_price_min": 75.0,
+      "used_price_max": 120.0
+    },
+    {
+      "id": "ram_8gb_ddr5",
+      "canonical_name": "8GB DDR5 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "8GB DDR5",
+        "8 GB DDR5",
+        "DDR5 8GB",
+        "8GB RAM DDR5"
+      ],
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 5,
+      "used_price_min": 20.0,
+      "used_price_max": 35.0
+    },
+    {
+      "id": "ram_16gb_ddr5",
+      "canonical_name": "16GB DDR5 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "16GB DDR5",
+        "16 GB DDR5",
+        "DDR5 16GB",
+        "16GB RAM DDR5"
+      ],
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 7,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "ram_32gb_ddr5",
+      "canonical_name": "32GB DDR5 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "32GB DDR5",
+        "32 GB DDR5",
+        "DDR5 32GB",
+        "DDR5-6000",
+        "DDR5-5600",
+        "32GB RAM DDR5"
+      ],
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 10,
+      "used_price_min": 75.0,
+      "used_price_max": 110.0
+    },
+    {
+      "id": "ram_64gb_ddr5",
+      "canonical_name": "64GB DDR5 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "64GB DDR5",
+        "64 GB DDR5",
+        "DDR5 64GB",
+        "64GB RAM DDR5"
+      ],
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 15,
+      "used_price_min": 140.0,
+      "used_price_max": 200.0
+    },
+    {
+      "id": "psu_400w",
+      "canonical_name": "400W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "400W",
+        "400 Watt",
+        "Netzteil 400W",
+        "PSU 400W"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 400,
+      "used_price_min": 20.0,
+      "used_price_max": 35.0
+    },
+    {
+      "id": "psu_450w",
+      "canonical_name": "450W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "450W",
+        "450 Watt",
+        "Netzteil 450W",
+        "PSU 450W"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 450,
+      "used_price_min": 25.0,
+      "used_price_max": 40.0
+    },
+    {
+      "id": "psu_500w",
+      "canonical_name": "500W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "500W",
+        "500 Watt",
+        "Netzteil 500W",
+        "PSU 500W"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 500,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "psu_550w",
+      "canonical_name": "550W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "550W",
+        "550 Watt",
+        "Netzteil 550W",
+        "PSU 550W"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 550,
+      "used_price_min": 30.0,
+      "used_price_max": 50.0
+    },
+    {
+      "id": "psu_600w",
+      "canonical_name": "600W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "600W",
+        "600 Watt",
+        "Netzteil 600W",
+        "PSU 600W"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 600,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "psu_650w",
+      "canonical_name": "650W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "650W",
+        "650 Watt",
+        "Netzteil 650W",
+        "PSU 650W"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 650,
+      "used_price_min": 35.0,
+      "used_price_max": 60.0
+    },
+    {
+      "id": "psu_750w",
+      "canonical_name": "750W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "750W",
+        "750 Watt",
+        "Netzteil 750W",
+        "PSU 750W",
+        "750W Gold"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 750,
+      "used_price_min": 45.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "psu_850w",
+      "canonical_name": "850W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "850W",
+        "850 Watt",
+        "Netzteil 850W",
+        "PSU 850W",
+        "850W Gold"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 850,
+      "used_price_min": 65.0,
+      "used_price_max": 105.0
+    },
+    {
+      "id": "psu_1000w",
+      "canonical_name": "1000W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "1000W",
+        "1000 Watt",
+        "Netzteil 1000W",
+        "PSU 1000W",
+        "1000W Gold"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 1000,
+      "used_price_min": 90.0,
+      "used_price_max": 150.0
+    },
+    {
+      "id": "gpu_gtx_980_ti",
+      "canonical_name": "NVIDIA GeForce GTX 980 Ti",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 980 TI",
+        "GTX980TI",
+        "980 TI",
+        "980TI 6GB",
+        "GTX 980TI"
+      ],
+      "gaming_score": 21,
+      "tier": "1080p_budget",
+      "tdp_w": 250,
+      "rec_psu_w": 600,
+      "vram_gb": 6,
+      "used_price_min": 70.0,
+      "used_price_max": 110.0
+    },
+    {
+      "id": "gpu_gtx_980",
+      "canonical_name": "NVIDIA GeForce GTX 980",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 980",
+        "GTX980",
+        "980 4GB"
+      ],
+      "gaming_score": 16,
+      "tier": "1080p_entry",
+      "tdp_w": 165,
+      "rec_psu_w": 500,
+      "vram_gb": 4,
+      "used_price_min": 50.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "gpu_gtx_960",
+      "canonical_name": "NVIDIA GeForce GTX 960",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 960",
+        "GTX960",
+        "960 4GB",
+        "960 2GB"
+      ],
+      "gaming_score": 10,
+      "tier": "1080p_entry",
+      "tdp_w": 120,
+      "rec_psu_w": 400,
+      "vram_gb": 4,
+      "used_price_min": 30.0,
+      "used_price_max": 50.0
+    },
+    {
+      "id": "gpu_gtx_1050",
+      "canonical_name": "NVIDIA GeForce GTX 1050",
+      "type": "GPU",
+      "brand": "NVIDIA",
+      "aliases": [
+        "GTX 1050",
+        "GTX1050",
+        "1050 2GB"
+      ],
+      "gaming_score": 9,
+      "tier": "1080p_entry",
+      "tdp_w": 75,
+      "rec_psu_w": 300,
+      "vram_gb": 2,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "gpu_rx_6400",
+      "canonical_name": "AMD Radeon RX 6400",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 6400",
+        "RX6400",
+        "RX 6400 4GB",
+        "6400 4GB"
+      ],
+      "gaming_score": 12,
+      "tier": "1080p_entry",
+      "tdp_w": 53,
+      "rec_psu_w": 350,
+      "vram_gb": 4,
+      "used_price_min": 60.0,
+      "used_price_max": 90.0
+    },
+    {
+      "id": "gpu_rx_560",
+      "canonical_name": "AMD Radeon RX 560",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 560",
+        "RX560",
+        "RX 560 4GB",
+        "560 4GB"
+      ],
+      "gaming_score": 9,
+      "tier": "1080p_entry",
+      "tdp_w": 80,
+      "rec_psu_w": 350,
+      "vram_gb": 4,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "gpu_rx_480_8gb",
+      "canonical_name": "AMD Radeon RX 480 8GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 480 8GB",
+        "RX 480",
+        "RX480 8GB",
+        "480 8GB",
+        "RX480"
+      ],
+      "gaming_score": 15,
+      "tier": "1080p_entry",
+      "tdp_w": 150,
+      "rec_psu_w": 450,
+      "vram_gb": 8,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "gpu_rx_480_4gb",
+      "canonical_name": "AMD Radeon RX 480 4GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 480 4GB",
+        "RX480 4GB",
+        "480 4GB"
+      ],
+      "gaming_score": 13,
+      "tier": "1080p_entry",
+      "tdp_w": 150,
+      "rec_psu_w": 450,
+      "vram_gb": 4,
+      "used_price_min": 30.0,
+      "used_price_max": 50.0
+    },
+    {
+      "id": "gpu_rx_470_8gb",
+      "canonical_name": "AMD Radeon RX 470 8GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 470 8GB",
+        "RX 470",
+        "RX470 8GB",
+        "470 8GB",
+        "RX470"
+      ],
+      "gaming_score": 13,
+      "tier": "1080p_entry",
+      "tdp_w": 120,
+      "rec_psu_w": 400,
+      "vram_gb": 8,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "gpu_rx_470_4gb",
+      "canonical_name": "AMD Radeon RX 470 4GB",
+      "type": "GPU",
+      "brand": "AMD",
+      "aliases": [
+        "RX 470 4GB",
+        "RX470 4GB",
+        "470 4GB"
+      ],
+      "gaming_score": 11,
+      "tier": "1080p_entry",
+      "tdp_w": 120,
+      "rec_psu_w": 400,
+      "vram_gb": 4,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "cpu_ryzen_9_3950x",
+      "canonical_name": "AMD Ryzen 9 3950X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 3950X",
+        "3950X",
+        "R9 3950X",
+        "Ryzen 3950X"
+      ],
+      "gaming_score": 72,
+      "tier": "high_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 190.0,
+      "used_price_max": 260.0
+    },
+    {
+      "id": "cpu_ryzen_9_3900x",
+      "canonical_name": "AMD Ryzen 9 3900X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 9 3900X",
+        "3900X",
+        "R9 3900X",
+        "Ryzen 3900X"
+      ],
+      "gaming_score": 67,
+      "tier": "mid_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 130.0,
+      "used_price_max": 180.0
+    },
+    {
+      "id": "cpu_ryzen_7_3800xt",
+      "canonical_name": "AMD Ryzen 7 3800XT",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 3800XT",
+        "3800XT",
+        "R7 3800XT",
+        "Ryzen 3800XT"
+      ],
+      "gaming_score": 58,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 105,
+      "used_price_min": 80.0,
+      "used_price_max": 115.0
+    },
+    {
+      "id": "cpu_ryzen_5_3600xt",
+      "canonical_name": "AMD Ryzen 5 3600XT",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 3600XT",
+        "3600XT",
+        "R5 3600XT",
+        "Ryzen 3600XT"
+      ],
+      "gaming_score": 53,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 50.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "cpu_ryzen_5_4500",
+      "canonical_name": "AMD Ryzen 5 4500",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 4500",
+        "R5 4500",
+        "Ryzen 4500"
+      ],
+      "gaming_score": 46,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "cpu_ryzen_3_4100",
+      "canonical_name": "AMD Ryzen 3 4100",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 3 4100",
+        "R3 4100",
+        "Ryzen 4100"
+      ],
+      "gaming_score": 38,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "cpu_ryzen_7_1800x",
+      "canonical_name": "AMD Ryzen 7 1800X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 1800X",
+        "1800X",
+        "R7 1800X",
+        "Ryzen 1800X"
+      ],
+      "gaming_score": 41,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "cpu_ryzen_7_1700x",
+      "canonical_name": "AMD Ryzen 7 1700X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 1700X",
+        "1700X",
+        "R7 1700X",
+        "Ryzen 1700X"
+      ],
+      "gaming_score": 39,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "cpu_ryzen_7_1700",
+      "canonical_name": "AMD Ryzen 7 1700",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 7 1700",
+        "R7 1700",
+        "Ryzen 1700"
+      ],
+      "gaming_score": 37,
+      "tier": "budget_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 30.0,
+      "used_price_max": 50.0
+    },
+    {
+      "id": "cpu_ryzen_5_1600x",
+      "canonical_name": "AMD Ryzen 5 1600X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 1600X",
+        "1600X",
+        "R5 1600X",
+        "Ryzen 1600X"
+      ],
+      "gaming_score": 36,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 95,
+      "used_price_min": 25.0,
+      "used_price_max": 40.0
+    },
+    {
+      "id": "cpu_ryzen_5_1500x",
+      "canonical_name": "AMD Ryzen 5 1500X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 1500X",
+        "1500X",
+        "R5 1500X",
+        "Ryzen 1500X"
+      ],
+      "gaming_score": 32,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 20.0,
+      "used_price_max": 35.0
+    },
+    {
+      "id": "cpu_ryzen_5_1400",
+      "canonical_name": "AMD Ryzen 5 1400",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 1400",
+        "R5 1400",
+        "Ryzen 1400"
+      ],
+      "gaming_score": 30,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 15.0,
+      "used_price_max": 30.0
+    },
+    {
+      "id": "cpu_ryzen_3_1300x",
+      "canonical_name": "AMD Ryzen 3 1300X",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 3 1300X",
+        "1300X",
+        "R3 1300X",
+        "Ryzen 1300X"
+      ],
+      "gaming_score": 28,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 15.0,
+      "used_price_max": 30.0
+    },
+    {
+      "id": "cpu_ryzen_3_1200",
+      "canonical_name": "AMD Ryzen 3 1200",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 3 1200",
+        "R3 1200",
+        "Ryzen 1200"
+      ],
+      "gaming_score": 25,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 12.0,
+      "used_price_max": 25.0
+    },
+    {
+      "id": "cpu_ryzen_5_3400g",
+      "canonical_name": "AMD Ryzen 5 3400G",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 3400G",
+        "3400G",
+        "R5 3400G",
+        "Ryzen 3400G"
+      ],
+      "gaming_score": 40,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 45.0,
+      "used_price_max": 70.0
+    },
+    {
+      "id": "cpu_ryzen_3_3200g",
+      "canonical_name": "AMD Ryzen 3 3200G",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 3 3200G",
+        "3200G",
+        "R3 3200G",
+        "Ryzen 3200G"
+      ],
+      "gaming_score": 34,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "cpu_ryzen_5_2400g",
+      "canonical_name": "AMD Ryzen 5 2400G",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 5 2400G",
+        "2400G",
+        "R5 2400G",
+        "Ryzen 2400G"
+      ],
+      "gaming_score": 36,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 35.0,
+      "used_price_max": 55.0
+    },
+    {
+      "id": "cpu_ryzen_3_2200g",
+      "canonical_name": "AMD Ryzen 3 2200G",
+      "type": "CPU",
+      "brand": "AMD",
+      "aliases": [
+        "Ryzen 3 2200G",
+        "2200G",
+        "R3 2200G",
+        "Ryzen 2200G"
+      ],
+      "gaming_score": 30,
+      "tier": "entry_gaming",
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "cpu_intel_i5_13500",
+      "canonical_name": "Intel Core i5-13500",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-13500",
+        "13500",
+        "Core i5 13500",
+        "i5 13500"
+      ],
+      "gaming_score": 74,
+      "tier": "mid_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 140.0,
+      "used_price_max": 185.0
+    },
+    {
+      "id": "cpu_intel_i5_12500",
+      "canonical_name": "Intel Core i5-12500",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-12500",
+        "12500",
+        "Core i5 12500",
+        "i5 12500"
+      ],
+      "gaming_score": 69,
+      "tier": "mid_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 100.0,
+      "used_price_max": 135.0
+    },
+    {
+      "id": "cpu_intel_i3_14100f",
+      "canonical_name": "Intel Core i3-14100F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i3-14100F",
+        "14100F",
+        "Core i3 14100F",
+        "i3 14100",
+        "i3-14100"
+      ],
+      "gaming_score": 60,
+      "tier": "budget_gaming",
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 58,
+      "used_price_min": 70.0,
+      "used_price_max": 95.0
+    },
+    {
+      "id": "cpu_intel_i9_10850k",
+      "canonical_name": "Intel Core i9-10850K",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i9-10850K",
+        "10850K",
+        "Core i9 10850K",
+        "i9 10850K"
+      ],
+      "gaming_score": 73,
+      "tier": "high_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 125,
+      "used_price_min": 160.0,
+      "used_price_max": 220.0
+    },
+    {
+      "id": "cpu_intel_i7_11700f",
+      "canonical_name": "Intel Core i7-11700F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-11700F",
+        "11700F",
+        "Core i7 11700F",
+        "i7 11700F"
+      ],
+      "gaming_score": 69,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 120.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "cpu_intel_i7_10700f",
+      "canonical_name": "Intel Core i7-10700F",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i7-10700F",
+        "10700F",
+        "Core i7 10700F",
+        "i7 10700F"
+      ],
+      "gaming_score": 65,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 100.0,
+      "used_price_max": 140.0
+    },
+    {
+      "id": "cpu_intel_i5_11400",
+      "canonical_name": "Intel Core i5-11400",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-11400",
+        "11400",
+        "Core i5 11400"
+      ],
+      "gaming_score": 61,
+      "tier": "mid_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 75.0,
+      "used_price_max": 105.0
+    },
+    {
+      "id": "cpu_intel_i5_10400",
+      "canonical_name": "Intel Core i5-10400",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-10400",
+        "10400",
+        "Core i5 10400"
+      ],
+      "gaming_score": 57,
+      "tier": "budget_gaming",
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 65.0,
+      "used_price_max": 90.0
+    },
+    {
+      "id": "cpu_intel_i5_9500",
+      "canonical_name": "Intel Core i5-9500",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-9500",
+        "Core i5 9500"
+      ],
+      "gaming_score": 50,
+      "tier": "budget_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 50.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "cpu_intel_i5_8500",
+      "canonical_name": "Intel Core i5-8500",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i5-8500",
+        "Core i5 8500"
+      ],
+      "gaming_score": 47,
+      "tier": "budget_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 45.0,
+      "used_price_max": 70.0
+    },
+    {
+      "id": "cpu_intel_i3_8100",
+      "canonical_name": "Intel Core i3-8100",
+      "type": "CPU",
+      "brand": "Intel",
+      "aliases": [
+        "i3-8100",
+        "Core i3 8100"
+      ],
+      "gaming_score": 36,
+      "tier": "entry_gaming",
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 65,
+      "used_price_min": 25.0,
+      "used_price_max": 45.0
+    },
+    {
+      "id": "mb_x370",
+      "canonical_name": "AMD X370 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "X370",
+        "X370 Gaming",
+        "X370 Taichi",
+        "X370 Aorus"
+      ],
+      "socket": "AM4",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 40.0,
+      "used_price_max": 70.0
+    },
+    {
+      "id": "mb_h370",
+      "canonical_name": "Intel H370 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H370",
+        "H370M",
+        "H370 Gaming",
+        "H370 Tomahawk"
+      ],
+      "socket": "LGA1151",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 45.0,
+      "used_price_max": 75.0
+    },
+    {
+      "id": "mb_h470",
+      "canonical_name": "Intel H470 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H470",
+        "H470M",
+        "H470 Gaming",
+        "H470 Tomahawk"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 50.0,
+      "used_price_max": 80.0
+    },
+    {
+      "id": "mb_h570",
+      "canonical_name": "Intel H570 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H570",
+        "H570M",
+        "H570 Gaming",
+        "H570 Tomahawk"
+      ],
+      "socket": "LGA1200",
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 25,
+      "used_price_min": 55.0,
+      "used_price_max": 85.0
+    },
+    {
+      "id": "mb_h770",
+      "canonical_name": "Intel H770 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "Intel",
+      "aliases": [
+        "H770",
+        "H770M",
+        "H770 Gaming",
+        "H770 Tomahawk"
+      ],
+      "socket": "LGA1700",
+      "memory_types": [
+        "DDR4",
+        "DDR5"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 80.0,
+      "used_price_max": 130.0
+    },
+    {
+      "id": "mb_x870",
+      "canonical_name": "AMD X870 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "X870",
+        "X870 Gaming",
+        "X870 Aorus",
+        "X870 Tomahawk"
+      ],
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 35,
+      "used_price_min": 160.0,
+      "used_price_max": 250.0
+    },
+    {
+      "id": "mb_b850",
+      "canonical_name": "AMD B850 Motherboard",
+      "type": "MOTHERBOARD",
+      "brand": "AMD",
+      "aliases": [
+        "B850",
+        "B850 Gaming",
+        "B850 Aorus",
+        "B850 Tomahawk"
+      ],
+      "socket": "AM5",
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 30,
+      "used_price_min": 110.0,
+      "used_price_max": 180.0
+    },
+    {
+      "id": "ram_4gb_ddr4",
+      "canonical_name": "4GB DDR4 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "4GB DDR4",
+        "4 GB DDR4",
+        "DDR4 4GB",
+        "4GB RAM DDR4"
+      ],
+      "memory_types": [
+        "DDR4"
+      ],
+      "tdp_w": 3,
+      "used_price_min": 8.0,
+      "used_price_max": 15.0
+    },
+    {
+      "id": "ram_48gb_ddr5",
+      "canonical_name": "48GB DDR5 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "48GB DDR5",
+        "48 GB DDR5",
+        "DDR5 48GB",
+        "48GB RAM DDR5"
+      ],
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 12,
+      "used_price_min": 110.0,
+      "used_price_max": 160.0
+    },
+    {
+      "id": "ram_96gb_ddr5",
+      "canonical_name": "96GB DDR5 RAM",
+      "type": "RAM",
+      "brand": "Generic",
+      "aliases": [
+        "96GB DDR5",
+        "96 GB DDR5",
+        "DDR5 96GB",
+        "96GB RAM DDR5"
+      ],
+      "memory_types": [
+        "DDR5"
+      ],
+      "tdp_w": 20,
+      "used_price_min": 220.0,
+      "used_price_max": 320.0
+    },
+    {
+      "id": "psu_700w",
+      "canonical_name": "700W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "700W",
+        "700 Watt",
+        "Netzteil 700W",
+        "PSU 700W"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 700,
+      "used_price_min": 40.0,
+      "used_price_max": 65.0
+    },
+    {
+      "id": "psu_1200w",
+      "canonical_name": "1200W Power Supply",
+      "type": "PSU",
+      "brand": "Generic",
+      "aliases": [
+        "1200W",
+        "1200 Watt",
+        "Netzteil 1200W",
+        "PSU 1200W",
+        "1200W Gold"
+      ],
+      "tdp_w": 0,
+      "rec_psu_w": 1200,
+      "used_price_min": 120.0,
+      "used_price_max": 200.0
+    }
+  ]
+}
