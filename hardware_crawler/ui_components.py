@@ -469,20 +469,54 @@ def render_deal_check_view(deal: Any):
         st.error(f"### {deal.assessment_headline}\n{deal.assessment_description}")
     else:
         st.warning(f"### {deal.assessment_headline}\n{deal.assessment_description}")
+        with st.container(border=True):
+            st.markdown("#### 💶 Angebotspreis des Verkäufers nachtragen")
+            st.caption("Trage den verlangten Preis ein, um die Ersparnis zu berechnen und das Verhandlungsangebot freizuschalten:")
+            c_p1, c_p2, c_p3 = st.columns([2, 1, 1.2])
+            with c_p1:
+                sup_price = st.number_input(
+                    "Preis in €",
+                    min_value=1.0,
+                    max_value=15000.0,
+                    step=10.0,
+                    value=None,
+                    placeholder="z. B. 650",
+                    label_visibility="collapsed",
+                    key="deal_checker_price_input"
+                )
+            with c_p2:
+                sup_vb = st.checkbox("VB (Verhandlungsbasis)", value=False, key="deal_checker_vb_input")
+            with c_p3:
+                if st.button("Deal jetzt bewerten ⚡", type="primary", use_container_width=True, key="deal_checker_eval_btn"):
+                    if sup_price and sup_price > 0:
+                        st.session_state.supplemented_ad_price = float(sup_price)
+                        st.session_state.supplemented_ad_is_vb = bool(sup_vb)
+                        st.rerun()
 
     # 2. Key Metrics Row
     m1, m2, m3 = st.columns(3)
-    seller_price_display = f"{deal.seller_asking_price:.0f} €" if deal.seller_asking_price > 0 else "k.A."
-    vb_label = " (VB)" if deal.is_vb else " (Festpreis)"
-    m1.metric("💰 Angebotspreis", f"{seller_price_display}{vb_label}")
+    if deal.seller_asking_price > 0:
+        vb_label = " (VB)" if deal.is_vb else " (Festpreis)"
+        m1.metric("💰 Angebotspreis", f"{deal.seller_asking_price:.0f} €{vb_label}")
+    else:
+        m1.metric("💰 Angebotspreis", "k.A.", help="Verkäufer hat keinen Preis im Text genannt")
+
     m2.metric("🏷️ Summe Einzelteil-Marktwerte", f"~{deal.total_market_value:.0f} €")
     
-    savings_sign = "+" if deal.arbitrage_savings > 0 else ""
-    m3.metric(
-        "⚡ Ersparnis gegenüber Einzelkauf",
-        f"{savings_sign}{deal.arbitrage_savings:.0f} €",
-        delta=f"{savings_sign}{deal.savings_percent:.1f}%"
-    )
+    if deal.seller_asking_price > 0:
+        savings_sign = "+" if deal.arbitrage_savings > 0 else ""
+        m3.metric(
+            "⚡ Ersparnis gegenüber Einzelkauf",
+            f"{savings_sign}{deal.arbitrage_savings:.0f} €",
+            delta=f"{savings_sign}{deal.savings_percent:.1f}%"
+        )
+    else:
+        m3.metric(
+            "⚡ Ersparnis gegenüber Einzelkauf",
+            "—",
+            delta=None,
+            help="Bitte Angebotspreis nachtragen"
+        )
 
     # 3. Component Breakdown Table
     with st.container(border=True):
@@ -500,16 +534,22 @@ def render_deal_check_view(deal: Any):
         if table_data:
             st.dataframe(pd.DataFrame(table_data), use_container_width=True, hide_index=True)
 
-    # 4. Ready-to-Play Gap Alert (if missing Case, Cooler, Storage)
+    # 4. Ready-to-Play Gap Alert (if missing essential parts)
     if deal.missing_essential_parts:
         with st.container(border=True):
             st.warning("⚠️ **Hinweis zu 'Ready-to-Play':** In der Anzeige fehlen essenzielle Teile für den Betrieb:")
             for mp in deal.missing_essential_parts:
                 st.caption(f"• {html.escape(mp)}")
-            st.markdown(
-                f"**Zusatzaufwand:** +{deal.ready_to_play_additional_cost:.0f} € "
-                f"$\rightarrow$ **Echter Ready-to-Play Preis:** **~{deal.ready_to_play_total_cost:.0f} €**"
-            )
+            if deal.seller_asking_price > 0:
+                st.markdown(
+                    f"**Zusatzaufwand:** +{deal.ready_to_play_additional_cost:.0f} € → "
+                    f"**Echter Ready-to-Play Preis:** **~{deal.ready_to_play_total_cost:.0f} €** *(Inseratspreis + nötige Ergänzungen)*"
+                )
+            else:
+                st.markdown(
+                    f"**Zusatzaufwand:** +{deal.ready_to_play_additional_cost:.0f} € → "
+                    f"**Geschätzter spielbereiter Gesamt-Marktwert:** **~{deal.ready_to_play_total_cost:.0f} €** *(Marktwert vorhandener Teile + nötige Ergänzungen)*"
+                )
 
     # 5. Negotiation Assistant
     if deal.negotiation:

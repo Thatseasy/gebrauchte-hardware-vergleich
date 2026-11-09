@@ -470,11 +470,29 @@
   - Pytest Gesamt-Suite: **42/42 Tests grün (100.0%)** in 7.08s.
   - `qa_head_audit.py`: **24/24 Tests bestanden (100.0%)**, 0 Issues.
 
-### Phase 5: Verification & Notion Ticket Sync
-- [x] Verify all tickets meet acceptance criteria (100% verified by Team 3 QA).
-- [x] Update all ticket statuses in Notion to `Done` (TICKET-01 to TICKET-08 in database `collection://9ec6db6c-82f2-4125-96f1-ecbe285aed56`).
-- [x] Update `tasks/todo.md` and `tasks/lessons.md`.
-- [x] Stage and commit changes to git repository.
+### Phase 6: Autonomous Bug Fixing & UX Polish (Post-Test Refinements)
+- [x] **Fix 1: Complete Essential Hardware Spectrum in Deal-Checker (`deal_checker.py`)**
+  - Add missing Motherboard (+80€), PSU (+65€), Cooler (+30€), Case (+50€), Storage (+55€), RAM (+45€), CPU (+150€), GPU (+250€) to `missing_essential_parts`
+- [x] **Fix 2: Mathematical Soundness in Ready-to-Play Total (`deal_checker.py`)**
+  - Fix `ready_to_play_total`: when `final_price <= 0`, base estimate on `total_market_value + ready_to_play_extra` instead of `0 + extra`
+- [x] **Fix 3: Fix LaTeX/Markdown corruption `ightarrow` (`ui_components.py`)**
+  - Replace `f"$\rightarrow$..."` with clean unicode `→`
+- [x] **Fix 4: Fix Metric Badges for Missing Price (`ui_components.py` & `app.py`)**
+  - Display `k.A.` without `(Festpreis)` and `—` for savings instead of `0 € (↑ 0.0%)`
+- [x] **Fix 5: Interactive Inline Price Input (`ui_components.py` & `app.py`)**
+  - Add inline number input directly in the Deal-Checker card + support standalone price inputs in chat
+- [x] **Fix 6: Storage Regex & Pricing Precision (`deal_checker.py`)**
+  - Match spaced formats like `512 GB` and adjust 512GB used fair value to ~28€
+- [x] **Fix 7: Deduplicate Warning Banner (`app.py`)**
+  - Remove redundant duplicate banner in chat message vs. card
+- [x] **Verification & Tests**
+  - Add unit test for the user's 4-component test case in `tests/test_deal_checker.py`
+  - Run `uv run pytest` and verify 100% pass rate (41/41 tests passing)
+- [x] **Deliverables & Response Formulation**
+  - Formulate detailed critique of user screenshots
+  - Answer log visibility question (localhost vs Streamlit Cloud)
+  - Detail 10 user simulation flows
+
 
 
 

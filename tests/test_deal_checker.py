@@ -130,3 +130,42 @@ def test_deal_checker_negotiation_strategy():
     assert "Hallo, ich habe Interesse" in neg.chat_message_german
     assert "vor Ort abholen" in neg.chat_message_german
     assert "bar bezahlen" in neg.chat_message_german
+
+def test_deal_checker_partial_ad_missing_mobo_psu():
+    """
+    Regression test for user session sess_20261109_091956_47d7a2:
+    Ad with RTX 4060, i5-14400F, 16GB DDR5, 512GB SSD without price:
+    1. Identifies missing MOTHERBOARD, PSU, CASE, COOLER in missing_essential_parts.
+    2. Correctly matches 512 GB SSD at ~28€ (not 55€).
+    3. Calculates ready_to_play_total based on total_market_value + ready_to_play_extra (~703€), NOT 80€!
+    """
+    user_ad = (
+        "* Grafikkarte: NVIDIA GeForce RTX 4060 – 8 GB\n"
+        "* Prozessor: Intel Core i5-14400F\n"
+        "* Arbeitsspeicher: 16 GB DDR5 – 5600 MHz\n"
+        "* Speicher: 512 GB SSD"
+    )
+
+    checker = DealChecker()
+    res = checker.evaluate_ad(user_ad, seller_asking_price=None)
+
+    assert len(res.components) == 4
+    categories = {c.category for c in res.components}
+    assert categories == {"GPU", "CPU", "RAM", "STORAGE"}
+
+    # 1. Check storage pricing (512 GB should be 28€)
+    storage_comp = next(c for c in res.components if c.category == "STORAGE")
+    assert storage_comp.market_value_fair == 28.0
+
+    # 2. Check missing essential parts (MOTHERBOARD, PSU, CASE, COOLER must be missing)
+    missing_str = " ".join(res.missing_essential_parts)
+    assert "Mainboard" in missing_str
+    assert "Netzteil" in missing_str
+    assert "CPU-Kühler" in missing_str
+    assert "Gehäuse" in missing_str
+    assert res.ready_to_play_additional_cost == 80.0 + 65.0 + 30.0 + 50.0  # 225.0 EUR
+
+    # 3. Check ready_to_play_total_cost when price is unknown
+    # Should NOT be 80 EUR, but market value (~478 EUR) + additional cost (225 EUR) = ~703 EUR
+    assert res.ready_to_play_total_cost > 600.0
+    assert res.ready_to_play_total_cost == round(res.total_market_value + res.ready_to_play_additional_cost, 2)

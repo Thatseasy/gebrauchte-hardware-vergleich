@@ -67,3 +67,15 @@ Historical and session lessons captured to prevent repeating mistakes.
 - **Narrative Fließtext- und Disclaimer-Filterung**: Echte Kleinanzeigen-Verkäufer kopieren Benchmark-Logs (3DMark, FurMark), Temperaturangaben ("CPU-Temperatur bei Last: 60°C"), rechtliche Klauseln (AGB, Impressum, Widerruf) oder Modding-Hinweise in ihre Texte. Durch strikte Präfix-Erkennung und Disclaimer-Regex werden diese Zeilen zuverlässig als Floskeln erkannt und verfälschen nicht die Stückliste.
 - **Deduplizierung singulärer Komponenten**: Inserate nennen Schlüsselkomponenten oft mehrfach (im Titel, im Einleitungssatz und in der technischen Liste). Eine strikte Singular-Kategoriendeduplizierung (maximal 1 CPU, 1 GPU, 1 Mainboard, 1 Gehäuse, 1 Netzteil, 1 Kühler) mit Priorisierung deterministischer Katalogtreffer verhindert künstliche Wertaufblähung.
 - **Fokussierte Alternativen-Generierung**: Die Suche nach Alternativen für jedes Gehäuse, jeden Lüfter oder jede zweite SSD vergrößert das Suchvolumen exponentiell (27+ Suchen bei max_workers=2). Eine Begrenzung der Alternativensuchen auf Kernhardware (GPU, CPU, Mainboard) hält Markt-Scans unter 30-40s, während das Ready-to-Play Modell Lücken mit marktüblichen Richtpreisen transparent schließt.
+
+## 12. Deal-Checker Nuances & UX Polish (Post-Test Refinements)
+- **Vollständiges Hardware-Spektrum bei Ready-to-Play**:
+  Viele Kleinanzeigen-Angebote listen nur GPU, CPU, RAM und SSD auf, unterschlagen aber Mainboard und Netzteil. Eine Ready-to-Play-Prüfung muss das gesamte 8-teilige Spektrum (CPU, GPU, MOTHERBOARD, RAM, STORAGE, PSU, COOLER, CASE) prüfen. Ohne Mainboard (+80€) und Netzteil (+65€) ist ein PC nicht lauffähig.
+- **Mathematische Konsistenz bei fehlendem Angebotspreis**:
+  Wenn kein Preis genannt wurde (`final_price <= 0`), darf der `ready_to_play_total` nicht aus `0 + zusatzaufwand` berechnet werden (was zu absurden ~80 € für einen Komplett-PC führte). In diesem Fall muss der Gesamt-Fertigstellungswert auf `total_market_value + ready_to_play_extra` basieren (~703 €).
+- **Escape-Sequenzen in Python F-Strings**:
+  In Nicht-Raw-Strings wird `\r` als Carriage Return (0x0D) interpretiert. `f"$\rightarrow$"` wird zu `ightarrow`. Formel-Pfeile sollten als Unicode `→` geschrieben werden.
+- **Keine Schein-Metriken bei fehlendem Preis**:
+  Bei unbekanntem Preis darf kein `k.A. (Festpreis)` oder ein grüner Aufwärtspfeil `↑ 0.0%` gerendert werden. Angebotspreis muss sauber als `k.A.` und Ersparnis als `—` dargestellt werden.
+- **Interaktiver Nachtrags-Pfad statt toter Call-to-Action**:
+  Wenn die UI den Nutzer auffordert: 'Bitte trage den Angebotspreis ein', muss direkt in der Deal-Checker-Karte ein Eingabefeld (`st.number_input`) mit Bestätigungs-Button bereitstehen, und der Chat-Input muss reine Zahlen ('650 €') als Preis-Nachtrag für den aktiven Deal erkennen, anstatt 'I didn't detect hardware parts' zu antworten.

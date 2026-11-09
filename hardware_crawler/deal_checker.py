@@ -58,6 +58,7 @@ class DealCheckResult:
     ready_to_play_additional_cost: float
     ready_to_play_total_cost: float
     negotiation: Optional[NegotiationStrategy] = None
+    raw_ad_text: str = ""
 
 # Regex patterns for ad boilerplate & pricing indicators
 AD_BOILERPLATE_PATTERN = re.compile(
@@ -350,15 +351,21 @@ class MultiLineAdParser:
         if detected_category == "STORAGE" or REGEX_STORAGE.search(t_upper):
             fair_price = 55.0
             name = "1TB NVMe M.2 SSD"
-            if "2TB" in t_upper or "2 TB" in t_upper:
-                fair_price = 100.0
-                name = "2TB NVMe M.2 SSD"
-            elif "500GB" in t_upper or "512GB" in t_upper:
-                fair_price = 35.0
-                name = "500GB NVMe M.2 SSD"
-            elif "4TB" in t_upper or "4 TB" in t_upper:
+            if re.search(r"\b(?:4\s*TB|4000\s*GB)\b", t_upper):
                 fair_price = 190.0
                 name = "4TB NVMe M.2 SSD"
+            elif re.search(r"\b(?:2\s*TB|2000\s*GB)\b", t_upper):
+                fair_price = 100.0
+                name = "2TB NVMe M.2 SSD"
+            elif re.search(r"\b(?:1\s*TB|1000\s*GB)\b", t_upper):
+                fair_price = 55.0
+                name = "1TB NVMe M.2 SSD"
+            elif re.search(r"\b(?:500\s*GB|512\s*GB)\b", t_upper):
+                fair_price = 28.0
+                name = "512GB NVMe M.2 SSD"
+            elif re.search(r"\b(?:250\s*GB|256\s*GB)\b", t_upper):
+                fair_price = 18.0
+                name = "256GB SSD"
             return EvaluatedComponent(
                 category="STORAGE",
                 raw_name=raw_line,
@@ -536,17 +543,26 @@ class DealChecker:
         missing_parts = []
         ready_to_play_extra = 0.0
 
-        if "CASE" not in present_categories:
-            missing_parts.append("Gehäuse (Standard Airflow ATX: +50 €)")
-            ready_to_play_extra += 50.0
-        if "COOLER" not in present_categories:
-            missing_parts.append("CPU-Kühler (120mm Tower: +30 €)")
-            ready_to_play_extra += 30.0
-        if "STORAGE" not in present_categories:
-            missing_parts.append("SSD (1TB M.2 NVMe: +55 €)")
-            ready_to_play_extra += 55.0
+        ESSENTIAL_SLOTS = [
+            ("MOTHERBOARD", "Mainboard (passender Chipsatz: +80 €)", 80.0),
+            ("PSU", "Netzteil (650W 80+ Standard: +65 €)", 65.0),
+            ("COOLER", "CPU-Kühler (120mm Tower: +30 €)", 30.0),
+            ("CASE", "Gehäuse (Standard Airflow ATX: +50 €)", 50.0),
+            ("STORAGE", "SSD (1TB M.2 NVMe: +55 €)", 55.0),
+            ("RAM", "Arbeitsspeicher (16GB RAM Kit: +45 €)", 45.0),
+            ("CPU", "Prozessor (passende Gaming-CPU: +150 €)", 150.0),
+            ("GPU", "Grafikkarte (Dedizierte Gaming-GPU: +250 €)", 250.0),
+        ]
 
-        ready_to_play_total = final_price + ready_to_play_extra
+        for cat, label, cost in ESSENTIAL_SLOTS:
+            if cat not in present_categories:
+                missing_parts.append(label)
+                ready_to_play_extra += cost
+
+        if final_price > 0:
+            ready_to_play_total = round(final_price + ready_to_play_extra, 2)
+        else:
+            ready_to_play_total = round(total_market_value + ready_to_play_extra, 2)
 
         # Negotiation Strategy
         negotiation = None
@@ -569,7 +585,8 @@ class DealChecker:
             missing_essential_parts=missing_parts,
             ready_to_play_additional_cost=round(ready_to_play_extra, 2),
             ready_to_play_total_cost=round(ready_to_play_total, 2),
-            negotiation=negotiation
+            negotiation=negotiation,
+            raw_ad_text=ad_text
         )
 
         # Pre-Implementation Telemetry Logging

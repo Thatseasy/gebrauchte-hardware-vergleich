@@ -200,6 +200,18 @@ def main():
     # Deal-Checker and Versus-View Action Area
     if st.session_state.get("deal_check_result"):
         deal_res = st.session_state.deal_check_result
+        if st.session_state.get("supplemented_ad_price") is not None:
+            sup_p = st.session_state.pop("supplemented_ad_price")
+            sup_vb = st.session_state.pop("supplemented_ad_is_vb", False)
+            deal_checker = DealChecker(orch.catalog)
+            deal_res = deal_checker.evaluate_ad(
+                deal_res.raw_ad_text,
+                seller_asking_price=sup_p,
+                is_vb=sup_vb,
+                session_logger=orch.session_logger
+            )
+            st.session_state.deal_check_result = deal_res
+
         render_deal_check_view(deal_res)
 
         if st.session_state.get("show_versus") and orch.latest_build:
@@ -269,6 +281,41 @@ def main():
         # Add User Message
         st.session_state.messages.append({"role": "user", "content": prompt})
         render_chat_message("user", prompt)
+
+        # Check if user typed a missing price for an active deal check without price
+        active_deal = st.session_state.get("deal_check_result")
+        price_match = re.match(r"^(?:preis\s*:?\s*|kostet\s*)?(\d{2,5})\s*(?:€|euro)?\s*(vb|vhb|festpreis)?$", prompt.strip(), re.I)
+
+        if active_deal and active_deal.seller_asking_price <= 0 and price_match and not any(kw in prompt.lower() for kw in ["rtx", "gtx", "rx", "ryzen", "core", "intel", "amd", "gb", "ssd"]):
+            try:
+                entered_price = float(price_match.group(1))
+                entered_vb = bool((price_match.group(2) or "").lower() in ["vb", "vhb"])
+                deal_checker = DealChecker(orch.catalog)
+                deal_res = deal_checker.evaluate_ad(
+                    active_deal.raw_ad_text,
+                    seller_asking_price=entered_price,
+                    is_vb=entered_vb,
+                    session_logger=orch.session_logger
+                )
+                st.session_state.deal_check_result = deal_res
+
+                savings_str = f"{'+' if deal_res.arbitrage_savings > 0 else ''}{deal_res.arbitrage_savings:.0f} € ({deal_res.savings_percent:.1f}%)"
+                vb_suffix = " (VB)" if deal_res.is_vb else " (Festpreis)"
+                ack_text = (
+                    f"✅ **Angebotspreis von {entered_price:.0f} €{vb_suffix} übernommen!**\n\n"
+                    f"### {deal_res.assessment_headline}\n"
+                    f"{deal_res.assessment_description}\n\n"
+                    f"• **Angebotspreis:** {entered_price:.0f} €{vb_suffix}\n"
+                    f"• **Marktwert:** ~{deal_res.total_market_value:.0f} €\n"
+                    f"• **Ersparnis:** {savings_str}\n\n"
+                    f"*Die Detailbewertung und der Verhandlungsassistent wurden unten aktualisiert!*"
+                )
+                with st.chat_message("assistant"):
+                    st.markdown(ack_text)
+                    st.session_state.messages.append({"role": "assistant", "content": ack_text})
+                st.rerun()
+            except Exception:
+                pass
         
         # Check for Paste-to-Evaluate Deal-Check Intent
         is_deal, det_price, is_vb, conf, mode = detect_deal_check_intent(prompt)
@@ -286,18 +333,24 @@ def main():
                     st.session_state.deal_check_result = deal_res
                     orch.process_user_intent(prompt)
 
-                    p_str = f"{deal_res.seller_asking_price:.0f} €" if deal_res.seller_asking_price > 0 else "k.A."
-                    vb_str = " (VB)" if deal_res.is_vb else ""
-                    savings_str = f"{'+' if deal_res.arbitrage_savings > 0 else ''}{deal_res.arbitrage_savings:.0f} €"
+                    if deal_res.seller_asking_price > 0:
+                        p_str = f"{deal_res.seller_asking_price:.0f} €"
+                        vb_str = " (VB)" if deal_res.is_vb else " (Festpreis)"
+                        savings_str = f"{'+' if deal_res.arbitrage_savings > 0 else ''}{deal_res.arbitrage_savings:.0f} € ({deal_res.savings_percent:.1f}%)"
+                        headline_block = f"### {deal_res.assessment_headline}\n{deal_res.assessment_description}\n\n"
+                    else:
+                        p_str = "k.A."
+                        vb_str = ""
+                        savings_str = "— (Warte auf Preisangabe)"
+                        headline_block = ""
 
                     response_text = (
                         f"🔍 **Kleinanzeigen-Inserat erkannt ({len(deal_res.components)} Komponenten)!**\n\n"
-                        f"### {deal_res.assessment_headline}\n"
-                        f"{deal_res.assessment_description}\n\n"
+                        f"{headline_block}"
                         f"• **Angebotspreis:** {p_str}{vb_str}\n"
                         f"• **Geschätzter Marktwert (Summe Teile):** ~{deal_res.total_market_value:.0f} €\n"
-                        f"• **Spar-Vorteil:** {savings_str} ({deal_res.savings_percent:.1f}%)\n\n"
-                        f"*Details zu Einzelpreisen und Verhandlungsvorlage siehe unten!*"
+                        f"• **Spar-Vorteil:** {savings_str}\n\n"
+                        f"*Details zu Einzelpreisen, Ready-to-Play Prüfung und Verhandlungsvorlage siehe unten!*"
                     )
                     st.markdown(response_text)
                     st.session_state.messages.append({"role": "assistant", "content": response_text})
@@ -318,6 +371,7 @@ def main():
                 st.session_state.messages.append({"role": "assistant", "content": response_text})
         
         st.rerun()
+
 
 
 def run_scan(orch: HardwareOrchestrator):
