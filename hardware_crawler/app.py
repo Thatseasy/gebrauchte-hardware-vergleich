@@ -1,5 +1,6 @@
 import sys
 import os
+import re
 import time
 
 # Add project root to sys.path

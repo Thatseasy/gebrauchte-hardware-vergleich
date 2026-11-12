@@ -79,3 +79,5 @@ Historical and session lessons captured to prevent repeating mistakes.
   Bei unbekanntem Preis darf kein `k.A. (Festpreis)` oder ein grüner Aufwärtspfeil `↑ 0.0%` gerendert werden. Angebotspreis muss sauber als `k.A.` und Ersparnis als `—` dargestellt werden.
 - **Interaktiver Nachtrags-Pfad statt toter Call-to-Action**:
   Wenn die UI den Nutzer auffordert: 'Bitte trage den Angebotspreis ein', muss direkt in der Deal-Checker-Karte ein Eingabefeld (`st.number_input`) mit Bestätigungs-Button bereitstehen, und der Chat-Input muss reine Zahlen ('650 €') als Preis-Nachtrag für den aktiven Deal erkennen, anstatt 'I didn't detect hardware parts' zu antworten.
+- **Statische Import-/NameError-Prüfung bei UI-Code (`ruff check --select F821`)**:
+  Streamlit-App-Code (`app.py`, `ui_components.py`) wird von reinen Engine-Pytest-Suiten oft nicht vollständig ausgeführt. Vor jedem Commit muss `uv run ruff check --select F821 hardware_crawler/ streamlit_app.py tests/` ausgeführt werden, um fehlende Imports (wie `import re`) oder `NameError` sofort abzufangen.
